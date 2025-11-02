@@ -33,17 +33,26 @@ const storeOTP = (identifier, otp, expiryMinutes = 5) => {
  * Verify OTP
  */
 const verifyOTP = (identifier, inputOTP) => {
+  console.log(`🔍 Verifying OTP for identifier: ${identifier}`);
+  console.log(`🔍 Input OTP: "${inputOTP}" (type: ${typeof inputOTP})`);
+
   const otpData = otpStore.get(identifier);
 
   if (!otpData) {
+    console.log('❌ No OTP data found for this identifier');
+    console.log('📋 Available identifiers:', Array.from(otpStore.keys()));
     return {
       success: false,
       message: 'No OTP found. Please request a new one.'
     };
   }
 
+  console.log(`🔍 Stored OTP: "${otpData.otp}" (type: ${typeof otpData.otp})`);
+  console.log(`🔍 Attempts so far: ${otpData.attempts}`);
+
   // Check expiry
   if (Date.now() > otpData.expiryTime) {
+    console.log('❌ OTP has expired');
     otpStore.delete(identifier);
     return {
       success: false,
@@ -53,6 +62,7 @@ const verifyOTP = (identifier, inputOTP) => {
 
   // Check attempts
   if (otpData.attempts >= 3) {
+    console.log('❌ Maximum attempts exceeded');
     otpStore.delete(identifier);
     return {
       success: false,
@@ -60,8 +70,14 @@ const verifyOTP = (identifier, inputOTP) => {
     };
   }
 
-  // Verify OTP
-  if (otpData.otp === inputOTP) {
+  // Verify OTP - convert both to strings and trim
+  const storedOTP = String(otpData.otp).trim();
+  const providedOTP = String(inputOTP).trim();
+
+  console.log(`🔍 Comparing: "${storedOTP}" === "${providedOTP}"`);
+
+  if (storedOTP === providedOTP) {
+    console.log('✅ OTP verified successfully!');
     otpStore.delete(identifier);
     return {
       success: true,
@@ -69,6 +85,7 @@ const verifyOTP = (identifier, inputOTP) => {
     };
   } else {
     otpData.attempts++;
+    console.log(`❌ OTP mismatch. Attempts remaining: ${3 - otpData.attempts}`);
     return {
       success: false,
       message: `Invalid OTP. ${3 - otpData.attempts} attempts remaining.`
