@@ -6,6 +6,11 @@
 
 const bcrypt = require('bcryptjs');
 
+// Generate correct password hash for "Banking@123" on startup
+console.log('🔐 Generating password hashes for demo accounts...');
+const passwordHash = bcrypt.hashSync('Banking@123', 10);
+console.log('✅ Password hashes generated successfully\n');
+
 // Sample users with hashed passwords
 // Default password for all users: "Banking@123"
 const users = [
@@ -13,7 +18,7 @@ const users = [
     id: 'USR001',
     username: 'john.doe',
     email: 'john.doe@example.com',
-    password: '$2a$10$rN7xqZqJZxvyVXN0Y3Jg5.xKzY7qHxWE0sZxqVXN0Y3Jg5.xKzY7q', // Banking@123
+    password: passwordHash, // Banking@123
     fullName: 'John Doe',
     phone: '+1234567890',
     profilePic: 'assets/images/user-avatar.png',
@@ -34,7 +39,7 @@ const users = [
     id: 'USR002',
     username: 'jane.smith',
     email: 'jane.smith@example.com',
-    password: '$2a$10$rN7xqZqJZxvyVXN0Y3Jg5.xKzY7qHxWE0sZxqVXN0Y3Jg5.xKzY7q', // Banking@123
+    password: passwordHash, // Banking@123
     fullName: 'Jane Smith',
     phone: '+1234567891',
     profilePic: 'assets/images/user-avatar.png',
@@ -55,7 +60,7 @@ const users = [
     id: 'ADM001',
     username: 'admin',
     email: 'admin@bankportal.com',
-    password: '$2a$10$rN7xqZqJZxvyVXN0Y3Jg5.xKzY7qHxWE0sZxqVXN0Y3Jg5.xKzY7q', // Banking@123
+    password: passwordHash, // Banking@123
     fullName: 'System Administrator',
     phone: '+1234567899',
     profilePic: 'assets/images/admin-avatar.png',
