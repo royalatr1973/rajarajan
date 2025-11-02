@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - SecureBank</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .chat-container { background: var(--bg-primary); border-radius: var(--radius-lg); padding: 1.5rem; max-width: 600px; margin: 0 auto; border: 1px solid var(--border-color); }
+        .chat-messages { height: 400px; overflow-y: auto; margin-bottom: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); }
+        .message { margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); max-width: 80%; }
+        .message-user { background: var(--primary-blue); color: white; margin-left: auto; }
+        .message-bot { background: var(--bg-tertiary); color: var(--text-primary); }
+        .chat-input { display: flex; gap: 0.5rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/dashboard.html" class="logo"><span class="logo-icon">🏦</span><span>SecureBank</span></a>
+                <ul class="nav-menu">
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/support.html" class="nav-link active">Support</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content" style="padding: 2rem 0;">
+        <div class="container">
+            <h1 style="text-align: center;">💬 Customer Support</h1>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">How can we help you today?</p>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message message-bot">Hello! I'm your virtual assistant. How can I help you today?</div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chatInput" class="form-control" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+
+            <div class="grid grid-3 mt-4">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📞</div>
+                    <div><strong>Phone</strong></div>
+                    <div style="color: var(--text-secondary);">1-800-BANK-HELP</div>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">✉️</div>
+                    <div><strong>Email</strong></div>
+                    <div style="color: var(--text-secondary);">support@securebank.com</div>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🕒</div>
+                    <div><strong>Hours</strong></div>
+                    <div style="color: var(--text-secondary);">24/7 Available</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+        checkAuth();
+
+        const responses = {
+            'balance': 'You can check your balance on the Dashboard or Accounts page.',
+            'transfer': 'To transfer funds, go to the Transfer page and select your transfer mode (NEFT/RTGS/IMPS/UPI).',
+            'password': 'You can change your password from Profile > Settings > Security.',
+            'bill': 'Visit the Bill Payment page to pay bills for electricity, mobile, DTH, and more.',
+            'default': 'Thank you for your question. For detailed assistance, please call 1-800-BANK-HELP or email support@securebank.com.'
+        };
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messages = document.getElementById('chatMessages');
+            messages.innerHTML += `<div class="message message-user">${message}</div>`;
+            input.value = '';
+
+            setTimeout(() => {
+                const response = Object.keys(responses).find(key => message.toLowerCase().includes(key)) || 'default';
+                messages.innerHTML += `<div class="message message-bot">${responses[response]}</div>`;
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
+        }
+    </script>
+</body>
+</html>

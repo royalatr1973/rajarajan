@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fund Transfer - SecureBank</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .main-content { padding: 2rem 0; min-height: calc(100vh - 80px); }
+        .transfer-modes { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .mode-btn { flex: 1; min-width: 150px; padding: 1rem; border: 2px solid var(--border-color); background: var(--bg-primary); border-radius: var(--radius-md); cursor: pointer; text-align: center; transition: all var(--transition-fast); }
+        .mode-btn.active { border-color: var(--primary-blue); background: var(--primary-blue); color: white; }
+        .mode-btn:hover { border-color: var(--primary-blue); }
+        .beneficiary-list { max-height: 300px; overflow-y: auto; margin-bottom: 1rem; }
+        .beneficiary-item { padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 0.5rem; cursor: pointer; transition: all var(--transition-fast); }
+        .beneficiary-item:hover, .beneficiary-item.selected { background: var(--primary-blue); color: white; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/dashboard.html" class="logo"><span class="logo-icon">🏦</span><span>SecureBank</span></a>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/accounts.html" class="nav-link">Accounts</a></li>
+                    <li><a href="/transfer.html" class="nav-link active">Transfer</a></li>
+                    <li><a href="/billpay.html" class="nav-link">Bill Pay</a></li>
+                    <li><a href="/support.html" class="nav-link">Support</a></li>
+                    <li><div class="user-profile" onclick="toggleUserMenu()"><div class="user-avatar" id="userAvatar">JD</div><span id="userName">User</span></div></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>💸 Fund Transfer</h1>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">New Transfer</h3></div>
+                    <div class="card-body">
+                        <div id="alertContainer"></div>
+
+                        <div class="transfer-modes" id="transferModes">
+                            <div class="mode-btn active" data-mode="NEFT" onclick="selectMode('NEFT')">NEFT</div>
+                            <div class="mode-btn" data-mode="RTGS" onclick="selectMode('RTGS')">RTGS</div>
+                            <div class="mode-btn" data-mode="IMPS" onclick="selectMode('IMPS')">IMPS</div>
+                            <div class="mode-btn" data-mode="UPI" onclick="selectMode('UPI')">UPI</div>
+                        </div>
+
+                        <form id="transferForm">
+                            <div class="form-group">
+                                <label class="form-label">From Account</label>
+                                <select id="fromAccount" class="form-control form-select" required></select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">To Account Number</label>
+                                <input type="text" id="toAccount" class="form-control" placeholder="Enter account number" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Amount</label>
+                                <input type="number" id="amount" class="form-control" placeholder="0.00" min="1" step="0.01" required>
+                                <span class="form-help" id="transferLimit"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Remarks (Optional)</label>
+                                <textarea id="remarks" class="form-control" rows="2" placeholder="Enter remarks"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-full" id="initiateBtn">🔐 Initiate Transfer</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Beneficiaries</h3>
+                        <button class="btn btn-sm btn-outline" onclick="showAddBeneficiary()">+ Add</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="beneficiary-list" id="beneficiaryList">
+                            <div class="spinner" style="margin: 2rem auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- OTP Modal -->
+    <div id="otpModal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999;">
+        <div class="card" style="max-width: 400px; margin: 0;">
+            <div class="card-header"><h3 class="card-title">Verify OTP</h3></div>
+            <div class="card-body">
+                <p style="text-align: center; margin-bottom: 1rem;">Enter OTP sent to your registered mobile</p>
+                <div style="display: flex; gap: 0.5rem; justify-content: center; margin: 1.5rem 0;">
+                    <input type="text" maxlength="1" class="otp-input" data-index="0" style="width: 50px; height: 50px; text-align: center; font-size: 1.5rem; border: 2px solid var(--border-color); border-radius: 0.5rem;">
+                    <input type="text" maxlength="1" class="otp-input" data-index="1" style="width: 50px; height: 50px; text-align: center; font-size: 1.5rem; border: 2px solid var(--border-color); border-radius: 0.5rem;">
+                    <input type="text" maxlength="1" class="otp-input" data-index="2" style="width: 50px; height: 50px; text-align: center; font-size: 1.5rem; border: 2px solid var(--border-color); border-radius: 0.5rem;">
+                    <input type="text" maxlength="1" class="otp-input" data-index="3" style="width: 50px; height: 50px; text-align: center; font-size: 1.5rem; border: 2px solid var(--border-color); border-radius: 0.5rem;">
+                    <input type="text" maxlength="1" class="otp-input" data-index="4" style="width: 50px; height: 50px; text-align: center; font-size: 1.5rem; border: 2px solid var(--border-color); border-radius: 0.5rem;">
+                    <input type="text" maxlength="1" class="otp-input" data-index="5" style="width: 50px; height: 50px; text-align: center; font-size: 1.5rem; border: 2px solid var(--border-color); border-radius: 0.5rem;">
+                </div>
+                <button class="btn btn-primary w-full" onclick="verifyTransferOTP()">✓ Verify & Transfer</button>
+                <button class="btn btn-secondary w-full mt-2" onclick="closeOTPModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Transfer logic
+        checkAuth();
+        let selectedMode = 'NEFT';
+        let currentTransfer = {};
+
+        const limits = { NEFT: 1000000, RTGS: 200000, IMPS: 200000, UPI: 100000 };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAccounts();
+            loadBeneficiaries();
+            setupTransferForm();
+            updateLimitText();
+        });
+
+        function selectMode(mode) {
+            selectedMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+            updateLimitText();
+        }
+
+        function updateLimitText() {
+            document.getElementById('transferLimit').textContent = `Maximum: $${limits[selectedMode].toLocaleString()}`;
+        }
+
+        async function loadAccounts() {
+            try {
+                const res = await fetchAPI('/accounts');
+                const data = await res.json();
+                const select = document.getElementById('fromAccount');
+                select.innerHTML = data.accounts.map(acc =>
+                    `<option value="${acc.accountId}">${acc.accountType} - ${acc.accountNumber} ($${acc.balance.toFixed(2)})</option>`
+                ).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadBeneficiaries() {
+            try {
+                const res = await fetchAPI('/transfer/beneficiaries');
+                const data = await res.json();
+                const container = document.getElementById('beneficiaryList');
+                if (!data.beneficiaries || data.beneficiaries.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No beneficiaries added</p>';
+                    return;
+                }
+                container.innerHTML = data.beneficiaries.map(ben =>
+                    `<div class="beneficiary-item" onclick="selectBeneficiary('${ben.accountNumber}', '${ben.name}')">
+                        <div style="font-weight: 600;">${ben.name}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">${ben.accountNumber}</div>
+                    </div>`
+                ).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function selectBeneficiary(accountNumber, name) {
+            document.getElementById('toAccount').value = accountNumber;
+            document.querySelectorAll('.beneficiary-item').forEach(item => {
+                item.classList.toggle('selected', item.textContent.includes(accountNumber));
+            });
+        }
+
+        function setupTransferForm() {
+            document.getElementById('transferForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const amount = parseFloat(document.getElementById('amount').value);
+                if (amount > limits[selectedMode]) {
+                    showAlert(`Amount exceeds ${selectedMode} limit`, 'error');
+                    return;
+                }
+
+                const btn = document.getElementById('initiateBtn');
+                btn.disabled = true;
+                btn.textContent = '⏳ Processing...';
+
+                try {
+                    const res = await fetchAPI('/transfer/initiate', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            fromAccountId: document.getElementById('fromAccount').value,
+                            toAccountNumber: document.getElementById('toAccount').value,
+                            amount,
+                            transferMode: selectedMode,
+                            remarks: document.getElementById('remarks').value
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        currentTransfer = {
+                            otpIdentifier: data.otpIdentifier,
+                            fromAccountId: document.getElementById('fromAccount').value,
+                            toAccountNumber: document.getElementById('toAccount').value,
+                            amount,
+                            transferMode: selectedMode,
+                            remarks: document.getElementById('remarks').value
+                        };
+                        showAlert('OTP sent! Check console for demo OTP', 'success');
+                        document.getElementById('otpModal').classList.remove('hidden');
+                    } else {
+                        throw new Error(data.message);
+                    }
+                } catch (err) {
+                    showAlert(err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = '🔐 Initiate Transfer';
+                }
+            });
+        }
+
+        async function verifyTransferOTP() {
+            const otpInputs = document.querySelectorAll('#otpModal .otp-input');
+            const otp = Array.from(otpInputs).map(input => input.value).join('');
+            if (otp.length !== 6) {
+                showAlert('Enter complete OTP', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetchAPI('/transfer/execute', {
+                    method: 'POST',
+                    body: JSON.stringify({ ...currentTransfer, otp })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showAlert('Transfer successful! ✓', 'success');
+                    closeOTPModal();
+                    document.getElementById('transferForm').reset();
+                    loadAccounts();
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (err) {
+                showAlert(err.message, 'error');
+            }
+        }
+
+        function closeOTPModal() {
+            document.getElementById('otpModal').classList.add('hidden');
+            document.querySelectorAll('#otpModal .otp-input').forEach(input => input.value = '');
+        }
+
+        function showAddBeneficiary() {
+            alert('Add beneficiary feature - implement modal form');
+        }
+    </script>
+</body>
+</html>

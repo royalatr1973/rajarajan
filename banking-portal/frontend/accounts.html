@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts - SecureBank</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/dashboard.html" class="logo"><span class="logo-icon">🏦</span><span>SecureBank</span></a>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/accounts.html" class="nav-link active">Accounts</a></li>
+                    <li><a href="/transfer.html" class="nav-link">Transfer</a></li>
+                    <li><a href="/billpay.html" class="nav-link">Bill Pay</a></li>
+                    <li><a href="/support.html" class="nav-link">Support</a></li>
+                    <li><div class="user-profile" onclick="toggleUserMenu()"><div class="user-avatar" id="userAvatar">JD</div><span id="userName">User</span></div></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content" style="padding: 2rem 0;">
+        <div class="container">
+            <h1>💰 My Accounts</h1>
+
+            <div id="accountsContainer">
+                <div class="spinner" style="margin: 2rem auto;"></div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header"><h3 class="card-title">Transaction History</h3></div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Select Account</label>
+                        <select id="accountSelect" class="form-control form-select" onchange="loadTransactions()"></select>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Reference</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsBody">
+                                <tr><td colspan="6" style="text-align: center;">Select an account</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        checkAuth();
+        let accounts = [];
+
+        document.addEventListener('DOMContentLoaded', loadAccounts);
+
+        async function loadAccounts() {
+            try {
+                const res = await fetchAPI('/accounts');
+                const data = await res.json();
+                accounts = data.accounts;
+
+                const container = document.getElementById('accountsContainer');
+                container.innerHTML = data.accounts.map(acc => `
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3>${acc.accountType} Account</h3>
+                                <p style="color: var(--text-secondary); margin: 0;">Account: ${acc.accountNumber}</p>
+                                <p style="color: var(--text-secondary); margin: 0;">Branch: ${acc.branch}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: var(--text-secondary); font-size: 0.875rem;">Available Balance</div>
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--primary-blue);">$${acc.balance.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                const select = document.getElementById('accountSelect');
+                select.innerHTML = data.accounts.map(acc =>
+                    `<option value="${acc.accountId}">${acc.accountType} - ${acc.accountNumber}</option>`
+                ).join('');
+
+                if (data.accounts.length > 0) loadTransactions();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadTransactions() {
+            const accountId = document.getElementById('accountSelect').value;
+            if (!accountId) return;
+
+            try {
+                const res = await fetchAPI(`/accounts/${accountId}/transactions?limit=20`);
+                const data = await res.json();
+
+                const tbody = document.getElementById('transactionsBody');
+                if (data.transactions.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No transactions found</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data.transactions.map(txn => `
+                    <tr>
+                        <td>${new Date(txn.timestamp).toLocaleDateString()}</td>
+                        <td>${txn.description}</td>
+                        <td style="font-family: monospace; font-size: 0.875rem;">${txn.reference}</td>
+                        <td><span class="status-badge status-${txn.status}">${txn.type}</span></td>
+                        <td class="${txn.type === 'credit' ? 'transaction-credit' : 'transaction-debit'}">
+                            ${txn.type === 'credit' ? '+' : '-'}$${txn.amount.toFixed(2)}
+                        </td>
+                        <td style="font-weight: 600;">$${txn.balance.toFixed(2)}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>
