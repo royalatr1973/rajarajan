@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SecureBank Portal</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .main-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
+            color: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-text h1 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text p {
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+
+        .quick-stats {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .quick-access-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-access-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-align: center;
+        }
+
+        .quick-access-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-blue);
+        }
+
+        .quick-access-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .quick-access-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-access-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .accounts-section {
+            margin-bottom: 2rem;
+        }
+
+        .account-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .account-info {
+            flex: 1;
+        }
+
+        .account-type {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .account-number {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        .account-balance {
+            text-align: right;
+        }
+
+        .balance-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .balance-amount {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transactions-table th {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .transactions-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .transaction-credit {
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        .transaction-debit {
+            color: var(--error-red);
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: var(--success-green-light);
+            color: #065f46;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .quick-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .account-card {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .account-balance {
+                text-align: center;
+            }
+
+            .transactions-table {
+                font-size: 0.875rem;
+            }
+
+            .transactions-table th,
+            .transactions-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/dashboard.html" class="logo">
+                    <span class="logo-icon">🏦</span>
+                    <span>SecureBank</span>
+                </a>
+
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/dashboard.html" class="nav-link active">Dashboard</a></li>
+                    <li><a href="/accounts.html" class="nav-link">Accounts</a></li>
+                    <li><a href="/transfer.html" class="nav-link">Transfer</a></li>
+                    <li><a href="/billpay.html" class="nav-link">Bill Pay</a></li>
+                    <li><a href="/support.html" class="nav-link">Support</a></li>
+                    <li>
+                        <div class="user-profile" onclick="toggleUserMenu()">
+                            <div class="user-avatar" id="userAvatar">JD</div>
+                            <span id="userName">User</span>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <div class="welcome-text">
+                    <h1>Welcome back, <span id="welcomeName">User</span>! 👋</h1>
+                    <p>Here's your financial summary for today</p>
+                </div>
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalAccounts">0</div>
+                        <div class="stat-label">Accounts</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalBalance">$0</div>
+                        <div class="stat-label">Total Balance</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Access -->
+            <section class="dashboard-section">
+                <h2>Quick Access</h2>
+                <div class="quick-access-grid">
+                    <div class="quick-access-card" onclick="window.location.href='/accounts.html'">
+                        <div class="quick-access-icon">💰</div>
+                        <div class="quick-access-title">Account Summary</div>
+                        <div class="quick-access-desc">View all your accounts</div>
+                    </div>
+
+                    <div class="quick-access-card" onclick="window.location.href='/transfer.html'">
+                        <div class="quick-access-icon">💸</div>
+                        <div class="quick-access-title">Fund Transfer</div>
+                        <div class="quick-access-desc">Transfer money instantly</div>
+                    </div>
+
+                    <div class="quick-access-card" onclick="window.location.href='/billpay.html'">
+                        <div class="quick-access-icon">📄</div>
+                        <div class="quick-access-title">Bill Payments</div>
+                        <div class="quick-access-desc">Pay bills and recharge</div>
+                    </div>
+
+                    <div class="quick-access-card" onclick="window.location.href='/profile.html'">
+                        <div class="quick-access-icon">⚙️</div>
+                        <div class="quick-access-title">Settings</div>
+                        <div class="quick-access-desc">Manage your profile</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Accounts Overview -->
+            <section class="accounts-section">
+                <h2>Your Accounts</h2>
+                <div id="accountsContainer">
+                    <div class="spinner" style="margin: 2rem auto;"></div>
+                </div>
+            </section>
+
+            <!-- Recent Transactions -->
+            <section class="dashboard-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Transactions</h3>
+                        <a href="/accounts.html" class="btn btn-sm btn-outline">View All</a>
+                    </div>
+                    <div class="card-body">
+                        <div style="overflow-x: auto;">
+                            <table class="transactions-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionsBody">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center;">
+                                            <div class="spinner" style="margin: 1rem auto;"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

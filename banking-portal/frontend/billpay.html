@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Payment - SecureBank</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .main-content { padding: 2rem 0; }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .category-card { padding: 2rem; text-align: center; border: 2px solid var(--border-color); border-radius: var(--radius-lg); cursor: pointer; transition: all var(--transition-fast); background: var(--bg-primary); }
+        .category-card:hover, .category-card.active { border-color: var(--primary-blue); background: var(--primary-blue); color: white; transform: translateY(-3px); }
+        .category-icon { font-size: 3rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/dashboard.html" class="logo"><span class="logo-icon">🏦</span><span>SecureBank</span></a>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+                <ul class="nav-menu">
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/accounts.html" class="nav-link">Accounts</a></li>
+                    <li><a href="/transfer.html" class="nav-link">Transfer</a></li>
+                    <li><a href="/billpay.html" class="nav-link active">Bill Pay</a></li>
+                    <li><a href="/support.html" class="nav-link">Support</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>📄 Bill Payment & Recharge</h1>
+
+            <div class="category-grid" id="categoryGrid">
+                <div class="category-card" onclick="selectCategory('electricity')"><div class="category-icon">💡</div><div>Electricity</div></div>
+                <div class="category-card" onclick="selectCategory('mobile')"><div class="category-icon">📱</div><div>Mobile</div></div>
+                <div class="category-card" onclick="selectCategory('dth')"><div class="category-icon">📺</div><div>DTH</div></div>
+                <div class="category-card" onclick="selectCategory('creditcard')"><div class="category-icon">💳</div><div>Credit Card</div></div>
+                <div class="category-card" onclick="selectCategory('gas')"><div class="category-icon">🔥</div><div>Gas</div></div>
+                <div class="category-card" onclick="selectCategory('broadband')"><div class="category-icon">🌐</div><div>Broadband</div></div>
+            </div>
+
+            <div class="card" id="billPayForm" style="display: none;">
+                <div class="card-header"><h3 class="card-title" id="formTitle">Pay Bill</h3></div>
+                <div class="card-body">
+                    <div id="alertContainer"></div>
+                    <form id="paymentForm">
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Provider</label>
+                                <select id="provider" class="form-control form-select" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Account/Customer Number</label>
+                                <input type="text" id="accountNumber" class="form-control" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline" onclick="fetchBill()">📋 Fetch Bill</button>
+
+                        <div id="billDetails" style="display: none; margin-top: 2rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-md);">
+                            <h4>Bill Details</h4>
+                            <div id="billInfo"></div>
+                            <div class="form-group mt-2">
+                                <label class="form-label">Pay from Account</label>
+                                <select id="payAccount" class="form-control form-select" required></select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full">💰 Pay Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        checkAuth();
+        let selectedCategory = null;
+        let currentBill = null;
+
+        async function selectCategory(category) {
+            selectedCategory = category;
+            document.querySelectorAll('.category-card').forEach(card => card.classList.remove('active'));
+            event.target.closest('.category-card').classList.add('active');
+            document.getElementById('formTitle').textContent = `Pay ${category.charAt(0).toUpperCase() + category.slice(1)} Bill`;
+            document.getElementById('billPayForm').style.display = 'block';
+
+            try {
+                const res = await fetchAPI('/billpay/categories');
+                const data = await res.json();
+                const cat = data.categories.find(c => c.id === category);
+                document.getElementById('provider').innerHTML = cat.providers.map(p => `<option value="${p}">${p}</option>`).join('');
+            } catch (err) {
+                console.error(err);
+            }
+
+            loadAccounts();
+        }
+
+        async function loadAccounts() {
+            try {
+                const res = await fetchAPI('/accounts');
+                const data = await res.json();
+                document.getElementById('payAccount').innerHTML = data.accounts.map(acc =>
+                    `<option value="${acc.accountId}">${acc.accountType} - $${acc.balance.toFixed(2)}</option>`
+                ).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function fetchBill() {
+            try {
+                const res = await fetchAPI('/billpay/fetch-bill', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        category: selectedCategory,
+                        provider: document.getElementById('provider').value,
+                        accountNumber: document.getElementById('accountNumber').value
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    currentBill = data.bill;
+                    document.getElementById('billInfo').innerHTML = `
+                        <p><strong>Bill Number:</strong> ${data.bill.billNumber}</p>
+                        <p><strong>Amount:</strong> <span style="font-size: 1.5rem; color: var(--primary-blue);">$${data.bill.amount}</span></p>
+                        <p><strong>Due Date:</strong> ${new Date(data.bill.dueDate).toLocaleDateString()}</p>
+                        <p><strong>Period:</strong> ${data.bill.billPeriod}</p>
+                    `;
+                    document.getElementById('billDetails').style.display = 'block';
+                    showAlert('Bill fetched successfully', 'success');
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (err) {
+                showAlert(err.message, 'error');
+            }
+        }
+
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentBill) return;
+
+            try {
+                const res = await fetchAPI('/billpay/pay', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        accountId: document.getElementById('payAccount').value,
+                        category: selectedCategory,
+                        provider: document.getElementById('provider').value,
+                        billNumber: currentBill.billNumber,
+                        accountNumber: document.getElementById('accountNumber').value,
+                        amount: currentBill.amount
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showAlert('Payment successful! ✓', 'success');
+                    document.getElementById('paymentForm').reset();
+                    document.getElementById('billDetails').style.display = 'none';
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (err) {
+                showAlert(err.message, 'error');
+            }
+        });
+    </script>
+</body>
+</html>

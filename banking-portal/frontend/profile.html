@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile & Settings - SecureBank</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/dashboard.html" class="logo"><span class="logo-icon">🏦</span><span>SecureBank</span></a>
+                <ul class="nav-menu">
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/profile.html" class="nav-link active">Profile</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content" style="padding: 2rem 0;">
+        <div class="container">
+            <h1>👤 Profile & Settings</h1>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">Personal Information</h3></div>
+                    <div class="card-body">
+                        <div id="alertContainer"></div>
+                        <form id="profileForm">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" id="fullName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" id="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" id="phone" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">Preferences</h3></div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Theme</label>
+                            <select id="theme" class="form-control form-select" onchange="changeTheme()">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="emailNotifications" class="form-checkbox">
+                                <span>Email Notifications</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="smsNotifications" class="form-checkbox">
+                                <span>SMS Notifications</span>
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="savePreferences()">💾 Save Preferences</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header"><h3 class="card-title">🔒 Security</h3></div>
+                <div class="card-body">
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Multi-Factor Authentication: <strong style="color: var(--success-green);">Enabled</strong></p>
+                    <button class="btn btn-outline">Change Password</button>
+                    <button class="btn btn-outline" onclick="logout()" style="margin-left: 1rem; color: var(--error-red); border-color: var(--error-red);">🚪 Logout</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        const user = checkAuth();
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetchAPI('/auth/profile');
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('fullName').value = data.user.fullName;
+                    document.getElementById('email').value = data.user.email;
+                    document.getElementById('phone').value = data.user.phone;
+                    document.getElementById('theme').value = data.user.preferences.theme;
+                    document.getElementById('emailNotifications').checked = data.user.preferences.emailNotifications;
+                    document.getElementById('smsNotifications').checked = data.user.preferences.smsNotifications;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const res = await fetchAPI('/auth/profile', {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        fullName: document.getElementById('fullName').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showAlert('Profile updated successfully', 'success');
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (err) {
+                showAlert(err.message, 'error');
+            }
+        });
+
+        async function savePreferences() {
+            try {
+                const res = await fetchAPI('/auth/profile', {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        preferences: {
+                            theme: document.getElementById('theme').value,
+                            emailNotifications: document.getElementById('emailNotifications').checked,
+                            smsNotifications: document.getElementById('smsNotifications').checked
+                        }
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showAlert('Preferences saved', 'success');
+                }
+            } catch (err) {
+                showAlert(err.message, 'error');
+            }
+        }
+
+        function changeTheme() {
+            const theme = document.getElementById('theme').value;
+            if (theme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
+    </script>
+</body>
+</html>
