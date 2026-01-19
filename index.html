@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Chat AI Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 WhatsApp Chat AI Search</h1>
+            <p class="subtitle">Search your WhatsApp chats intelligently with AI</p>
+        </header>
+
+        <main>
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-box">
+                    <div class="upload-icon">📁</div>
+                    <h2>Import WhatsApp Chat</h2>
+                    <p>Export your WhatsApp chat (without media) and upload the .txt file</p>
+                    <input type="file" id="fileInput" accept=".txt" class="file-input">
+                    <label for="fileInput" class="upload-btn">Choose File</label>
+                    <p class="file-name" id="fileName">No file selected</p>
+                </div>
+            </section>
+
+            <!-- Search Section -->
+            <section class="search-section" id="searchSection" style="display: none;">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search your chats... (e.g., 'messages about dinner plans')" class="search-input">
+                    <button id="searchBtn" class="search-btn">🔍 Search</button>
+                </div>
+
+                <div class="filters">
+                    <select id="senderFilter" class="filter-select">
+                        <option value="">All Participants</option>
+                    </select>
+                    <select id="dateFilter" class="filter-select">
+                        <option value="">All Dates</option>
+                        <option value="today">Today</option>
+                        <option value="week">Last Week</option>
+                        <option value="month">Last Month</option>
+                        <option value="year">Last Year</option>
+                    </select>
+                    <button id="clearBtn" class="clear-btn">Clear Filters</button>
+                </div>
+
+                <!-- AI Settings -->
+                <div class="ai-settings">
+                    <button id="toggleSettings" class="settings-btn">⚙️ AI Settings</button>
+                    <div id="settingsPanel" class="settings-panel" style="display: none;">
+                        <h3>AI Search Configuration</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="radio" name="aiMode" value="semantic" checked>
+                                Semantic Search (AI-powered)
+                            </label>
+                            <p class="setting-desc">Uses AI to understand context and meaning</p>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="radio" name="aiMode" value="keyword">
+                                Keyword Search
+                            </label>
+                            <p class="setting-desc">Traditional text matching</p>
+                        </div>
+                        <div class="setting-item">
+                            <label for="apiKey">OpenAI API Key (Optional):</label>
+                            <input type="password" id="apiKey" placeholder="sk-..." class="api-key-input">
+                            <p class="setting-desc">For enhanced AI search. Leave empty for basic semantic search.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats" id="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Messages:</span>
+                        <span class="stat-value" id="totalMessages">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Participants:</span>
+                        <span class="stat-value" id="participantCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Date Range:</span>
+                        <span class="stat-value" id="dateRange">-</span>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="results" id="results">
+                    <div class="results-header">
+                        <h2>Messages</h2>
+                        <span class="results-count" id="resultsCount">Showing all messages</span>
+                    </div>
+                    <div class="messages-container" id="messagesContainer">
+                        <!-- Messages will be inserted here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Processing your chat...</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Your data stays in your browser. Nothing is uploaded to any server.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
