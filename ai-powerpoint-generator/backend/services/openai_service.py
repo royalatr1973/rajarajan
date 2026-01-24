@@ -20,14 +20,24 @@ class OpenAIService:
         Returns:
             List of slide dictionaries with title, content, and image_keywords
         """
-        prompt = f"""Create a professional PowerPoint presentation outline for the topic: "{topic}"
+        prompt = f"""Create an exceptional, professional PowerPoint presentation outline for the topic: "{topic}"
 
 Generate exactly {num_slides} slides (including a title slide and conclusion slide).
 
+IMPORTANT GUIDELINES:
+1. Make content highly engaging, insightful, and valuable
+2. Use specific facts, statistics, and concrete examples where appropriate
+3. Each bullet point should be concise but meaningful (8-15 words)
+4. Avoid generic statements - be specific and actionable
+5. Use professional business language appropriate for presentations
+
 For each slide, provide:
-1. A compelling title
-2. 3-5 bullet points with engaging content (make them concise and impactful)
-3. 1-3 keywords for finding relevant images
+1. A compelling, specific title (not generic)
+2. 3-5 high-impact bullet points with substantive content
+3. 2-4 HIGHLY SPECIFIC image search keywords that will find professional, relevant photos
+   - For image keywords, be very specific (e.g., "business team collaboration office" instead of just "business")
+   - Include descriptive adjectives and context (e.g., "modern renewable solar panels farm" instead of "solar energy")
+   - Think about what would make a great professional stock photo for this topic
 
 Return the response as a JSON array with this exact structure:
 [
@@ -35,24 +45,32 @@ Return the response as a JSON array with this exact structure:
     "slide_number": 1,
     "title": "Presentation Title",
     "content": ["Point 1", "Point 2", "Point 3"],
-    "image_keywords": ["keyword1", "keyword2"]
+    "image_keywords": ["specific keyword phrase 1", "specific keyword phrase 2", "specific keyword phrase 3"]
   }},
   ...
 ]
 
-Make the content professional, engaging, and visually suitable for a presentation.
-The first slide should be a title slide with the main topic.
-The last slide should be a conclusion or summary slide."""
+CONTENT QUALITY REQUIREMENTS:
+- First slide: Title slide with topic and 2-3 compelling subtitle points about what the presentation covers
+- Middle slides: Deep, substantive content with specific insights
+- Last slide: Strong conclusion with key takeaways and call-to-action
+- Make it presentation-ready - someone should be able to present directly from these slides
+
+IMAGE KEYWORD REQUIREMENTS:
+- Use 3-4 keywords per slide (not just 1-2)
+- Be descriptive and specific (e.g., "professional business handshake partnership" vs "business")
+- Include visual context that helps find the RIGHT image
+- Think like a photographer describing the shot"""
 
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="gpt-4o",
                 messages=[
-                    {"role": "system", "content": "You are a professional presentation designer. Create engaging, well-structured presentation content. Always respond with valid JSON only."},
+                    {"role": "system", "content": "You are an expert presentation designer with deep knowledge across all subjects. Create highly engaging, insightful, and well-structured presentation content that is both professional and memorable. Always respond with valid JSON only."},
                     {"role": "user", "content": prompt}
                 ],
-                temperature=0.7,
-                max_tokens=3000
+                temperature=0.8,
+                max_tokens=4000
             )
 
             content = response.choices[0].message.content.strip()
@@ -122,15 +140,22 @@ The last slide should be a conclusion or summary slide."""
         Returns:
             List of slide dictionaries
         """
-        prompt = f"""Convert the following content into a professional PowerPoint presentation with exactly {num_slides} slides.
+        prompt = f"""Convert the following content into an exceptional, professional PowerPoint presentation with exactly {num_slides} slides.
 
 Content:
 {content}
 
+IMPORTANT GUIDELINES:
+1. Extract the most important and valuable insights from the content
+2. Make each bullet point concise but meaningful (8-15 words)
+3. Organize information logically and create a compelling narrative
+4. Use professional business language
+5. Generate HIGHLY SPECIFIC image keywords (3-4 per slide) that will find relevant professional photos
+
 Create a well-structured presentation with:
-1. A title slide
-2. Content slides breaking down the main points
-3. A conclusion slide
+1. A compelling title slide with 2-3 subtitle points
+2. Content slides with substantive, specific bullet points (not generic)
+3. A strong conclusion slide with key takeaways
 
 Return the response as a JSON array with this exact structure:
 [
@@ -138,22 +163,28 @@ Return the response as a JSON array with this exact structure:
     "slide_number": 1,
     "title": "Presentation Title",
     "content": ["Point 1", "Point 2", "Point 3"],
-    "image_keywords": ["keyword1", "keyword2"]
+    "image_keywords": ["specific descriptive phrase 1", "specific descriptive phrase 2", "specific descriptive phrase 3"]
   }},
   ...
 ]
 
-Make the content professional, concise, and visually suitable for slides."""
+IMAGE KEYWORD REQUIREMENTS:
+- Use 3-4 descriptive keyword phrases per slide
+- Be specific with visual context (e.g., "modern office team collaboration meeting" vs "office")
+- Think about what professional stock photo would match the slide content
+- Include descriptive adjectives and context
+
+Make the content professional, concise, presentation-ready, and visually suitable for slides."""
 
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="gpt-4o",
                 messages=[
-                    {"role": "system", "content": "You are a professional presentation designer. Create engaging, well-structured presentation content from provided text. Always respond with valid JSON only."},
+                    {"role": "system", "content": "You are an expert presentation designer with deep knowledge across all subjects. Create highly engaging, insightful, and well-structured presentation content from provided text that is both professional and memorable. Always respond with valid JSON only."},
                     {"role": "user", "content": prompt}
                 ],
-                temperature=0.7,
-                max_tokens=3000
+                temperature=0.8,
+                max_tokens=4000
             )
 
             content_response = response.choices[0].message.content.strip()
