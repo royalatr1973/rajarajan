@@ -13,7 +13,7 @@ export default function AboutPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl lg:text-6xl font-bold mb-6">Our Story</h1>
           <p className="text-xl text-cream max-w-3xl mx-auto leading-relaxed">
-            Where passion meets craftsmanship in every hand-poured chocolate
+            Where passion meets craftsmanship in every homemade cake
           </p>
         </div>
       </section>
@@ -32,23 +32,22 @@ export default function AboutPage() {
             </div>
             <div className="space-y-6">
               <h2 className="text-4xl font-bold text-cocoa-dark mb-6">
-                Handcrafted with Love, One Batch at a Time
+                Homemade with Love, One Cake at a Time
               </h2>
               <p className="text-lg text-cocoa-medium leading-relaxed">
-                At Artisan Chocolates, we believe that the best things in life are made by hand.
-                Our journey began in a small kitchen with a simple mission: to create exceptional
-                chocolates using only the finest ingredients and traditional techniques.
+                At The Cake Craving, we believe that the best cakes are made at home with love.
+                Our journey began in a small kitchen in Avadi, Chennai with a simple mission: to create
+                exceptional homemade cakes for every celebration using only the finest ingredients.
               </p>
               <p className="text-lg text-cocoa-medium leading-relaxed">
-                Every piece of chocolate is carefully hand-poured in small batches, ensuring
-                consistent quality and attention to detail. We source our cocoa from sustainable
-                farms and use only premium ingredients—no artificial flavors, no preservatives,
-                just pure, delicious chocolate.
+                Every cake is carefully crafted by certified home bakers, ensuring consistent quality
+                and attention to detail. We use only premium ingredients—no artificial flavors,
+                no preservatives, just pure, delicious cakes made fresh to order.
               </p>
               <p className="text-lg text-cocoa-medium leading-relaxed">
-                Our commitment to quality means we never rush the process. Each chocolate is
-                allowed to set naturally, developing the perfect texture and flavor that makes
-                our creations truly special.
+                "Cake is the secret ingredient for a joyful celebration, make it little sweeter with
+                our delectable cakes!" We require 2 days prior notice to ensure your cake is baked
+                fresh and perfect for your special moment.
               </p>
             </div>
           </div>
@@ -68,7 +67,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-cocoa-dark">Made with Love</h3>
               <p className="text-cocoa-medium">
-                Every chocolate is hand-poured with care and passion, never mass-produced.
+                Every cake is handmade with care and passion, never mass-produced.
               </p>
             </div>
 
@@ -76,9 +75,9 @@ export default function AboutPage() {
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gold/20 rounded-full">
                 <Award size={36} className="text-gold" />
               </div>
-              <h3 className="text-xl font-bold text-cocoa-dark">Premium Quality</h3>
+              <h3 className="text-xl font-bold text-cocoa-dark">Certified Baker</h3>
               <p className="text-cocoa-medium">
-                We use only the finest cocoa beans and ingredients from trusted suppliers.
+                Certified home baker ensuring quality and food safety standards.
               </p>
             </div>
 
@@ -86,9 +85,9 @@ export default function AboutPage() {
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gold/20 rounded-full">
                 <Leaf size={36} className="text-gold" />
               </div>
-              <h3 className="text-xl font-bold text-cocoa-dark">Sustainable</h3>
+              <h3 className="text-xl font-bold text-cocoa-dark">Fresh & Custom</h3>
               <p className="text-cocoa-medium">
-                Our ingredients are ethically sourced from sustainable farms around the world.
+                Freshly baked to order with customization options for your special occasions.
               </p>
             </div>
 
@@ -96,9 +95,9 @@ export default function AboutPage() {
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gold/20 rounded-full">
                 <Users size={36} className="text-gold" />
               </div>
-              <h3 className="text-xl font-bold text-cocoa-dark">Family Owned</h3>
+              <h3 className="text-xl font-bold text-cocoa-dark">Home Based</h3>
               <p className="text-cocoa-medium">
-                A small family business dedicated to bringing joy through chocolate.
+                A home-based business in Avadi, Chennai dedicated to bringing joy through cakes.
               </p>
             </div>
           </div>
@@ -117,13 +116,13 @@ export default function AboutPage() {
                 <li className="flex items-start space-x-3">
                   <span className="text-gold text-xl">✓</span>
                   <span className="text-lg text-cream">
-                    Single-origin cocoa beans from ethical farms
+                    Premium quality flour and fresh eggs
                   </span>
                 </li>
                 <li className="flex items-start space-x-3">
                   <span className="text-gold text-xl">✓</span>
                   <span className="text-lg text-cream">
-                    Organic sugar and natural sweeteners
+                    High-quality chocolate and cocoa powder
                   </span>
                 </li>
                 <li className="flex items-start space-x-3">
@@ -135,13 +134,13 @@ export default function AboutPage() {
                 <li className="flex items-start space-x-3">
                   <span className="text-gold text-xl">✓</span>
                   <span className="text-lg text-cream">
-                    Fresh nuts and fruits from local suppliers
+                    Fresh fruits and nuts from trusted suppliers
                   </span>
                 </li>
                 <li className="flex items-start space-x-3">
                   <span className="text-gold text-xl">✓</span>
                   <span className="text-lg text-cream">
-                    No artificial colors, flavors, or preservatives
+                    No artificial preservatives, made fresh to order
                   </span>
                 </li>
               </ul>
@@ -165,13 +164,13 @@ export default function AboutPage() {
             Experience the Difference
           </h2>
           <p className="text-xl text-cocoa-medium mb-8">
-            Taste the passion and craftsmanship in every bite. Order your handcrafted chocolates today.
+            Taste the passion and craftsmanship in every bite. Order your homemade cakes today. Remember to order 2 days prior!
           </p>
           <a
-            href="/products"
+            href="/contact"
             className="inline-flex items-center justify-center bg-cocoa-dark hover:bg-cocoa-medium text-gold font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
           >
-            Shop Our Collection
+            Order Now
           </a>
         </div>
       </section>

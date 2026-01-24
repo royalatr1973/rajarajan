@@ -1,32 +1,25 @@
-'use client';
-
 import Image from 'next/image';
-import { ShoppingCart, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { Product } from '@/types/product';
-import { useCart } from '@/lib/CartContext';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { addToCart } = useCart();
-
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'Dark':
+      case 'Chocolate':
         return 'bg-cocoa-dark text-cream-light';
-      case 'Milk':
+      case 'Classic':
         return 'bg-gold-light text-cocoa-dark';
-      case 'Vegan':
+      case 'Theme':
+        return 'bg-pink-100 text-pink-800';
+      case 'Fruit':
         return 'bg-green-100 text-green-800';
       default:
         return 'bg-gray-200 text-gray-800';
     }
-  };
-
-  const handleQuickAdd = () => {
-    addToCart(product);
   };
 
   return (
@@ -52,26 +45,12 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Content */}
       <div className="p-5">
-        <h3 className="text-lg font-bold text-cocoa-dark mb-2 line-clamp-1">
+        <h3 className="text-lg font-bold text-cocoa-dark mb-2">
           {product.name}
         </h3>
-        <p className="text-sm text-cocoa-medium mb-4 line-clamp-2">
+        <p className="text-sm text-cocoa-medium line-clamp-3">
           {product.description}
         </p>
-
-        {/* Price and Action */}
-        <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold text-gold">
-            ${product.price.toFixed(2)}
-          </div>
-          <button
-            onClick={handleQuickAdd}
-            className="group/btn flex items-center space-x-2 bg-cocoa-dark hover:bg-cocoa-medium text-gold font-semibold px-4 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
-          >
-            <ShoppingCart size={18} className="group-hover/btn:scale-110 transition-transform" />
-            <span className="text-sm">Quick Add</span>
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export default function ProductsPage() {
       ? products
       : products.filter((product) => product.type === selectedType);
 
-  const types: (ChocolateType | 'All')[] = ['All', 'Dark', 'Milk', 'Vegan'];
+  const types: (ChocolateType | 'All')[] = ['All', 'Chocolate', 'Classic', 'Theme', 'Fruit'];
 
   return (
     <div className="min-h-screen bg-cream-light py-12">
@@ -22,11 +22,17 @@ export default function ProductsPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl lg:text-5xl font-bold text-cocoa-dark mb-4">
-            Our Chocolate Collection
+            Our Cake Menu
           </h1>
-          <p className="text-lg text-cocoa-medium max-w-2xl mx-auto">
-            Explore our full range of handcrafted chocolates, from rich dark chocolates to creamy milk varieties
+          <p className="text-lg text-cocoa-medium max-w-2xl mx-auto mb-6">
+            Explore our full range of homemade cakes, from classic favorites to custom theme cakes
           </p>
+          <a
+            href="/contact"
+            className="inline-flex items-center space-x-2 bg-gold hover:bg-gold-light text-cocoa-dark font-semibold px-6 py-3 rounded-full transition-all duration-300 shadow-md hover:shadow-lg text-sm"
+          >
+            <span>Contact us to place your order</span>
+          </a>
         </div>
 
         {/* Filters */}

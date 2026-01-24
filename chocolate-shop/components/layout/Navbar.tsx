@@ -1,15 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
 import { useState } from 'react';
 
-interface NavbarProps {
-  cartItemCount?: number;
-  onCartClick?: () => void;
-}
-
-export default function Navbar({ cartItemCount = 0, onCartClick }: NavbarProps) {
+export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -19,7 +14,7 @@ export default function Navbar({ cartItemCount = 0, onCartClick }: NavbarProps) 
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <div className="text-2xl font-bold text-gold hover:text-gold-light transition-colors duration-300">
-              Artisan Chocolates
+              The Cake Craving
             </div>
           </Link>
 
@@ -35,7 +30,13 @@ export default function Navbar({ cartItemCount = 0, onCartClick }: NavbarProps) 
               href="/products"
               className="text-cream-light hover:text-gold transition-colors duration-300 font-medium"
             >
-              Shop
+              Menu
+            </Link>
+            <Link
+              href="/custom-cakes"
+              className="text-cream-light hover:text-gold transition-colors duration-300 font-medium"
+            >
+              Custom Cakes
             </Link>
             <Link
               href="/about"
@@ -44,34 +45,18 @@ export default function Navbar({ cartItemCount = 0, onCartClick }: NavbarProps) 
               About Us
             </Link>
 
-            {/* Cart Button */}
-            <button
-              onClick={onCartClick}
-              className="relative flex items-center space-x-2 bg-gold hover:bg-gold-light text-cocoa-dark px-4 py-2 rounded-full transition-all duration-300 font-semibold shadow-md hover:shadow-lg"
+            {/* Contact Button */}
+            <Link
+              href="/contact"
+              className="flex items-center space-x-2 bg-gold hover:bg-gold-light text-cocoa-dark px-4 py-2 rounded-full transition-all duration-300 font-semibold shadow-md hover:shadow-lg"
             >
-              <ShoppingCart size={20} />
-              <span>Cart</span>
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-cocoa-dark text-gold text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
-            </button>
+              <Phone size={20} />
+              <span>Contact Us</span>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-4">
-            <button
-              onClick={onCartClick}
-              className="relative text-gold hover:text-gold-light transition-colors"
-            >
-              <ShoppingCart size={24} />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-gold text-cocoa-dark text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
-            </button>
+          <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gold hover:text-gold-light transition-colors"
@@ -98,7 +83,14 @@ export default function Navbar({ cartItemCount = 0, onCartClick }: NavbarProps) 
               className="block py-3 px-4 text-cream-light hover:bg-cocoa-dark hover:text-gold rounded-lg transition-all"
               onClick={() => setIsMenuOpen(false)}
             >
-              Shop
+              Menu
+            </Link>
+            <Link
+              href="/custom-cakes"
+              className="block py-3 px-4 text-cream-light hover:bg-cocoa-dark hover:text-gold rounded-lg transition-all"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Custom Cakes
             </Link>
             <Link
               href="/about"
@@ -106,6 +98,13 @@ export default function Navbar({ cartItemCount = 0, onCartClick }: NavbarProps) 
               onClick={() => setIsMenuOpen(false)}
             >
               About Us
+            </Link>
+            <Link
+              href="/contact"
+              className="block py-3 px-4 bg-gold text-cocoa-dark hover:bg-gold-light rounded-lg transition-all font-semibold"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contact Us
             </Link>
           </div>
         </div>

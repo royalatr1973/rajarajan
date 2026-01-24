@@ -8,9 +8,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-gold">Artisan Chocolates</h3>
+            <h3 className="text-2xl font-bold text-gold">The Cake Craving</h3>
             <p className="text-cream text-sm leading-relaxed">
-              Hand-poured, small-batch chocolates crafted with love and the finest ingredients.
+              Home Made Cakes | Customized Cakes. Order 2 days prior for your special celebrations.
             </p>
           </div>
 
@@ -31,7 +31,15 @@ export default function Footer() {
                   href="/products"
                   className="text-cream hover:text-gold transition-colors duration-300"
                 >
-                  Shop
+                  Menu
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/custom-cakes"
+                  className="text-cream hover:text-gold transition-colors duration-300"
+                >
+                  Custom Cakes
                 </Link>
               </li>
               <li>
@@ -61,19 +69,15 @@ export default function Footer() {
             <h4 className="text-lg font-semibold text-gold mb-4">Connect With Us</h4>
             <div className="flex space-x-4 mb-4">
               <a
-                href="#"
+                href="https://www.instagram.com/the_.cake._craving/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-gold/20 hover:bg-gold hover:text-cocoa-dark p-2 rounded-full transition-all duration-300"
               >
                 <Instagram size={20} />
               </a>
               <a
-                href="#"
-                className="bg-gold/20 hover:bg-gold hover:text-cocoa-dark p-2 rounded-full transition-all duration-300"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="#"
+                href="mailto:cake.cravings22@gmail.com"
                 className="bg-gold/20 hover:bg-gold hover:text-cocoa-dark p-2 rounded-full transition-all duration-300"
               >
                 <Mail size={20} />
@@ -88,7 +92,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gold/30 mt-8 pt-8 text-center">
           <p className="text-cream text-sm flex items-center justify-center gap-2">
-            © 2024 Artisan Chocolates. Made with <Heart size={16} className="text-gold fill-gold" /> by passionate chocolatiers
+            © 2024 The Cake Craving. Made with <Heart size={16} className="text-gold fill-gold" /> by certified home bakers
           </p>
         </div>
       </div>
