@@ -9,11 +9,13 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'Dark':
+      case 'Chocolate':
         return 'bg-cocoa-dark text-cream-light';
-      case 'Milk':
+      case 'Classic':
         return 'bg-gold-light text-cocoa-dark';
-      case 'Vegan':
+      case 'Theme':
+        return 'bg-pink-100 text-pink-800';
+      case 'Fruit':
         return 'bg-green-100 text-green-800';
       default:
         return 'bg-gray-200 text-gray-800';

@@ -137,9 +137,9 @@ export default function ContactPage() {
                     <Phone size={24} className="text-gold" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-cocoa-dark mb-1">Phone</h3>
-                    <p className="text-cocoa-medium">+91 98765 43210</p>
-                    <p className="text-cocoa-medium">+91 87654 32109</p>
+                    <h3 className="font-bold text-cocoa-dark mb-1">Phone / WhatsApp</h3>
+                    <p className="text-cocoa-medium">+91 88384 24741</p>
+                    <p className="text-cocoa-medium">+91 99413 56037</p>
                   </div>
                 </div>
 
@@ -149,8 +149,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-cocoa-dark mb-1">Email</h3>
-                    <p className="text-cocoa-medium">orders@artisanchocolates.com</p>
-                    <p className="text-cocoa-medium">info@artisanchocolates.com</p>
+                    <p className="text-cocoa-medium">cake.cravings22@gmail.com</p>
                   </div>
                 </div>
 
@@ -161,9 +160,10 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-bold text-cocoa-dark mb-1">Location</h3>
                     <p className="text-cocoa-medium">
-                      123 Sweet Street<br />
-                      Chocolate Lane<br />
-                      Mumbai, Maharashtra 400001
+                      14, Alagrisamy Street<br />
+                      Avadi<br />
+                      Chennai, Tamil Nadu<br />
+                      (Door nearby location / Self pickup)
                     </p>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ export default function ContactPage() {
               <div className="bg-gradient-to-br from-gold/20 to-gold/10 p-6 rounded-xl border border-gold/30">
                 <h3 className="font-bold text-cocoa-dark mb-2">Custom Orders Welcome!</h3>
                 <p className="text-sm text-cocoa-medium">
-                  Looking for custom cakes or bulk orders for events? Contact us for personalized quotes and we'll create something special just for you.
+                  Please order 2 days prior to your celebration. We specialize in custom cakes for all occasions - birthdays, weddings, anniversaries, and more. Contact us via DM or WhatsApp for personalized quotes!
                 </p>
               </div>
             </div>

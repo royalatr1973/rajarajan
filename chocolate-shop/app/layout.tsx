@@ -3,8 +3,8 @@ import "./globals.css";
 import ClientLayout from "@/components/layout/ClientLayout";
 
 export const metadata: Metadata = {
-  title: "Artisan Chocolates - Hand-Poured Small-Batch Chocolates",
-  description: "Premium handmade chocolates crafted with love and the finest ingredients. Discover our collection of dark, milk, and vegan chocolates.",
+  title: "The Cake Craving - Home Made Cakes | Customized Cakes Chennai",
+  description: "Certified home baker in Avadi, Chennai. Premium homemade cakes crafted with love. Order 2 days prior for birthdays, weddings, and all celebrations. Custom theme cakes available.",
 };
 
 export default function RootLayout({

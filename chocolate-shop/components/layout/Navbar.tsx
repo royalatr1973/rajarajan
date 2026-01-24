@@ -14,7 +14,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <div className="text-2xl font-bold text-gold hover:text-gold-light transition-colors duration-300">
-              Artisan Chocolates
+              The Cake Craving
             </div>
           </Link>
 

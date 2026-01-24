@@ -1,4 +1,4 @@
-export type ChocolateType = 'Dark' | 'Milk' | 'Vegan';
+export type ChocolateType = 'Chocolate' | 'Classic' | 'Theme' | 'Fruit';
 
 export interface Product {
   id: string;

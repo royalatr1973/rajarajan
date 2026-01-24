@@ -12,10 +12,10 @@ export default function BestSellers() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold text-cocoa-dark mb-4">
-            Our Best Sellers
+            Popular Cake Varieties
           </h2>
           <p className="text-lg text-cocoa-medium max-w-2xl mx-auto">
-            Discover our most loved chocolates, handcrafted with passion and the finest ingredients
+            Discover our most loved cakes, handcrafted with passion and the finest ingredients
           </p>
         </div>
 

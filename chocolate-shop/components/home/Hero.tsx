@@ -20,13 +20,12 @@ export default function Hero() {
             </div>
 
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              Small-batch,{' '}
-              <span className="text-gold">hand-poured</span> chocolates
+              Home made,{' '}
+              <span className="text-gold">customized cakes</span> for every celebration
             </h1>
 
             <p className="text-lg lg:text-xl text-cream leading-relaxed max-w-xl">
-              Experience the art of chocolate-making with our premium, handcrafted chocolates.
-              Each piece is carefully crafted using the finest ingredients and traditional techniques.
+              "Cake is the secret ingredient for a joyful celebration, make it little sweeter with our delectable cakes!"
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -49,15 +48,15 @@ export default function Hero() {
             <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gold/30">
               <div>
                 <div className="text-3xl font-bold text-gold">100%</div>
-                <div className="text-sm text-cream">Handmade</div>
+                <div className="text-sm text-cream">Homemade</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-gold">Fresh</div>
-                <div className="text-sm text-cream">Daily Batches</div>
+                <div className="text-3xl font-bold text-gold">2 Days</div>
+                <div className="text-sm text-cream">Prior Order</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-gold">Premium</div>
-                <div className="text-sm text-cream">Ingredients</div>
+                <div className="text-3xl font-bold text-gold">Certified</div>
+                <div className="text-sm text-cream">Home Baker</div>
               </div>
             </div>
           </div>
@@ -65,8 +64,8 @@ export default function Hero() {
           {/* Right Image */}
           <div className="relative h-[400px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
             <img
-              src="https://images.unsplash.com/photo-1511381939415-e44015466834?w=1200&q=80"
-              alt="Artisan chocolates"
+              src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1200&q=80"
+              alt="Homemade cakes"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-cocoa-dark/60 to-transparent"></div>
