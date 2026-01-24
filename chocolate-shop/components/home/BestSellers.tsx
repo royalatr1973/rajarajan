@@ -32,7 +32,7 @@ export default function BestSellers() {
             href="/products"
             className="inline-flex items-center space-x-2 bg-cocoa-dark hover:bg-cocoa-medium text-gold font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group"
           >
-            <span>View All Products</span>
+            <span>View Full Menu</span>
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

@@ -31,17 +31,17 @@ export default function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="/products"
+                href="/contact"
                 className="group inline-flex items-center justify-center space-x-2 bg-gold hover:bg-gold-light text-cocoa-dark font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
-                <span>Shop Now</span>
+                <span>Order Now</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/about"
+                href="/products"
                 className="inline-flex items-center justify-center space-x-2 bg-transparent hover:bg-cream-light/10 text-cream-light border-2 border-cream-light/30 hover:border-gold font-semibold px-8 py-4 rounded-full transition-all duration-300"
               >
-                <span>Our Story</span>
+                <span>View Menu</span>
               </Link>
             </div>
 
@@ -70,12 +70,6 @@ export default function Hero() {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-cocoa-dark/60 to-transparent"></div>
-
-            {/* Floating Badge */}
-            <div className="absolute bottom-6 right-6 bg-cream-light text-cocoa-dark px-6 py-4 rounded-xl shadow-xl backdrop-blur-sm">
-              <div className="text-sm font-semibold">Starting from</div>
-              <div className="text-3xl font-bold text-gold">$10.99</div>
-            </div>
           </div>
         </div>
       </div>
