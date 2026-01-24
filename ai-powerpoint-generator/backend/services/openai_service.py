@@ -2,12 +2,14 @@ import json
 from typing import List, Dict
 from openai import OpenAI
 from config import config
+from services.web_research_service import WebResearchService
 
 class OpenAIService:
     """Service for generating presentation content using OpenAI API"""
 
     def __init__(self):
         self.client = OpenAI(api_key=config.OPENAI_API_KEY)
+        self.web_research = WebResearchService()
 
     def generate_presentation_outline(self, topic: str, num_slides: int) -> List[Dict]:
         """
@@ -20,7 +22,19 @@ class OpenAIService:
         Returns:
             List of slide dictionaries with title, content, and image_keywords
         """
+        # Research the topic on the web first (if enabled)
+        research_context = ""
+        if config.ENABLE_WEB_RESEARCH:
+            try:
+                print(f"🔍 Researching '{topic}' on the web for detailed information...")
+                research_data = self.web_research.research_topic(topic, max_sources=config.MAX_RESEARCH_SOURCES)
+                research_context = self.web_research.format_research_for_prompt(research_data)
+            except Exception as e:
+                print(f"  ⚠ Web research failed: {e}, continuing without it")
+
         prompt = f"""Create an exceptional, professional PowerPoint presentation outline for the topic: "{topic}"
+
+{research_context}
 
 Generate exactly {num_slides} slides (including a title slide and conclusion slide).
 
@@ -140,7 +154,31 @@ IMAGE KEYWORD REQUIREMENTS:
         Returns:
             List of slide dictionaries
         """
+        # Extract main topic from content for web research
+        topic_extraction_prompt = f"Extract the main topic/subject from this content in 2-5 words:\n\n{content[:500]}"
+
+        try:
+            topic_response = self.client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "user", "content": topic_extraction_prompt}
+                ],
+                temperature=0.3,
+                max_tokens=20
+            )
+            extracted_topic = topic_response.choices[0].message.content.strip()
+            print(f"🔍 Extracted topic: '{extracted_topic}' - Researching on the web...")
+
+            # Research the extracted topic
+            research_data = self.web_research.research_topic(extracted_topic, max_sources=3)
+            research_context = self.web_research.format_research_for_prompt(research_data)
+        except:
+            print("  ⚠ Could not perform web research, continuing without it")
+            research_context = ""
+
         prompt = f"""Convert the following content into an exceptional, professional PowerPoint presentation with exactly {num_slides} slides.
+
+{research_context}
 
 Content:
 {content}

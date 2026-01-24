@@ -19,6 +19,10 @@ class Config:
     IMAGE_HEIGHT: int = 600
     MAX_IMAGES_PER_SLIDE: int = 1
 
+    # Web research settings
+    ENABLE_WEB_RESEARCH: bool = True
+    MAX_RESEARCH_SOURCES: int = 5
+
     # Output directory
     OUTPUT_DIR: str = "../output"
 
