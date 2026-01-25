@@ -69,4 +69,22 @@ export const products: Product[] = [
     type: 'Chocolate',
     image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&q=80',
   },
+  {
+  id: '9',
+  name: 'Mango Delight Cake',
+  description: 'Fresh mango puree with vanilla sponge',
+  price: 0,
+  type: 'Fruit',
+  image: '/images/mango.jpg',
+  isBestSeller: false,
+  },
+    {
+  id: '10',
+  name: 'Grape Delight Cake',
+  description: 'Fresh Grape puree with vanilla sponge',
+  price: 0,
+  type: 'Fruit',
+  image: '/images/grape.jpg',
+  isBestSeller: false,
+  },	
 ];
