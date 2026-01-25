@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F5F0FF;
+  --foreground: #8B4789;
+  --cocoa-dark: #DB7093;
+  --cocoa-medium: #FFB6C1;
+  --cream: #E6E6FA;
+  --cream-light: #F5F0FF;
+  --gold: #98FF98;
+  --gold-light: #D4FFD4;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-cocoa-dark: var(--cocoa-dark);
+  --color-cocoa-medium: var(--cocoa-medium);
+  --color-cream: var(--cream);
+  --color-cream-light: var(--cream-light);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
