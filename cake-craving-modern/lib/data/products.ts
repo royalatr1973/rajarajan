@@ -7,7 +7,7 @@ export const products: Product[] = [
     description: 'Rich chocolate layers with smooth truffle cream frosting',
     price: 0,
     type: 'Chocolate',
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80',
+    image: '/images/chocolate.jpg', // Your own image!
     isBestSeller: true,
   },
   {
@@ -69,4 +69,22 @@ export const products: Product[] = [
     type: 'Chocolate',
     image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&q=80',
   },
+  {
+  id: '9',
+  name: 'Mango Delight Cake',
+  description: 'Fresh mango puree with vanilla sponge',
+  price: 0,
+  type: 'Fruit',
+  image: '/images/mango.jpg',
+  isBestSeller: false,
+  },
+    {
+  id: '10',
+  name: 'Grape Delight Cake',
+  description: 'Fresh Grape puree with vanilla sponge',
+  price: 0,
+  type: 'Fruit',
+  image: '/images/grape.jpg',
+  isBestSeller: false,
+  },	
 ];
