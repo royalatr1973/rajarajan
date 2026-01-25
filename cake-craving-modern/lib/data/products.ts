@@ -34,7 +34,7 @@ export const products: Product[] = [
     description: 'Classic butterscotch flavor with crunchy caramel bits',
     price: 0,
     type: 'Classic',
-    image: 'https://images.unsplash.com/photo-1562440499-64c9a5623d78?w=800&q=80',
+    image: '/images/butterscotch.jpg', // Your own image!
     isBestSeller: true,
   },
   {

@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { products } from '@/lib/data/products';
+import { getProducts } from '@/lib/sanity';
 import ProductCard from '../products/ProductCard';
 
-export default function BestSellers() {
-  const bestSellers = products.filter((product) => product.isBestSeller);
+export default async function BestSellers() {
+  const products = await getProducts();
+  const bestSellers = products.filter((product: any) => product.isBestSeller);
 
   return (
     <section className="py-20 bg-cream-light">
@@ -21,8 +22,8 @@ export default function BestSellers() {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {bestSellers.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {bestSellers.map((product: any) => (
+            <ProductCard key={product._id || product.id} product={product} />
           ))}
         </div>
 
