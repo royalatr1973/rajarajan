@@ -7,7 +7,7 @@ export const products: Product[] = [
     description: 'Rich chocolate layers with smooth truffle cream frosting',
     price: 0,
     type: 'Chocolate',
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80',
+    image: '/images/chocolate.jpg', // Your own image!
     isBestSeller: true,
   },
   {
