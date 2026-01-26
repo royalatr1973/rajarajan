@@ -1225,3 +1225,193 @@ body {
         line-height: 1.5;
     }
 }
+
+/* ====================================
+   Room Modal / Lightbox
+   ==================================== */
+.room-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.room-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    position: relative;
+    animation: modalSlideIn 0.4s ease;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-medium);
+}
+
+.modal-close:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: var(--shadow-hover);
+}
+
+.modal-content img {
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    object-fit: cover;
+    display: block;
+}
+
+.modal-info {
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #FFF5F7 0%, #F0F8FF 100%);
+}
+
+.modal-info h3 {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-info h3::before {
+    content: '✨';
+    font-size: 1.5rem;
+}
+
+.modal-info p {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    font-family: var(--font-secondary);
+    line-height: 1.7;
+}
+
+/* Clickable Room Cards */
+.clickable-room {
+    cursor: pointer;
+    position: relative;
+}
+
+.clickable-room::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    transition: background 0.3s ease;
+    border-radius: var(--border-radius-lg);
+    pointer-events: none;
+}
+
+.clickable-room:hover::after {
+    background: rgba(124, 77, 255, 0.05);
+}
+
+.click-hint {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-lg);
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: var(--shadow-soft);
+}
+
+.clickable-room:hover .click-hint {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.special-hint {
+    background: linear-gradient(135deg, var(--color-purple), var(--color-accent));
+}
+
+/* Modal Responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 95%;
+        max-height: 85vh;
+    }
+
+    .modal-content img {
+        max-height: 45vh;
+    }
+
+    .modal-info {
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-info h3 {
+        font-size: 1.4rem;
+    }
+
+    .modal-info p {
+        font-size: 1rem;
+    }
+
+    .modal-close {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+
+    .click-hint {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+}

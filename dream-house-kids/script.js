@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initHoverEffects();
     initNavbarScroll();
     initCardAnimations();
+    initRoomModal();
 });
 
 // ====================================
@@ -393,3 +394,116 @@ function initActiveNavHighlight() {
 
 // Initialize active nav highlight
 initActiveNavHighlight();
+
+// ====================================
+// Room Modal / Lightbox
+// ====================================
+function initRoomModal() {
+    const modal = document.getElementById('roomModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    const closeBtn = document.querySelector('.modal-close');
+    const clickableRooms = document.querySelectorAll('.clickable-room');
+
+    // Open modal when clicking on a room card
+    clickableRooms.forEach(room => {
+        room.addEventListener('click', function(e) {
+            // Prevent event from bubbling
+            e.stopPropagation();
+
+            const fullImage = this.dataset.fullImage;
+            const roomName = this.dataset.roomName;
+            const roomDesc = this.dataset.roomDesc;
+
+            if (fullImage && roomName) {
+                // Set modal content
+                modalImage.src = fullImage;
+                modalImage.alt = roomName + ' - Full View';
+                modalTitle.textContent = roomName;
+                modalDescription.textContent = roomDesc;
+
+                // Show modal with animation
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+
+                // Play a fun sound effect (optional visual feedback)
+                createModalSparkles();
+            }
+        });
+    });
+
+    // Close modal when clicking close button
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+
+    // Close modal when clicking outside the content
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    function closeModal() {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }, 300);
+    }
+
+    // Create sparkle effect when modal opens
+    function createModalSparkles() {
+        const modalContent = document.querySelector('.modal-content');
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                const sparkle = document.createElement('span');
+                sparkle.innerHTML = ['✨', '⭐', '🌟', '💫'][Math.floor(Math.random() * 4)];
+                sparkle.style.cssText = `
+                    position: absolute;
+                    font-size: ${1 + Math.random() * 1.5}rem;
+                    pointer-events: none;
+                    animation: modalSparkle 1s ease-out forwards;
+                    z-index: 100;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                `;
+                modalContent.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1000);
+            }, i * 100);
+        }
+    }
+}
+
+// Add modal sparkle animation
+const modalSparkleStyles = document.createElement('style');
+modalSparkleStyles.textContent = `
+    @keyframes modalSparkle {
+        0% {
+            opacity: 1;
+            transform: scale(0) rotate(0deg);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.2) rotate(180deg);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0.5) rotate(360deg) translateY(-30px);
+        }
+    }
+`;
+document.head.appendChild(modalSparkleStyles);
