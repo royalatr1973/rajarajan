@@ -1415,3 +1415,213 @@ body {
         padding: 0.4rem 0.8rem;
     }
 }
+
+/* ====================================
+   Secret Room Multi-Step Modal
+   ==================================== */
+.secret-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2500;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.secret-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.secret-modal-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-radius: var(--border-radius-lg);
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    position: relative;
+    animation: secretModalIn 0.5s ease;
+    box-shadow: 0 0 60px rgba(124, 77, 255, 0.4), 0 0 100px rgba(0, 217, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes secretModalIn {
+    from {
+        transform: scale(0.8) rotate(-5deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.secret-close {
+    background: linear-gradient(135deg, #e94560, #ff6b9d) !important;
+    z-index: 20;
+}
+
+.secret-step {
+    display: block;
+    animation: stepFadeIn 0.5s ease;
+}
+
+.secret-step.hidden {
+    display: none;
+}
+
+@keyframes stepFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.secret-image {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    object-fit: cover;
+    display: block;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.secret-info {
+    padding: 1.5rem 2rem;
+    text-align: center;
+}
+
+.secret-info h3 {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 0.8rem;
+    text-shadow: 0 0 20px rgba(124, 77, 255, 0.5);
+}
+
+.secret-info p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.secret-next-btn {
+    background: linear-gradient(135deg, var(--color-purple), var(--color-accent));
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius-xl);
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: var(--font-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(124, 77, 255, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.secret-next-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(124, 77, 255, 0.5);
+}
+
+.secret-restart {
+    background: linear-gradient(135deg, var(--color-green), var(--color-teal));
+    box-shadow: 0 8px 25px rgba(38, 222, 129, 0.4);
+}
+
+.secret-restart:hover {
+    box-shadow: 0 12px 35px rgba(38, 222, 129, 0.5);
+}
+
+.secret-features {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.secret-feature {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-lg);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Sparkle decoration for secret modal */
+.secret-modal-content::before {
+    content: '✨';
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    font-size: 2rem;
+    animation: float 3s ease-in-out infinite;
+    opacity: 0.7;
+    z-index: 5;
+}
+
+.secret-modal-content::after {
+    content: '🌟';
+    position: absolute;
+    bottom: 15%;
+    right: 5%;
+    font-size: 2rem;
+    animation: float 3s ease-in-out infinite 1s;
+    opacity: 0.7;
+    z-index: 5;
+}
+
+/* Secret Room Responsive */
+@media (max-width: 768px) {
+    .secret-modal-content {
+        max-width: 95%;
+        max-height: 85vh;
+    }
+
+    .secret-image {
+        max-height: 40vh;
+    }
+
+    .secret-info {
+        padding: 1rem 1.5rem;
+    }
+
+    .secret-info h3 {
+        font-size: 1.4rem;
+    }
+
+    .secret-info p {
+        font-size: 1rem;
+    }
+
+    .secret-next-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .secret-features {
+        gap: 0.5rem;
+    }
+
+    .secret-feature {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+}

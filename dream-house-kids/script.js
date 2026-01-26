@@ -507,3 +507,195 @@ modalSparkleStyles.textContent = `
     }
 `;
 document.head.appendChild(modalSparkleStyles);
+
+// ====================================
+// Secret Room Multi-Step Modal
+// ====================================
+function initSecretRoomModal() {
+    const secretRoomCard = document.getElementById('secretRoomCard');
+    const secretModal = document.getElementById('secretRoomModal');
+    const secretClose = document.querySelector('.secret-close');
+    const step1 = document.getElementById('secretStep1');
+    const step2 = document.getElementById('secretStep2');
+    const step3 = document.getElementById('secretStep3');
+    const goToStep2Btn = document.getElementById('goToStep2');
+    const goToStep3Btn = document.getElementById('goToStep3');
+    const restartBtn = document.getElementById('restartSecret');
+
+    if (!secretRoomCard || !secretModal) return;
+
+    // Open secret modal when clicking secret room card
+    secretRoomCard.addEventListener('click', function(e) {
+        e.stopPropagation();
+        openSecretModal();
+    });
+
+    function openSecretModal() {
+        // Reset to step 1
+        showStep(1);
+
+        // Show modal
+        secretModal.style.display = 'flex';
+        setTimeout(() => {
+            secretModal.classList.add('active');
+        }, 10);
+
+        document.body.style.overflow = 'hidden';
+        createMagicParticles();
+    }
+
+    function closeSecretModal() {
+        secretModal.classList.remove('active');
+        setTimeout(() => {
+            secretModal.style.display = 'none';
+            document.body.style.overflow = '';
+            showStep(1); // Reset for next time
+        }, 300);
+    }
+
+    function showStep(stepNumber) {
+        // Hide all steps
+        step1.classList.add('hidden');
+        step2.classList.add('hidden');
+        step3.classList.add('hidden');
+
+        // Show requested step
+        switch(stepNumber) {
+            case 1:
+                step1.classList.remove('hidden');
+                break;
+            case 2:
+                step2.classList.remove('hidden');
+                createMagicParticles();
+                break;
+            case 3:
+                step3.classList.remove('hidden');
+                createFinalRevealEffect();
+                break;
+        }
+    }
+
+    // Step navigation
+    if (goToStep2Btn) {
+        goToStep2Btn.addEventListener('click', function() {
+            showStep(2);
+        });
+    }
+
+    if (goToStep3Btn) {
+        goToStep3Btn.addEventListener('click', function() {
+            showStep(3);
+        });
+    }
+
+    if (restartBtn) {
+        restartBtn.addEventListener('click', function() {
+            showStep(1);
+        });
+    }
+
+    // Close modal
+    if (secretClose) {
+        secretClose.addEventListener('click', closeSecretModal);
+    }
+
+    secretModal.addEventListener('click', function(e) {
+        if (e.target === secretModal) {
+            closeSecretModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && secretModal.classList.contains('active')) {
+            closeSecretModal();
+        }
+    });
+
+    // Create magical particle effect
+    function createMagicParticles() {
+        const modalContent = document.querySelector('.secret-modal-content');
+        const particles = ['✨', '⭐', '🌟', '💫', '🔮'];
+
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('span');
+                particle.innerHTML = particles[Math.floor(Math.random() * particles.length)];
+                particle.style.cssText = `
+                    position: absolute;
+                    font-size: ${1 + Math.random() * 1.5}rem;
+                    pointer-events: none;
+                    animation: secretParticle 2s ease-out forwards;
+                    z-index: 100;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                `;
+                modalContent.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }, i * 150);
+        }
+    }
+
+    // Final reveal celebration effect
+    function createFinalRevealEffect() {
+        const modalContent = document.querySelector('.secret-modal-content');
+        const celebrationItems = ['🎉', '✨', '🌟', '💫', '⛓️', '🔮', '💎'];
+
+        for (let i = 0; i < 15; i++) {
+            setTimeout(() => {
+                const item = document.createElement('span');
+                item.innerHTML = celebrationItems[Math.floor(Math.random() * celebrationItems.length)];
+                item.style.cssText = `
+                    position: absolute;
+                    font-size: ${1.5 + Math.random() * 2}rem;
+                    pointer-events: none;
+                    animation: celebrationBurst 2.5s ease-out forwards;
+                    z-index: 100;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                `;
+                modalContent.appendChild(item);
+                setTimeout(() => item.remove(), 2500);
+            }, i * 100);
+        }
+    }
+}
+
+// Add secret room particle animations
+const secretParticleStyles = document.createElement('style');
+secretParticleStyles.textContent = `
+    @keyframes secretParticle {
+        0% {
+            opacity: 1;
+            transform: scale(0) translateY(0);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.3) translateY(-20px);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0.5) translateY(-50px);
+        }
+    }
+
+    @keyframes celebrationBurst {
+        0% {
+            opacity: 1;
+            transform: scale(0) rotate(0deg);
+        }
+        30% {
+            opacity: 1;
+            transform: scale(1.5) rotate(180deg);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0.3) rotate(360deg) translateY(-80px);
+        }
+    }
+`;
+document.head.appendChild(secretParticleStyles);
+
+// Initialize secret room modal on DOM load
+document.addEventListener('DOMContentLoaded', function() {
+    initSecretRoomModal();
+});

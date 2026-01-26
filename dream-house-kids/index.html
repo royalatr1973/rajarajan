@@ -171,11 +171,11 @@
 
             <!-- Kitchen -->
             <div class="room-card kitchen clickable-room"
-                 data-full-image="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=800&fit=crop"
+                 data-full-image="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=1200&h=800&fit=crop"
                  data-room-name="Kitchen"
                  data-room-desc="A bright and cheerful kitchen with a big refrigerator, modern stove, and a cozy dining area where the whole family eats together!">
                 <div class="room-image">
-                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop" alt="Bright and clean kitchen">
+                    <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=400&h=300&fit=crop" alt="Bright and clean kitchen">
                     <div class="room-badge">🍳</div>
                     <div class="click-hint">👆 Click to see full room!</div>
                 </div>
@@ -243,9 +243,13 @@
         </div>
 
         <div class="special-grid">
-            <div class="special-card treehouse">
+            <div class="special-card treehouse clickable-room"
+                 data-full-image="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?w=1200&h=800&fit=crop"
+                 data-room-name="Tree House"
+                 data-room-desc="Welcome to my magical tree house! It has a cozy wooden floor, a small window to watch birds, fairy lights wrapped around branches, and a rope ladder to climb up. I keep my treasure maps and adventure books here!">
                 <div class="special-image">
                     <img src="https://images.unsplash.com/photo-1520880867055-1e30d1cb001c?w=350&h=250&fit=crop" alt="Magical tree house">
+                    <div class="click-hint special-hint">🌳 Click to explore!</div>
                 </div>
                 <div class="special-content">
                     <div class="special-icon">🌳</div>
@@ -254,9 +258,13 @@
                 </div>
             </div>
 
-            <div class="special-card pool">
+            <div class="special-card pool clickable-room"
+                 data-full-image="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=1200&h=800&fit=crop"
+                 data-room-name="Swimming Pool"
+                 data-room-desc="My amazing swimming pool with crystal clear blue water! It has a shallow end for safe playing, colorful pool floats, and a small waterfall feature. On hot summer days, this is where all the fun happens!">
                 <div class="special-image">
                     <img src="https://images.unsplash.com/photo-1572331165267-854da2b10ccc?w=600&h=400&fit=crop&q=90" alt="Beautiful blue swimming pool">
+                    <div class="click-hint special-hint">🏊 Click to dive in!</div>
                 </div>
                 <div class="special-content">
                     <div class="special-icon">🏊</div>
@@ -265,9 +273,13 @@
                 </div>
             </div>
 
-            <div class="special-card slide">
+            <div class="special-card slide clickable-room"
+                 data-full-image="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=1200&h=800&fit=crop"
+                 data-room-name="Indoor Slide"
+                 data-room-desc="The most fun way to go downstairs - my rainbow indoor slide! It's smooth, twisty, and super fast! It starts from the second floor and lands on soft cushions. Wheeeee! Every morning starts with a fun slide down!">
                 <div class="special-image">
                     <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=350&h=250&fit=crop" alt="Indoor playground slide">
+                    <div class="click-hint special-hint">🛝 Click to slide!</div>
                 </div>
                 <div class="special-content">
                     <div class="special-icon">🛝</div>
@@ -276,10 +288,7 @@
                 </div>
             </div>
 
-            <div class="special-card secret clickable-room"
-                 data-full-image="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=800&fit=crop"
-                 data-room-name="Secret Room"
-                 data-room-desc="Shhh! Behind the wardrobe is my secret hideaway! It has soft cushions, magical fairy lights, my treasure box, and cozy blankets. This is where I go to read my favorite books and dream big dreams!">
+            <div class="special-card secret" id="secretRoomCard">
                 <div class="special-image">
                     <img src="https://images.unsplash.com/photo-1558997519-83ea9252edf8?w=350&h=250&fit=crop" alt="Wardrobe hiding secret room">
                     <div class="click-hint special-hint">🔮 Click to discover the secret!</div>
@@ -291,9 +300,13 @@
                 </div>
             </div>
 
-            <div class="special-card playroom">
+            <div class="special-card playroom clickable-room"
+                 data-full-image="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=1200&h=800&fit=crop"
+                 data-room-name="Playroom"
+                 data-room-desc="My colorful playroom is the best place ever! It has toy shelves reaching the ceiling, a craft table for drawing and painting, building blocks, board games, and a cozy reading corner. My friends and I have the best adventures here!">
                 <div class="special-image">
                     <img src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=350&h=250&fit=crop" alt="Colorful playroom with toys">
+                    <div class="click-hint special-hint">🎮 Click to play!</div>
                 </div>
                 <div class="special-content">
                     <div class="special-icon">🎮</div>
@@ -466,6 +479,54 @@
             <div class="modal-info">
                 <h3 id="modalTitle"></h3>
                 <p id="modalDescription"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secret Room Multi-Step Modal -->
+    <div id="secretRoomModal" class="secret-modal">
+        <div class="secret-modal-content">
+            <button class="modal-close secret-close" aria-label="Close modal">&times;</button>
+
+            <!-- Step 1: Cushions -->
+            <div class="secret-step" id="secretStep1">
+                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&h=600&fit=crop" alt="Cozy cushions" class="secret-image">
+                <div class="secret-info">
+                    <h3>🛋️ Soft Cushions</h3>
+                    <p>You found the cozy cushions! They look so soft and comfortable... but wait, there's something hidden behind them!</p>
+                    <button class="secret-next-btn" id="goToStep2">
+                        <span>👆 Click the cushions to see what's behind!</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Hidden Door -->
+            <div class="secret-step hidden" id="secretStep2">
+                <img src="https://images.unsplash.com/photo-1517991104123-1d56a6e81ed9?w=900&h=600&fit=crop" alt="Hidden door behind cushions" class="secret-image">
+                <div class="secret-info">
+                    <h3>🚪 A Hidden Door!</h3>
+                    <p>WOW! Behind the cushions, there's a secret door! It looks mysterious and magical. Should we open it?</p>
+                    <button class="secret-next-btn" id="goToStep3">
+                        <span>🔑 Click to open the secret door!</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Secret Room with Chains -->
+            <div class="secret-step hidden" id="secretStep3">
+                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&h=600&fit=crop" alt="Secret room with silver chains" class="secret-image">
+                <div class="secret-info">
+                    <h3>✨ The Secret Room!</h3>
+                    <p>You discovered my secret hideaway! It has beautiful silver chains hanging from the ceiling that sparkle like stars, soft lighting, and cozy corners. This is my magical place to dream and imagine! 🌟</p>
+                    <div class="secret-features">
+                        <span class="secret-feature">⛓️ Silver Chains</span>
+                        <span class="secret-feature">💡 Soft Lights</span>
+                        <span class="secret-feature">✨ Magic Corner</span>
+                    </div>
+                    <button class="secret-next-btn secret-restart" id="restartSecret">
+                        <span>🔄 Explore Again!</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
