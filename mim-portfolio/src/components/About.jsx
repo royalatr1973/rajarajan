@@ -1,5 +1,3 @@
-import ImagePlaceholder from './ImagePlaceholder'
-
 function About() {
   return (
     <section id="about">
@@ -11,11 +9,9 @@ function About() {
           <div className="about-main">
             <div className="about-intro">
               <div className="about-photo">
-                <ImagePlaceholder
-                  id="IMG-002"
-                  label="About Photo"
-                  description="Professional or working photo"
-                />
+                <div className="img-placeholder has-image">
+                  <img src="/images/img-002-about.jpg" alt="Pooja T S R - Presentation" />
+                </div>
               </div>
               <div className="about-text">
                 <h3>Background</h3>

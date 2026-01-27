@@ -1,11 +1,8 @@
-import ImagePlaceholder from './ImagePlaceholder'
-
 function Leadership({ openModal }) {
   const leadershipRoles = [
     {
-      imageId: 'IMG-006',
-      imageLabel: 'NSS Activities',
-      imageDesc: 'Community service or volunteer photo',
+      imageSrc: '/images/img-006-nss.jpg',
+      imageAlt: 'NSS Community Service Activity',
       title: 'National Service Scheme',
       role: 'Lead Volunteer | 2022 – 2024',
       description:
@@ -20,9 +17,8 @@ function Leadership({ openModal }) {
       },
     },
     {
-      imageId: 'IMG-007',
-      imageLabel: 'Speakers Forum',
-      imageDesc: 'Mentoring or public speaking photo',
+      imageSrc: '/images/img-007-speakers.jpg',
+      imageAlt: 'Speakers Forum Mentoring Session',
       title: 'Speakers Forum',
       role: 'Student Mentor | 2022 – 2025',
       description:
@@ -37,9 +33,8 @@ function Leadership({ openModal }) {
       },
     },
     {
-      imageId: 'IMG-008',
-      imageLabel: 'AAVIN Team',
-      imageDesc: 'Team or business operations photo',
+      imageSrc: '/images/img-008-aavin-team.jpg',
+      imageAlt: 'AAVIN Team at Venture',
       title: 'AAVIN Venture',
       role: 'Co-founder & Team Lead | 2023 – 2025',
       description:
@@ -54,9 +49,8 @@ function Leadership({ openModal }) {
       },
     },
     {
-      imageId: 'IMG-009',
-      imageLabel: 'Legal Pro AI',
-      imageDesc: 'Product or technology visual',
+      imageSrc: '/images/img-009-legalpro.png',
+      imageAlt: 'Legal Pro AI Platform',
       title: 'Legal Pro AI',
       role: 'Founder | 2025',
       description:
@@ -86,11 +80,9 @@ function Leadership({ openModal }) {
           {leadershipRoles.map((role, index) => (
             <article key={index} className="leadership-card">
               <div className="leadership-image">
-                <ImagePlaceholder
-                  id={role.imageId}
-                  label={role.imageLabel}
-                  description={role.imageDesc}
-                />
+                <div className="img-placeholder has-image">
+                  <img src={role.imageSrc} alt={role.imageAlt} />
+                </div>
               </div>
               <div className="leadership-content">
                 <h3>{role.title}</h3>

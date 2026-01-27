@@ -1,5 +1,3 @@
-import ImagePlaceholder from './ImagePlaceholder'
-
 function Hero() {
   const scrollToAbout = (e) => {
     e.preventDefault()
@@ -13,11 +11,9 @@ function Hero() {
     <section id="home" className="hero">
       <div className="hero-inner">
         <div className="hero-image">
-          <ImagePlaceholder
-            id="IMG-001"
-            label="Profile Photo"
-            description="Professional headshot"
-          />
+          <div className="img-placeholder has-image">
+            <img src="/images/img-001-profile.jpg" alt="Pooja T S R - Professional Photo" />
+          </div>
         </div>
         <div className="hero-content">
           <p className="hero-subtitle">Master in Management Candidate</p>

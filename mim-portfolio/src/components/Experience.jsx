@@ -3,9 +3,8 @@ import ImagePlaceholder from './ImagePlaceholder'
 function Experience({ openModal }) {
   const experiences = [
     {
-      imageId: 'IMG-003',
-      imageLabel: 'Legal Pro AI',
-      imageDesc: 'Platform screenshot or tech visual',
+      imageSrc: '/images/img-003-legalpro.png',
+      imageAlt: 'Legal Pro AI Platform',
       title: 'Business & Product Strategy',
       role: 'Founder',
       organization: 'Legal Pro AI',
@@ -34,9 +33,8 @@ function Experience({ openModal }) {
       },
     },
     {
-      imageId: 'IMG-004',
-      imageLabel: 'AAVIN Venture',
-      imageDesc: 'Business or team photo',
+      imageSrc: '/images/img-004-aavin.jpg',
+      imageAlt: 'AAVIN Venture Team',
       title: 'Student Entrepreneur',
       role: 'Co-founder',
       organization: 'AAVIN (College Initiative)',
@@ -65,9 +63,10 @@ function Experience({ openModal }) {
       },
     },
     {
+      imageSrc: null, // No image provided for Ashok Leyland
       imageId: 'IMG-005',
       imageLabel: 'Ashok Leyland',
-      imageDesc: 'Internship or corporate photo',
+      imageDesc: 'Internship photo',
       title: 'Market & Digital Analytics Intern',
       role: 'Intern',
       organization: 'Ashok Leyland',
@@ -104,11 +103,17 @@ function Experience({ openModal }) {
         {experiences.map((exp, index) => (
           <article key={index} className="experience-item">
             <div className="experience-image">
-              <ImagePlaceholder
-                id={exp.imageId}
-                label={exp.imageLabel}
-                description={exp.imageDesc}
-              />
+              {exp.imageSrc ? (
+                <div className="img-placeholder has-image">
+                  <img src={exp.imageSrc} alt={exp.imageAlt} />
+                </div>
+              ) : (
+                <ImagePlaceholder
+                  id={exp.imageId}
+                  label={exp.imageLabel}
+                  description={exp.imageDesc}
+                />
+              )}
             </div>
             <div className="experience-body">
               <div className="experience-header">
