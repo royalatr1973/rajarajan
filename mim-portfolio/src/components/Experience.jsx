@@ -1,6 +1,11 @@
+import ImagePlaceholder from './ImagePlaceholder'
+
 function Experience({ openModal }) {
   const experiences = [
     {
+      imageId: 'IMG-003',
+      imageLabel: 'Legal Pro AI',
+      imageDesc: 'Platform screenshot or tech visual',
       title: 'Business & Product Strategy',
       role: 'Founder',
       organization: 'Legal Pro AI',
@@ -29,6 +34,9 @@ function Experience({ openModal }) {
       },
     },
     {
+      imageId: 'IMG-004',
+      imageLabel: 'AAVIN Venture',
+      imageDesc: 'Business or team photo',
       title: 'Student Entrepreneur',
       role: 'Co-founder',
       organization: 'AAVIN (College Initiative)',
@@ -57,6 +65,9 @@ function Experience({ openModal }) {
       },
     },
     {
+      imageId: 'IMG-005',
+      imageLabel: 'Ashok Leyland',
+      imageDesc: 'Internship or corporate photo',
       title: 'Market & Digital Analytics Intern',
       role: 'Intern',
       organization: 'Ashok Leyland',
@@ -92,52 +103,66 @@ function Experience({ openModal }) {
 
         {experiences.map((exp, index) => (
           <article key={index} className="experience-item">
-            <div className="experience-header">
-              <div>
-                <h3>{exp.title}</h3>
-                <p className="experience-org">{exp.role} | {exp.organization}</p>
+            <div className="experience-image">
+              <ImagePlaceholder
+                id={exp.imageId}
+                label={exp.imageLabel}
+                description={exp.imageDesc}
+              />
+            </div>
+            <div className="experience-body">
+              <div className="experience-header">
+                <div>
+                  <h3>{exp.title}</h3>
+                  <p className="experience-org">{exp.role} | {exp.organization}</p>
+                </div>
+                <span className="experience-date">{exp.date}</span>
               </div>
-              <span className="experience-date">{exp.date}</span>
-            </div>
 
-            <p className="experience-context">{exp.context}</p>
+              <p className="experience-context">{exp.context}</p>
 
-            <div className="experience-actions">
-              <ul>
-                {exp.actions.map((action, i) => (
-                  <li key={i}>{action}</li>
-                ))}
-              </ul>
-            </div>
+              <div className="experience-details">
+                <div className="experience-actions">
+                  <h4>Key Actions</h4>
+                  <ul>
+                    {exp.actions.map((action, i) => (
+                      <li key={i}>{action}</li>
+                    ))}
+                  </ul>
+                </div>
 
-            {exp.outcomes.length > 0 && (
-              <div className="experience-outcomes">
-                <ul>
-                  {exp.outcomes.map((outcome, i) => (
-                    <li key={i}>{outcome}</li>
+                {exp.outcomes.length > 0 && (
+                  <div className="experience-outcomes">
+                    <h4>Outcomes</h4>
+                    <ul>
+                      {exp.outcomes.map((outcome, i) => (
+                        <li key={i}>{outcome}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              {exp.metrics.length > 0 && (
+                <div className="experience-metrics">
+                  {exp.metrics.map((metric, i) => (
+                    <span key={i} className="metric">
+                      <strong>{metric.value}</strong>
+                      <span>{metric.label}</span>
+                    </span>
                   ))}
-                </ul>
-              </div>
-            )}
+                </div>
+              )}
 
-            {exp.metrics.length > 0 && (
-              <div className="experience-metrics">
-                {exp.metrics.map((metric, i) => (
-                  <span key={i} className="metric">
-                    <strong>{metric.value}</strong> {metric.label}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {exp.proofContent && (
-              <button
-                className="btn btn-link"
-                onClick={() => openModal(exp.proofContent)}
-              >
-                {exp.proofLabel} →
-              </button>
-            )}
+              {exp.proofContent && (
+                <button
+                  className="btn btn-link"
+                  onClick={() => openModal(exp.proofContent)}
+                >
+                  {exp.proofLabel} →
+                </button>
+              )}
+            </div>
           </article>
         ))}
       </div>
