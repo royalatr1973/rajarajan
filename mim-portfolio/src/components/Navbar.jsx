@@ -31,6 +31,7 @@ function Navbar({ activeSection }) {
     <nav className="navbar">
       <div className="container">
         <a href="#" className="nav-logo" onClick={scrollToTop}>
+          <span className="nav-logo-accent">P</span>
           Pooja T S R
         </a>
         <ul className={`nav-links ${isOpen ? 'open' : ''}`}>

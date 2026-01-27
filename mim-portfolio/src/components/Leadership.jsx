@@ -1,6 +1,8 @@
 function Leadership({ openModal }) {
   const leadershipRoles = [
     {
+      imageSrc: '/images/img-006-nss.jpg',
+      imageAlt: 'NSS Community Service Activity',
       title: 'National Service Scheme',
       role: 'Lead Volunteer | 2022 – 2024',
       description:
@@ -15,6 +17,8 @@ function Leadership({ openModal }) {
       },
     },
     {
+      imageSrc: '/images/img-007-speakers.jpg',
+      imageAlt: 'Speakers Forum Mentoring Session',
       title: 'Speakers Forum',
       role: 'Student Mentor | 2022 – 2025',
       description:
@@ -29,6 +33,8 @@ function Leadership({ openModal }) {
       },
     },
     {
+      imageSrc: '/images/img-008-aavin-team.jpg',
+      imageAlt: 'AAVIN Team at Venture',
       title: 'AAVIN Venture',
       role: 'Co-founder & Team Lead | 2023 – 2025',
       description:
@@ -43,6 +49,8 @@ function Leadership({ openModal }) {
       },
     },
     {
+      imageSrc: '/images/img-009-legalpro.png',
+      imageAlt: 'Legal Pro AI Platform',
       title: 'Legal Pro AI',
       role: 'Founder | 2025',
       description:
@@ -71,29 +79,36 @@ function Leadership({ openModal }) {
         <div className="leadership-grid">
           {leadershipRoles.map((role, index) => (
             <article key={index} className="leadership-card">
-              <h3>{role.title}</h3>
-              <p className="leadership-role">{role.role}</p>
-              <p>{role.description}</p>
-
-              {role.stats.length > 0 && (
-                <div className="leadership-stats">
-                  {role.stats.map((stat, i) => (
-                    <div key={i} className="stat">
-                      <span className="stat-value">{stat.value}</span>
-                      <span className="stat-label">{stat.label}</span>
-                    </div>
-                  ))}
+              <div className="leadership-image">
+                <div className="img-placeholder has-image">
+                  <img src={role.imageSrc} alt={role.imageAlt} />
                 </div>
-              )}
+              </div>
+              <div className="leadership-content">
+                <h3>{role.title}</h3>
+                <p className="leadership-role">{role.role}</p>
+                <p>{role.description}</p>
 
-              {role.proofContent && (
-                <button
-                  className="btn btn-link"
-                  onClick={() => openModal(role.proofContent)}
-                >
-                  View Proof →
-                </button>
-              )}
+                {role.stats.length > 0 && (
+                  <div className="leadership-stats">
+                    {role.stats.map((stat, i) => (
+                      <div key={i} className="stat">
+                        <span className="stat-value">{stat.value}</span>
+                        <span className="stat-label">{stat.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {role.proofContent && (
+                  <button
+                    className="btn btn-link"
+                    onClick={() => openModal(role.proofContent)}
+                  >
+                    View Proof →
+                  </button>
+                )}
+              </div>
             </article>
           ))}
         </div>
