@@ -1,8 +1,27 @@
-import { Star, Quote } from 'lucide-react';
-import { getTestimonials } from '@/lib/sanity';
+'use client';
 
-export default async function Testimonials() {
-  const testimonials = await getTestimonials();
+import { useState, useEffect } from 'react';
+import { Star, Quote } from 'lucide-react';
+import { useProducts, Testimonial } from '@/lib/ProductsContext';
+
+const defaultTestimonials: Testimonial[] = [
+  { id: '1', name: 'Priya S.', text: 'The chocolate truffle cake was absolutely divine! Perfect for my birthday celebration.', rating: 5 },
+  { id: '2', name: 'Rahul M.', text: 'Best homemade cakes in Chennai! The butterscotch cake is my favorite.', rating: 5 },
+  { id: '3', name: 'Ananya K.', text: 'Ordered a custom cake for my daughter\'s birthday. It exceeded all expectations!', rating: 5 },
+  { id: '4', name: 'Vijay R.', text: 'Fresh, delicious, and beautifully decorated. Highly recommend!', rating: 5 },
+];
+
+export default function Testimonials() {
+  const { testimonials: contextTestimonials } = useProducts();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Use context testimonials on client, fallback to default on server
+  const testimonials = isClient ? contextTestimonials : defaultTestimonials;
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,9 +37,9 @@ export default async function Testimonials() {
 
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {testimonials.map((testimonial: any) => (
+          {testimonials.map((testimonial) => (
             <div
-              key={testimonial._id}
+              key={testimonial.id}
               className="bg-cream-light p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gold/20 relative"
             >
               <Quote size={40} className="text-gold/30 absolute top-4 right-4" />

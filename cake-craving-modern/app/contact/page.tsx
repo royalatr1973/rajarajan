@@ -1,9 +1,28 @@
 'use client';
 
-import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
-import { useState } from 'react';
+import { Phone, Mail, MapPin, Clock, Send, MessageCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useProducts, ContactSettings } from '@/lib/ProductsContext';
+
+const defaultContact: ContactSettings = {
+  phone1: '+91 88384 24741',
+  phone2: '+91 99413 56037',
+  email: 'cake.cravings22@gmail.com',
+  address: '14, Alagrisamy Street, Avadi, Chennai, Tamil Nadu',
+  whatsappNumber: '918838424741'
+};
 
 export default function ContactPage() {
+  const { contact: contextContact } = useProducts();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Use context contact on client, fallback to default on server
+  const contact = isClient ? contextContact : defaultContact;
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,6 +44,8 @@ export default function ContactPage() {
     });
   };
 
+  const whatsappLink = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent('Hi! I would like to order a cake.')}`;
+
   return (
     <div className="min-h-screen bg-cream-light">
       {/* Hero Section */}
@@ -40,6 +61,17 @@ export default function ContactPage() {
           </p>
         </div>
       </section>
+
+      {/* WhatsApp Floating Button (Mobile) */}
+      <a
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 md:hidden"
+      >
+        <MessageCircle size={24} className="fill-white" />
+        <span className="font-semibold">Chat on WhatsApp</span>
+      </a>
 
       {/* Contact Content */}
       <section className="py-20">
@@ -132,14 +164,30 @@ export default function ContactPage() {
               </div>
 
               <div className="space-y-6">
+                {/* WhatsApp Chat Button (Desktop) */}
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-4 bg-green-500 hover:bg-green-600 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                >
+                  <div className="bg-white/20 p-3 rounded-full group-hover:scale-110 transition-transform">
+                    <MessageCircle size={28} className="fill-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1">Chat on WhatsApp</h3>
+                    <p className="text-white/90">Quick response for orders & inquiries</p>
+                  </div>
+                </a>
+
                 <div className="flex items-start space-x-4 bg-white p-6 rounded-xl shadow-md border border-gold/20">
                   <div className="bg-gold/20 p-3 rounded-full">
                     <Phone size={24} className="text-gold" />
                   </div>
                   <div>
                     <h3 className="font-bold text-cocoa-dark mb-1">Phone / WhatsApp</h3>
-                    <p className="text-cocoa-medium">+91 88384 24741</p>
-                    <p className="text-cocoa-medium">+91 99413 56037</p>
+                    <p className="text-cocoa-medium">{contact.phone1}</p>
+                    <p className="text-cocoa-medium">{contact.phone2}</p>
                   </div>
                 </div>
 
@@ -149,7 +197,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-cocoa-dark mb-1">Email</h3>
-                    <p className="text-cocoa-medium">cake.cravings22@gmail.com</p>
+                    <p className="text-cocoa-medium">{contact.email}</p>
                   </div>
                 </div>
 
@@ -159,11 +207,9 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-cocoa-dark mb-1">Location</h3>
-                    <p className="text-cocoa-medium">
-                      14, Alagrisamy Street<br />
-                      Avadi<br />
-                      Chennai, Tamil Nadu<br />
-                      (Door nearby location / Self pickup)
+                    <p className="text-cocoa-medium whitespace-pre-line">
+                      {contact.address}
+                      <br />(Door nearby location / Self pickup)
                     </p>
                   </div>
                 </div>

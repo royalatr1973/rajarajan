@@ -1,17 +1,27 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import { getHero, urlFor } from '@/lib/sanity';
+import { useProducts } from '@/lib/ProductsContext';
 
-export default async function Hero() {
-  const hero = await getHero();
+const defaultHero = {
+  title: 'Home made, customized cakes for every celebration',
+  subtitle: 'Cake is the secret ingredient for a joyful celebration, make it little sweeter with our delectable cakes!',
+  ctaText: 'Order Now',
+  backgroundImage: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1200&q=80'
+};
 
-  // Fallback content if CMS data is not available yet
-  const title = hero?.title || 'Home made, customized cakes for every celebration';
-  const subtitle = hero?.subtitle || 'Cake is the secret ingredient for a joyful celebration, make it little sweeter with our delectable cakes!';
-  const ctaText = hero?.ctaText || 'Order Now';
-  const backgroundImage = hero?.backgroundImage
-    ? urlFor(hero.backgroundImage).width(1200).url()
-    : 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1200&q=80';
+export default function Hero() {
+  const { hero } = useProducts();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Use context hero on client, fallback to default on server
+  const heroData = isClient ? hero : defaultHero;
 
   return (
     <section className="relative bg-gradient-to-br from-cocoa-dark via-cocoa-medium to-cocoa-dark text-cream-light overflow-hidden">
@@ -31,11 +41,11 @@ export default async function Hero() {
             </div>
 
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              {title}
+              {heroData.title}
             </h1>
 
             <p className="text-lg lg:text-xl text-cream leading-relaxed max-w-xl">
-              {subtitle}
+              {heroData.subtitle}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -43,7 +53,7 @@ export default async function Hero() {
                 href="/contact"
                 className="group inline-flex items-center justify-center space-x-2 bg-gold hover:bg-gold-light text-cocoa-dark font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
-                <span>{ctaText}</span>
+                <span>{heroData.ctaText}</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
@@ -74,7 +84,7 @@ export default async function Hero() {
           {/* Right Image */}
           <div className="relative h-[400px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
             <img
-              src={backgroundImage}
+              src={heroData.backgroundImage}
               alt="Homemade cakes"
               className="w-full h-full object-cover"
             />
