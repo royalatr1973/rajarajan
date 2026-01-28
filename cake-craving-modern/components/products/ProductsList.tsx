@@ -1,16 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Filter } from 'lucide-react';
 import ProductCard from './ProductCard';
 import { ChocolateType } from '@/types/product';
+import { useProducts } from '@/lib/ProductsContext';
 
 interface ProductsListProps {
-  products: any[];
+  products?: any[];
 }
 
-export default function ProductsList({ products }: ProductsListProps) {
+export default function ProductsList({ products: initialProducts }: ProductsListProps) {
+  const { products: contextProducts } = useProducts();
   const [selectedType, setSelectedType] = useState<ChocolateType | 'All'>('All');
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Use context products on client, fallback to initial products from server
+  const products = isClient ? contextProducts : (initialProducts || []);
 
   const filteredProducts =
     selectedType === 'All'

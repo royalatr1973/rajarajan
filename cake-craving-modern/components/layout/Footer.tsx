@@ -50,6 +50,14 @@ export default function Footer() {
                   About Us
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/admin-panel"
+                  className="text-cream/50 hover:text-gold transition-colors duration-300 text-sm"
+                >
+                  Admin Panel
+                </Link>
+              </li>
             </ul>
           </div>
 

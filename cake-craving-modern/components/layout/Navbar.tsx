@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X, Phone, Settings } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -53,6 +53,13 @@ export default function Navbar() {
               className="text-cream-light hover:text-gold transition-colors duration-300 font-medium"
             >
               About Us
+            </Link>
+            <Link
+              href="/admin-panel"
+              className="text-cream-light/60 hover:text-gold transition-colors duration-300"
+              title="Admin Panel"
+            >
+              <Settings size={20} />
             </Link>
 
             {/* Contact Button */}
@@ -115,6 +122,14 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               Contact Us
+            </Link>
+            <Link
+              href="/admin-panel"
+              className="flex items-center gap-2 py-3 px-4 text-cream-light/60 hover:bg-cocoa-dark hover:text-gold rounded-lg transition-all text-sm"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Settings size={16} />
+              Admin Panel
             </Link>
           </div>
         </div>
