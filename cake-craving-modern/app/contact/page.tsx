@@ -1,6 +1,6 @@
 'use client';
 
-import { Phone, Mail, MapPin, Clock, Send, MessageCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, MessageCircle, CheckCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useProducts, ContactSettings } from '@/lib/ProductsContext';
 
@@ -13,8 +13,9 @@ const defaultContact: ContactSettings = {
 };
 
 export default function ContactPage() {
-  const { contact: contextContact } = useProducts();
+  const { contact: contextContact, addMessage } = useProducts();
   const [isClient, setIsClient] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -32,9 +33,17 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    alert('Thank you for your inquiry! We will get back to you soon.');
+    // Save message to the admin panel
+    addMessage({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+    });
+    setSubmitted(true);
     setFormData({ name: '', email: '', phone: '', message: '' });
+    // Reset submitted state after 5 seconds
+    setTimeout(() => setSubmitted(false), 5000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -80,6 +89,14 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="bg-white rounded-2xl shadow-xl p-8 border border-gold/20">
               <h2 className="text-3xl font-bold text-cocoa-dark mb-6">Send us a Message</h2>
+
+              {submitted && (
+                <div className="mb-6 flex items-center gap-3 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+                  <CheckCircle size={20} className="text-green-500" />
+                  <span>Thank you! Your message has been sent. We'll get back to you soon.</span>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-semibold text-cocoa-dark mb-2">
