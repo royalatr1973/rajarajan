@@ -26,6 +26,16 @@ export interface ContactSettings {
   whatsappNumber: string;
 }
 
+export interface Message {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  date: string;
+  read: boolean;
+}
+
 interface ProductsContextType {
   products: Product[];
   addProduct: (product: Omit<Product, 'id'>) => void;
@@ -41,6 +51,10 @@ interface ProductsContextType {
   deleteTestimonial: (id: string) => void;
   contact: ContactSettings;
   updateContact: (contact: Partial<ContactSettings>) => void;
+  messages: Message[];
+  addMessage: (message: Omit<Message, 'id' | 'date' | 'read'>) => void;
+  markMessageRead: (id: string) => void;
+  deleteMessage: (id: string) => void;
 }
 
 const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
@@ -49,6 +63,7 @@ const STORAGE_KEY = 'cake-craving-products';
 const HERO_STORAGE_KEY = 'cake-craving-hero';
 const TESTIMONIALS_STORAGE_KEY = 'cake-craving-testimonials';
 const CONTACT_STORAGE_KEY = 'cake-craving-contact';
+const MESSAGES_STORAGE_KEY = 'cake-craving-messages';
 
 const defaultHero: HeroSettings = {
   title: 'Home made, customized cakes for every celebration',
@@ -77,6 +92,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   const [hero, setHero] = useState<HeroSettings>(defaultHero);
   const [testimonials, setTestimonials] = useState<Testimonial[]>(defaultTestimonials);
   const [contact, setContact] = useState<ContactSettings>(defaultContact);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load all data from localStorage on mount
@@ -117,6 +133,15 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       }
     }
 
+    const storedMessages = localStorage.getItem(MESSAGES_STORAGE_KEY);
+    if (storedMessages) {
+      try {
+        setMessages(JSON.parse(storedMessages));
+      } catch {
+        setMessages([]);
+      }
+    }
+
     setIsLoaded(true);
   }, []);
 
@@ -144,6 +169,12 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(contact));
     }
   }, [contact, isLoaded]);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem(MESSAGES_STORAGE_KEY, JSON.stringify(messages));
+    }
+  }, [messages, isLoaded]);
 
   // Products functions
   const addProduct = (productData: Omit<Product, 'id'>) => {
@@ -204,12 +235,35 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
     setContact(prev => ({ ...prev, ...contactData }));
   };
 
+  // Messages functions
+  const addMessage = (messageData: Omit<Message, 'id' | 'date' | 'read'>) => {
+    const newId = (Math.max(...messages.map(m => parseInt(m.id)), 0) + 1).toString();
+    const newMessage: Message = {
+      ...messageData,
+      id: newId,
+      date: new Date().toISOString(),
+      read: false
+    };
+    setMessages(prev => [newMessage, ...prev]);
+  };
+
+  const markMessageRead = (id: string) => {
+    setMessages(prev => prev.map(m =>
+      m.id === id ? { ...m, read: true } : m
+    ));
+  };
+
+  const deleteMessage = (id: string) => {
+    setMessages(prev => prev.filter(m => m.id !== id));
+  };
+
   return (
     <ProductsContext.Provider value={{
       products, addProduct, updateProduct, deleteProduct, reorderProducts, resetProducts,
       hero, updateHero,
       testimonials, addTestimonial, updateTestimonial, deleteTestimonial,
-      contact, updateContact
+      contact, updateContact,
+      messages, addMessage, markMessageRead, deleteMessage
     }}>
       {children}
     </ProductsContext.Provider>

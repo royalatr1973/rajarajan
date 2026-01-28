@@ -5,21 +5,22 @@ import {
   Plus, Edit2, Trash2, Download, Save, X, Upload,
   Eye, EyeOff, Lock, RefreshCw, Image as ImageIcon,
   CheckCircle, AlertCircle, LogOut, GripVertical,
-  Home, MessageSquare, Phone, Cake, Star
+  Home, MessageSquare, Phone, Cake, Star, Mail, Circle
 } from 'lucide-react';
-import { useProducts, HeroSettings, Testimonial, ContactSettings } from '@/lib/ProductsContext';
+import { useProducts, HeroSettings, Testimonial, ContactSettings, Message } from '@/lib/ProductsContext';
 import { Product, ChocolateType } from '@/types/product';
 
 const ADMIN_PASSWORD = 'cakeadmin2024';
 
-type TabType = 'products' | 'hero' | 'testimonials' | 'contact';
+type TabType = 'products' | 'hero' | 'testimonials' | 'contact' | 'messages';
 
 export default function AdminPanel() {
   const {
     products, addProduct, updateProduct, deleteProduct, reorderProducts, resetProducts,
     hero, updateHero,
     testimonials, addTestimonial, updateTestimonial, deleteTestimonial,
-    contact, updateContact
+    contact, updateContact,
+    messages, markMessageRead, deleteMessage
   } = useProducts();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -427,6 +428,7 @@ ${products.map(p => `  {
               { id: 'hero', label: 'Hero Section', icon: Home },
               { id: 'testimonials', label: 'Testimonials', icon: MessageSquare },
               { id: 'contact', label: 'Contact Info', icon: Phone },
+              { id: 'messages', label: 'Messages', icon: Mail },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -439,6 +441,11 @@ ${products.map(p => `  {
               >
                 <tab.icon size={18} />
                 {tab.label}
+                {tab.id === 'messages' && messages.filter(m => !m.read).length > 0 && (
+                  <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 ml-1">
+                    {messages.filter(m => !m.read).length}
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -888,6 +895,99 @@ ${products.map(p => `  {
               </div>
             </div>
           </div>
+        )}
+
+        {/* MESSAGES TAB */}
+        {activeTab === 'messages' && (
+          <>
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-cocoa-dark">Customer Messages</h2>
+                <p className="text-cocoa-medium text-sm">
+                  {messages.length === 0
+                    ? 'No messages yet'
+                    : `${messages.filter(m => !m.read).length} unread of ${messages.length} total`}
+                </p>
+              </div>
+            </div>
+
+            {messages.length === 0 ? (
+              <div className="text-center py-16 bg-white rounded-xl shadow-md">
+                <Mail size={48} className="mx-auto text-cocoa-medium/30 mb-3" />
+                <h3 className="text-lg font-bold text-cocoa-dark mb-2">No Messages Yet</h3>
+                <p className="text-cocoa-medium text-sm">Messages from the contact form will appear here</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`bg-white rounded-xl shadow-md p-5 border-l-4 transition-all ${
+                      message.read ? 'border-gray-300' : 'border-gold'
+                    }`}
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex items-center gap-2">
+                        {!message.read && (
+                          <Circle size={10} className="fill-gold text-gold" />
+                        )}
+                        <h3 className="font-bold text-cocoa-dark">{message.name}</h3>
+                      </div>
+                      <span className="text-xs text-cocoa-medium">
+                        {new Date(message.date).toLocaleString()}
+                      </span>
+                    </div>
+
+                    <div className="space-y-1 mb-4 text-sm">
+                      <p className="text-cocoa-medium">
+                        <span className="font-semibold">Email:</span> {message.email}
+                      </p>
+                      {message.phone && (
+                        <p className="text-cocoa-medium">
+                          <span className="font-semibold">Phone:</span> {message.phone}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="bg-cream-light p-4 rounded-lg mb-4">
+                      <p className="text-cocoa-dark text-sm whitespace-pre-wrap">{message.message}</p>
+                    </div>
+
+                    <div className="flex gap-2">
+                      {!message.read && (
+                        <button
+                          onClick={() => {
+                            markMessageRead(message.id);
+                            showNotification('success', 'Marked as read');
+                          }}
+                          className="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold"
+                        >
+                          <CheckCircle size={14} /> Mark Read
+                        </button>
+                      )}
+                      <a
+                        href={`mailto:${message.email}?subject=Re: Your inquiry at The Cake Craving`}
+                        className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold"
+                      >
+                        <Mail size={14} /> Reply
+                      </a>
+                      <button
+                        onClick={() => {
+                          if (confirm('Delete this message?')) {
+                            deleteMessage(message.id);
+                            showNotification('success', 'Message deleted');
+                          }
+                        }}
+                        className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold"
+                      >
+                        <Trash2 size={14} /> Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
