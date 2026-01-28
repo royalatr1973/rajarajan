@@ -1,10 +1,22 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { getProducts } from '@/lib/sanity';
 import ProductCard from '../products/ProductCard';
+import { useProducts } from '@/lib/ProductsContext';
+import { products as fallbackProducts } from '@/lib/data/products';
 
-export default async function BestSellers() {
-  const products = await getProducts();
+export default function BestSellers() {
+  const { products: contextProducts } = useProducts();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Use context products on client, fallback to initial products on server
+  const products = isClient ? contextProducts : fallbackProducts;
   const bestSellers = products.filter((product: any) => product.isBestSeller);
 
   return (
