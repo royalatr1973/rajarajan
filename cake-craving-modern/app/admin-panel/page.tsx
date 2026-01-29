@@ -5,7 +5,8 @@ import {
   Plus, Edit2, Trash2, Download, Save, X, Upload,
   Eye, EyeOff, Lock, RefreshCw, Image as ImageIcon,
   CheckCircle, AlertCircle, LogOut, GripVertical,
-  Home, MessageSquare, Phone, Cake, Star, Mail, Circle
+  Home, MessageSquare, Phone, Cake, Star, Mail, Circle,
+  Cloud, Database
 } from 'lucide-react';
 import { useProducts, HeroSettings, Testimonial, ContactSettings, Message } from '@/lib/ProductsContext';
 import { Product, ChocolateType } from '@/types/product';
@@ -20,7 +21,8 @@ export default function AdminPanel() {
     hero, updateHero,
     testimonials, addTestimonial, updateTestimonial, deleteTestimonial,
     contact, updateContact,
-    messages, markMessageRead, deleteMessage
+    messages, markMessageRead, deleteMessage,
+    isLoading, useSupabase
   } = useProducts();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -394,7 +396,23 @@ ${products.map(p => `  {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gold">Admin Panel</h1>
-            <p className="text-cream/60 text-sm">Manage your website content</p>
+            <div className="flex items-center gap-2 text-cream/60 text-sm">
+              <span>Manage your website content</span>
+              <span className="text-cream/30">|</span>
+              {isLoading ? (
+                <span className="flex items-center gap-1">
+                  <RefreshCw size={14} className="animate-spin" /> Loading...
+                </span>
+              ) : useSupabase ? (
+                <span className="flex items-center gap-1 text-green-400">
+                  <Cloud size={14} /> Cloud Storage
+                </span>
+              ) : (
+                <span className="flex items-center gap-1 text-yellow-400">
+                  <Database size={14} /> Local Storage
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex gap-2 flex-wrap justify-center">
             <button
