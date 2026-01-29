@@ -1,8 +1,9 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { Product } from '@/types/product';
 import { products as initialProducts } from './data/products';
+import { supabase } from './supabase';
 
 export interface HeroSettings {
   title: string;
@@ -55,15 +56,11 @@ interface ProductsContextType {
   addMessage: (message: Omit<Message, 'id' | 'date' | 'read'>) => void;
   markMessageRead: (id: string) => void;
   deleteMessage: (id: string) => void;
+  isLoading: boolean;
+  useSupabase: boolean;
 }
 
 const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
-
-const STORAGE_KEY = 'cake-craving-products';
-const HERO_STORAGE_KEY = 'cake-craving-hero';
-const TESTIMONIALS_STORAGE_KEY = 'cake-craving-testimonials';
-const CONTACT_STORAGE_KEY = 'cake-craving-contact';
-const MESSAGES_STORAGE_KEY = 'cake-craving-messages';
 
 const defaultHero: HeroSettings = {
   title: 'Home made, customized cakes for every celebration',
@@ -87,157 +84,335 @@ const defaultContact: ContactSettings = {
   whatsappNumber: '918838424741'
 };
 
+// Check if Supabase is configured
+const isSupabaseConfigured = () => {
+  return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+};
+
 export function ProductsProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [hero, setHero] = useState<HeroSettings>(defaultHero);
   const [testimonials, setTestimonials] = useState<Testimonial[]>(defaultTestimonials);
   const [contact, setContact] = useState<ContactSettings>(defaultContact);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [useSupabase, setUseSupabase] = useState(false);
 
-  // Load all data from localStorage on mount
-  useEffect(() => {
-    const storedProducts = localStorage.getItem(STORAGE_KEY);
-    if (storedProducts) {
+  // Load data from Supabase or localStorage
+  const loadData = useCallback(async () => {
+    setIsLoading(true);
+
+    if (isSupabaseConfigured() && supabase) {
       try {
-        setProducts(JSON.parse(storedProducts));
-      } catch {
-        setProducts(initialProducts);
+        // Try to fetch from Supabase
+        const [productsRes, heroRes, testimonialsRes, contactRes, messagesRes] = await Promise.all([
+          supabase.from('products').select('*').order('sort_order'),
+          supabase.from('hero_settings').select('*').single(),
+          supabase.from('testimonials').select('*').order('sort_order'),
+          supabase.from('contact_settings').select('*').single(),
+          supabase.from('messages').select('*').order('created_at', { ascending: false })
+        ]);
+
+        if (!productsRes.error && productsRes.data && productsRes.data.length > 0) {
+          setUseSupabase(true);
+
+          // Map products from DB format to app format
+          setProducts(productsRes.data.map(p => ({
+            id: p.id,
+            name: p.name,
+            description: p.description || '',
+            price: p.price || 0,
+            image: p.image || '',
+            type: p.category || 'Classic',
+            isBestSeller: p.is_bestseller || false
+          })));
+
+          if (!heroRes.error && heroRes.data) {
+            setHero({
+              title: heroRes.data.title,
+              subtitle: heroRes.data.subtitle || '',
+              ctaText: heroRes.data.cta_text || 'Order Now',
+              backgroundImage: heroRes.data.background_image || ''
+            });
+          }
+
+          if (!testimonialsRes.error && testimonialsRes.data) {
+            setTestimonials(testimonialsRes.data.map(t => ({
+              id: t.id,
+              name: t.name,
+              text: t.content,
+              rating: t.rating || 5
+            })));
+          }
+
+          if (!contactRes.error && contactRes.data) {
+            setContact({
+              phone1: contactRes.data.phone || '',
+              phone2: contactRes.data.phone2 || '',
+              email: contactRes.data.email || '',
+              address: contactRes.data.address || '',
+              whatsappNumber: contactRes.data.whatsapp || ''
+            });
+          }
+
+          if (!messagesRes.error && messagesRes.data) {
+            setMessages(messagesRes.data.map(m => ({
+              id: m.id,
+              name: m.name,
+              email: m.email || '',
+              phone: m.phone || '',
+              message: m.message,
+              date: m.created_at,
+              read: m.read || false
+            })));
+          }
+
+          setIsLoading(false);
+          return;
+        }
+      } catch (error) {
+        console.log('Supabase not available, falling back to localStorage', error);
       }
     }
 
-    const storedHero = localStorage.getItem(HERO_STORAGE_KEY);
-    if (storedHero) {
-      try {
-        setHero(JSON.parse(storedHero));
-      } catch {
-        setHero(defaultHero);
+    // Fallback to localStorage
+    if (typeof window !== 'undefined') {
+      const storedProducts = localStorage.getItem('cake-craving-products');
+      if (storedProducts) {
+        try {
+          setProducts(JSON.parse(storedProducts));
+        } catch {
+          setProducts(initialProducts);
+        }
+      }
+
+      const storedHero = localStorage.getItem('cake-craving-hero');
+      if (storedHero) {
+        try {
+          setHero(JSON.parse(storedHero));
+        } catch {
+          setHero(defaultHero);
+        }
+      }
+
+      const storedTestimonials = localStorage.getItem('cake-craving-testimonials');
+      if (storedTestimonials) {
+        try {
+          setTestimonials(JSON.parse(storedTestimonials));
+        } catch {
+          setTestimonials(defaultTestimonials);
+        }
+      }
+
+      const storedContact = localStorage.getItem('cake-craving-contact');
+      if (storedContact) {
+        try {
+          setContact(JSON.parse(storedContact));
+        } catch {
+          setContact(defaultContact);
+        }
+      }
+
+      const storedMessages = localStorage.getItem('cake-craving-messages');
+      if (storedMessages) {
+        try {
+          setMessages(JSON.parse(storedMessages));
+        } catch {
+          setMessages([]);
+        }
       }
     }
 
-    const storedTestimonials = localStorage.getItem(TESTIMONIALS_STORAGE_KEY);
-    if (storedTestimonials) {
-      try {
-        setTestimonials(JSON.parse(storedTestimonials));
-      } catch {
-        setTestimonials(defaultTestimonials);
-      }
-    }
-
-    const storedContact = localStorage.getItem(CONTACT_STORAGE_KEY);
-    if (storedContact) {
-      try {
-        setContact(JSON.parse(storedContact));
-      } catch {
-        setContact(defaultContact);
-      }
-    }
-
-    const storedMessages = localStorage.getItem(MESSAGES_STORAGE_KEY);
-    if (storedMessages) {
-      try {
-        setMessages(JSON.parse(storedMessages));
-      } catch {
-        setMessages([]);
-      }
-    }
-
-    setIsLoaded(true);
+    setIsLoading(false);
   }, []);
 
-  // Save to localStorage whenever data changes
   useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+    loadData();
+  }, [loadData]);
+
+  // Save to localStorage as backup (always)
+  useEffect(() => {
+    if (!isLoading && typeof window !== 'undefined') {
+      localStorage.setItem('cake-craving-products', JSON.stringify(products));
     }
-  }, [products, isLoaded]);
+  }, [products, isLoading]);
 
   useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem(HERO_STORAGE_KEY, JSON.stringify(hero));
+    if (!isLoading && typeof window !== 'undefined') {
+      localStorage.setItem('cake-craving-hero', JSON.stringify(hero));
     }
-  }, [hero, isLoaded]);
+  }, [hero, isLoading]);
 
   useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem(TESTIMONIALS_STORAGE_KEY, JSON.stringify(testimonials));
+    if (!isLoading && typeof window !== 'undefined') {
+      localStorage.setItem('cake-craving-testimonials', JSON.stringify(testimonials));
     }
-  }, [testimonials, isLoaded]);
+  }, [testimonials, isLoading]);
 
   useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(contact));
+    if (!isLoading && typeof window !== 'undefined') {
+      localStorage.setItem('cake-craving-contact', JSON.stringify(contact));
     }
-  }, [contact, isLoaded]);
+  }, [contact, isLoading]);
 
   useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem(MESSAGES_STORAGE_KEY, JSON.stringify(messages));
+    if (!isLoading && typeof window !== 'undefined') {
+      localStorage.setItem('cake-craving-messages', JSON.stringify(messages));
     }
-  }, [messages, isLoaded]);
+  }, [messages, isLoading]);
 
   // Products functions
-  const addProduct = (productData: Omit<Product, 'id'>) => {
-    const newId = (Math.max(...products.map(p => parseInt(p.id)), 0) + 1).toString();
+  const addProduct = async (productData: Omit<Product, 'id'>) => {
+    const newId = (Math.max(...products.map(p => parseInt(p.id) || 0), 0) + 1).toString();
     const newProduct: Product = { ...productData, id: newId };
+
     setProducts(prev => [...prev, newProduct]);
+
+    if (useSupabase && supabase) {
+      await supabase.from('products').insert({
+        id: newId,
+        name: productData.name,
+        description: productData.description,
+        price: productData.price,
+        image: productData.image,
+        category: productData.type,
+        is_bestseller: productData.isBestSeller || false,
+        sort_order: products.length + 1
+      });
+    }
   };
 
-  const updateProduct = (id: string, productData: Partial<Product>) => {
+  const updateProduct = async (id: string, productData: Partial<Product>) => {
     setProducts(prev => prev.map(p =>
       p.id === id ? { ...p, ...productData } : p
     ));
+
+    if (useSupabase && supabase) {
+      const updateData: Record<string, unknown> = {};
+      if (productData.name !== undefined) updateData.name = productData.name;
+      if (productData.description !== undefined) updateData.description = productData.description;
+      if (productData.price !== undefined) updateData.price = productData.price;
+      if (productData.image !== undefined) updateData.image = productData.image;
+      if (productData.type !== undefined) updateData.category = productData.type;
+      if (productData.isBestSeller !== undefined) updateData.is_bestseller = productData.isBestSeller;
+
+      await supabase.from('products').update(updateData).eq('id', id);
+    }
   };
 
-  const deleteProduct = (id: string) => {
+  const deleteProduct = async (id: string) => {
     setProducts(prev => prev.filter(p => p.id !== id));
+
+    if (useSupabase && supabase) {
+      await supabase.from('products').delete().eq('id', id);
+    }
   };
 
-  const reorderProducts = (newProducts: Product[]) => {
+  const reorderProducts = async (newProducts: Product[]) => {
     setProducts(newProducts);
+
+    if (useSupabase && supabase) {
+      // Update sort_order for all products
+      const sb = supabase;
+      const updates = newProducts.map((p, index) =>
+        sb.from('products').update({ sort_order: index + 1 }).eq('id', p.id)
+      );
+      await Promise.all(updates);
+    }
   };
 
-  const resetProducts = () => {
+  const resetProducts = async () => {
     setProducts(initialProducts);
     setHero(defaultHero);
     setTestimonials(defaultTestimonials);
     setContact(defaultContact);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(initialProducts));
-    localStorage.setItem(HERO_STORAGE_KEY, JSON.stringify(defaultHero));
-    localStorage.setItem(TESTIMONIALS_STORAGE_KEY, JSON.stringify(defaultTestimonials));
-    localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(defaultContact));
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cake-craving-products', JSON.stringify(initialProducts));
+      localStorage.setItem('cake-craving-hero', JSON.stringify(defaultHero));
+      localStorage.setItem('cake-craving-testimonials', JSON.stringify(defaultTestimonials));
+      localStorage.setItem('cake-craving-contact', JSON.stringify(defaultContact));
+    }
+
+    // Note: Supabase reset would need to be handled separately if needed
   };
 
   // Hero functions
-  const updateHero = (heroData: Partial<HeroSettings>) => {
-    setHero(prev => ({ ...prev, ...heroData }));
+  const updateHero = async (heroData: Partial<HeroSettings>) => {
+    const newHero = { ...hero, ...heroData };
+    setHero(newHero);
+
+    if (useSupabase && supabase) {
+      await supabase.from('hero_settings').upsert({
+        id: 1,
+        title: newHero.title,
+        subtitle: newHero.subtitle,
+        cta_text: newHero.ctaText,
+        background_image: newHero.backgroundImage
+      });
+    }
   };
 
   // Testimonials functions
-  const addTestimonial = (testimonialData: Omit<Testimonial, 'id'>) => {
-    const newId = (Math.max(...testimonials.map(t => parseInt(t.id)), 0) + 1).toString();
+  const addTestimonial = async (testimonialData: Omit<Testimonial, 'id'>) => {
+    const newId = (Math.max(...testimonials.map(t => parseInt(t.id) || 0), 0) + 1).toString();
     const newTestimonial: Testimonial = { ...testimonialData, id: newId };
     setTestimonials(prev => [...prev, newTestimonial]);
+
+    if (useSupabase && supabase) {
+      await supabase.from('testimonials').insert({
+        id: newId,
+        name: testimonialData.name,
+        content: testimonialData.text,
+        rating: testimonialData.rating,
+        sort_order: testimonials.length + 1
+      });
+    }
   };
 
-  const updateTestimonial = (id: string, testimonialData: Partial<Testimonial>) => {
+  const updateTestimonial = async (id: string, testimonialData: Partial<Testimonial>) => {
     setTestimonials(prev => prev.map(t =>
       t.id === id ? { ...t, ...testimonialData } : t
     ));
+
+    if (useSupabase && supabase) {
+      const updateData: Record<string, unknown> = {};
+      if (testimonialData.name !== undefined) updateData.name = testimonialData.name;
+      if (testimonialData.text !== undefined) updateData.content = testimonialData.text;
+      if (testimonialData.rating !== undefined) updateData.rating = testimonialData.rating;
+
+      await supabase.from('testimonials').update(updateData).eq('id', id);
+    }
   };
 
-  const deleteTestimonial = (id: string) => {
+  const deleteTestimonial = async (id: string) => {
     setTestimonials(prev => prev.filter(t => t.id !== id));
+
+    if (useSupabase && supabase) {
+      await supabase.from('testimonials').delete().eq('id', id);
+    }
   };
 
   // Contact functions
-  const updateContact = (contactData: Partial<ContactSettings>) => {
-    setContact(prev => ({ ...prev, ...contactData }));
+  const updateContact = async (contactData: Partial<ContactSettings>) => {
+    const newContact = { ...contact, ...contactData };
+    setContact(newContact);
+
+    if (useSupabase && supabase) {
+      await supabase.from('contact_settings').upsert({
+        id: 1,
+        address: newContact.address,
+        phone: newContact.phone1,
+        phone2: newContact.phone2,
+        email: newContact.email,
+        whatsapp: newContact.whatsappNumber
+      });
+    }
   };
 
   // Messages functions
-  const addMessage = (messageData: Omit<Message, 'id' | 'date' | 'read'>) => {
-    const newId = (Math.max(...messages.map(m => parseInt(m.id)), 0) + 1).toString();
+  const addMessage = async (messageData: Omit<Message, 'id' | 'date' | 'read'>) => {
+    const newId = (Math.max(...messages.map(m => parseInt(m.id) || 0), 0) + 1).toString();
     const newMessage: Message = {
       ...messageData,
       id: newId,
@@ -245,16 +420,35 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       read: false
     };
     setMessages(prev => [newMessage, ...prev]);
+
+    if (useSupabase && supabase) {
+      await supabase.from('messages').insert({
+        id: newId,
+        name: messageData.name,
+        email: messageData.email,
+        phone: messageData.phone,
+        message: messageData.message,
+        read: false
+      });
+    }
   };
 
-  const markMessageRead = (id: string) => {
+  const markMessageRead = async (id: string) => {
     setMessages(prev => prev.map(m =>
       m.id === id ? { ...m, read: true } : m
     ));
+
+    if (useSupabase && supabase) {
+      await supabase.from('messages').update({ read: true }).eq('id', id);
+    }
   };
 
-  const deleteMessage = (id: string) => {
+  const deleteMessage = async (id: string) => {
     setMessages(prev => prev.filter(m => m.id !== id));
+
+    if (useSupabase && supabase) {
+      await supabase.from('messages').delete().eq('id', id);
+    }
   };
 
   return (
@@ -263,7 +457,8 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       hero, updateHero,
       testimonials, addTestimonial, updateTestimonial, deleteTestimonial,
       contact, updateContact,
-      messages, addMessage, markMessageRead, deleteMessage
+      messages, addMessage, markMessageRead, deleteMessage,
+      isLoading, useSupabase
     }}>
       {children}
     </ProductsContext.Provider>
