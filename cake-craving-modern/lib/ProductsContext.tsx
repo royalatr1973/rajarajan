@@ -118,6 +118,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   // Load data from Supabase or localStorage
   const loadData = useCallback(async () => {
     setIsLoading(true);
+    let loaded = false;
 
     // Try Supabase first
     if (supabase) {
@@ -126,6 +127,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
 
         if (!productsRes.error && productsRes.data && productsRes.data.length > 0) {
           setSbActive(true);
+          loaded = true;
 
           setProducts(productsRes.data.map(p => ({
             id: p.id,
@@ -137,77 +139,72 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
             isBestSeller: p.is_bestseller || false
           })));
 
-          // Load other data - each wrapped in its own try-catch
-          try {
-            const heroRes = await supabase.from('hero_settings').select('*').single();
-            if (!heroRes.error && heroRes.data) {
-              setHero({
-                title: heroRes.data.title,
-                subtitle: heroRes.data.subtitle || '',
-                ctaText: heroRes.data.cta_text || 'Order Now',
-                backgroundImage: heroRes.data.background_image || ''
-              });
-            }
-          } catch { /* hero load failed, use defaults */ }
+          // Load remaining data in parallel, don't block on failures
+          const [heroRes, testimonialsRes, contactRes, messagesRes] = await Promise.all([
+            supabase.from('hero_settings').select('*').single().then(r => r).then(null, () => null),
+            supabase.from('testimonials').select('*').order('sort_order').then(r => r).then(null, () => null),
+            supabase.from('contact_settings').select('*').single().then(r => r).then(null, () => null),
+            supabase.from('messages').select('*').order('created_at', { ascending: false }).then(r => r).then(null, () => null),
+          ]);
 
-          try {
-            const testimonialsRes = await supabase.from('testimonials').select('*').order('sort_order');
-            if (!testimonialsRes.error && testimonialsRes.data) {
-              setTestimonials(testimonialsRes.data.map(t => ({
-                id: t.id,
-                name: t.name,
-                text: t.content,
-                rating: t.rating || 5
-              })));
-            }
-          } catch { /* testimonials load failed, use defaults */ }
+          if (heroRes && !heroRes.error && heroRes.data) {
+            setHero({
+              title: heroRes.data.title,
+              subtitle: heroRes.data.subtitle || '',
+              ctaText: heroRes.data.cta_text || 'Order Now',
+              backgroundImage: heroRes.data.background_image || ''
+            });
+          }
 
-          try {
-            const contactRes = await supabase.from('contact_settings').select('*').single();
-            if (!contactRes.error && contactRes.data) {
-              setContact({
-                phone1: contactRes.data.phone || '',
-                phone2: contactRes.data.phone2 || '',
-                email: contactRes.data.email || '',
-                address: contactRes.data.address || '',
-                whatsappNumber: contactRes.data.whatsapp || ''
-              });
-            }
-          } catch { /* contact load failed, use defaults */ }
+          if (testimonialsRes && !testimonialsRes.error && testimonialsRes.data) {
+            setTestimonials(testimonialsRes.data.map((t: Record<string, unknown>) => ({
+              id: t.id as string,
+              name: t.name as string,
+              text: (t.content as string) || '',
+              rating: (t.rating as number) || 5
+            })));
+          }
 
-          try {
-            const messagesRes = await supabase.from('messages').select('*').order('created_at', { ascending: false });
-            if (!messagesRes.error && messagesRes.data) {
-              setMessages(messagesRes.data.map(m => ({
-                id: m.id,
-                name: m.name,
-                email: m.email || '',
-                phone: m.phone || '',
-                message: m.message,
-                date: m.created_at || new Date().toISOString(),
-                read: m.read || false
-              })));
-            }
-          } catch { /* messages load failed, use empty */ }
+          if (contactRes && !contactRes.error && contactRes.data) {
+            setContact({
+              phone1: (contactRes.data.phone as string) || '',
+              phone2: (contactRes.data.phone2 as string) || '',
+              email: (contactRes.data.email as string) || '',
+              address: (contactRes.data.address as string) || '',
+              whatsappNumber: (contactRes.data.whatsapp as string) || ''
+            });
+          }
 
-          setIsLoading(false);
-          return;
+          if (messagesRes && !messagesRes.error && messagesRes.data) {
+            setMessages(messagesRes.data.map((m: Record<string, unknown>) => ({
+              id: m.id as string,
+              name: m.name as string,
+              email: (m.email as string) || '',
+              phone: (m.phone as string) || '',
+              message: (m.message as string) || '',
+              date: (m.created_at as string) || new Date().toISOString(),
+              read: (m.read as boolean) || false
+            })));
+          }
         }
       } catch (error) {
         console.warn('Supabase not available, falling back to localStorage', error);
       }
     }
 
-    // Fallback to localStorage
-    const stored = loadFromLocalStorage();
-    if (stored) {
-      if (stored.products) setProducts(stored.products);
-      if (stored.hero) setHero(stored.hero);
-      if (stored.testimonials) setTestimonials(stored.testimonials);
-      if (stored.contact) setContact(stored.contact);
-      if (stored.messages) setMessages(stored.messages);
+    // Fallback to localStorage if Supabase didn't load
+    if (!loaded) {
+      const stored = loadFromLocalStorage();
+      if (stored) {
+        if (stored.products) setProducts(stored.products);
+        if (stored.hero) setHero(stored.hero);
+        if (stored.testimonials) setTestimonials(stored.testimonials);
+        if (stored.contact) setContact(stored.contact);
+        if (stored.messages) setMessages(stored.messages);
+      }
     }
 
+    // Always mark loading as done
     setIsLoading(false);
   }, []);
 
