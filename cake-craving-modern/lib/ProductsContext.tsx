@@ -84,10 +84,27 @@ const defaultContact: ContactSettings = {
   whatsappNumber: '918838424741'
 };
 
-// Check if Supabase is configured
-const isSupabaseConfigured = () => {
-  return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-};
+function loadFromLocalStorage() {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const storedProducts = localStorage.getItem('cake-craving-products');
+    const storedHero = localStorage.getItem('cake-craving-hero');
+    const storedTestimonials = localStorage.getItem('cake-craving-testimonials');
+    const storedContact = localStorage.getItem('cake-craving-contact');
+    const storedMessages = localStorage.getItem('cake-craving-messages');
+
+    return {
+      products: storedProducts ? JSON.parse(storedProducts) : null,
+      hero: storedHero ? JSON.parse(storedHero) : null,
+      testimonials: storedTestimonials ? JSON.parse(storedTestimonials) : null,
+      contact: storedContact ? JSON.parse(storedContact) : null,
+      messages: storedMessages ? JSON.parse(storedMessages) : null,
+    };
+  } catch {
+    return null;
+  }
+}
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
@@ -96,27 +113,20 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   const [contact, setContact] = useState<ContactSettings>(defaultContact);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [useSupabase, setUseSupabase] = useState(false);
+  const [sbActive, setSbActive] = useState(false);
 
   // Load data from Supabase or localStorage
   const loadData = useCallback(async () => {
     setIsLoading(true);
 
-    if (isSupabaseConfigured() && supabase) {
+    // Try Supabase first
+    if (supabase) {
       try {
-        // Try to fetch from Supabase
-        const [productsRes, heroRes, testimonialsRes, contactRes, messagesRes] = await Promise.all([
-          supabase.from('products').select('*').order('sort_order'),
-          supabase.from('hero_settings').select('*').single(),
-          supabase.from('testimonials').select('*').order('sort_order'),
-          supabase.from('contact_settings').select('*').single(),
-          supabase.from('messages').select('*').order('created_at', { ascending: false })
-        ]);
+        const productsRes = await supabase.from('products').select('*').order('sort_order');
 
         if (!productsRes.error && productsRes.data && productsRes.data.length > 0) {
-          setUseSupabase(true);
+          setSbActive(true);
 
-          // Map products from DB format to app format
           setProducts(productsRes.data.map(p => ({
             id: p.id,
             name: p.name,
@@ -127,100 +137,75 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
             isBestSeller: p.is_bestseller || false
           })));
 
-          if (!heroRes.error && heroRes.data) {
-            setHero({
-              title: heroRes.data.title,
-              subtitle: heroRes.data.subtitle || '',
-              ctaText: heroRes.data.cta_text || 'Order Now',
-              backgroundImage: heroRes.data.background_image || ''
-            });
-          }
+          // Load other data - each wrapped in its own try-catch
+          try {
+            const heroRes = await supabase.from('hero_settings').select('*').single();
+            if (!heroRes.error && heroRes.data) {
+              setHero({
+                title: heroRes.data.title,
+                subtitle: heroRes.data.subtitle || '',
+                ctaText: heroRes.data.cta_text || 'Order Now',
+                backgroundImage: heroRes.data.background_image || ''
+              });
+            }
+          } catch { /* hero load failed, use defaults */ }
 
-          if (!testimonialsRes.error && testimonialsRes.data) {
-            setTestimonials(testimonialsRes.data.map(t => ({
-              id: t.id,
-              name: t.name,
-              text: t.content,
-              rating: t.rating || 5
-            })));
-          }
+          try {
+            const testimonialsRes = await supabase.from('testimonials').select('*').order('sort_order');
+            if (!testimonialsRes.error && testimonialsRes.data) {
+              setTestimonials(testimonialsRes.data.map(t => ({
+                id: t.id,
+                name: t.name,
+                text: t.content,
+                rating: t.rating || 5
+              })));
+            }
+          } catch { /* testimonials load failed, use defaults */ }
 
-          if (!contactRes.error && contactRes.data) {
-            setContact({
-              phone1: contactRes.data.phone || '',
-              phone2: contactRes.data.phone2 || '',
-              email: contactRes.data.email || '',
-              address: contactRes.data.address || '',
-              whatsappNumber: contactRes.data.whatsapp || ''
-            });
-          }
+          try {
+            const contactRes = await supabase.from('contact_settings').select('*').single();
+            if (!contactRes.error && contactRes.data) {
+              setContact({
+                phone1: contactRes.data.phone || '',
+                phone2: contactRes.data.phone2 || '',
+                email: contactRes.data.email || '',
+                address: contactRes.data.address || '',
+                whatsappNumber: contactRes.data.whatsapp || ''
+              });
+            }
+          } catch { /* contact load failed, use defaults */ }
 
-          if (!messagesRes.error && messagesRes.data) {
-            setMessages(messagesRes.data.map(m => ({
-              id: m.id,
-              name: m.name,
-              email: m.email || '',
-              phone: m.phone || '',
-              message: m.message,
-              date: m.created_at,
-              read: m.read || false
-            })));
-          }
+          try {
+            const messagesRes = await supabase.from('messages').select('*').order('created_at', { ascending: false });
+            if (!messagesRes.error && messagesRes.data) {
+              setMessages(messagesRes.data.map(m => ({
+                id: m.id,
+                name: m.name,
+                email: m.email || '',
+                phone: m.phone || '',
+                message: m.message,
+                date: m.created_at || new Date().toISOString(),
+                read: m.read || false
+              })));
+            }
+          } catch { /* messages load failed, use empty */ }
 
           setIsLoading(false);
           return;
         }
       } catch (error) {
-        console.log('Supabase not available, falling back to localStorage', error);
+        console.warn('Supabase not available, falling back to localStorage', error);
       }
     }
 
     // Fallback to localStorage
-    if (typeof window !== 'undefined') {
-      const storedProducts = localStorage.getItem('cake-craving-products');
-      if (storedProducts) {
-        try {
-          setProducts(JSON.parse(storedProducts));
-        } catch {
-          setProducts(initialProducts);
-        }
-      }
-
-      const storedHero = localStorage.getItem('cake-craving-hero');
-      if (storedHero) {
-        try {
-          setHero(JSON.parse(storedHero));
-        } catch {
-          setHero(defaultHero);
-        }
-      }
-
-      const storedTestimonials = localStorage.getItem('cake-craving-testimonials');
-      if (storedTestimonials) {
-        try {
-          setTestimonials(JSON.parse(storedTestimonials));
-        } catch {
-          setTestimonials(defaultTestimonials);
-        }
-      }
-
-      const storedContact = localStorage.getItem('cake-craving-contact');
-      if (storedContact) {
-        try {
-          setContact(JSON.parse(storedContact));
-        } catch {
-          setContact(defaultContact);
-        }
-      }
-
-      const storedMessages = localStorage.getItem('cake-craving-messages');
-      if (storedMessages) {
-        try {
-          setMessages(JSON.parse(storedMessages));
-        } catch {
-          setMessages([]);
-        }
-      }
+    const stored = loadFromLocalStorage();
+    if (stored) {
+      if (stored.products) setProducts(stored.products);
+      if (stored.hero) setHero(stored.hero);
+      if (stored.testimonials) setTestimonials(stored.testimonials);
+      if (stored.contact) setContact(stored.contact);
+      if (stored.messages) setMessages(stored.messages);
     }
 
     setIsLoading(false);
@@ -233,43 +218,43 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   // Save to localStorage as backup (always)
   useEffect(() => {
     if (!isLoading && typeof window !== 'undefined') {
-      localStorage.setItem('cake-craving-products', JSON.stringify(products));
+      try { localStorage.setItem('cake-craving-products', JSON.stringify(products)); } catch {}
     }
   }, [products, isLoading]);
 
   useEffect(() => {
     if (!isLoading && typeof window !== 'undefined') {
-      localStorage.setItem('cake-craving-hero', JSON.stringify(hero));
+      try { localStorage.setItem('cake-craving-hero', JSON.stringify(hero)); } catch {}
     }
   }, [hero, isLoading]);
 
   useEffect(() => {
     if (!isLoading && typeof window !== 'undefined') {
-      localStorage.setItem('cake-craving-testimonials', JSON.stringify(testimonials));
+      try { localStorage.setItem('cake-craving-testimonials', JSON.stringify(testimonials)); } catch {}
     }
   }, [testimonials, isLoading]);
 
   useEffect(() => {
     if (!isLoading && typeof window !== 'undefined') {
-      localStorage.setItem('cake-craving-contact', JSON.stringify(contact));
+      try { localStorage.setItem('cake-craving-contact', JSON.stringify(contact)); } catch {}
     }
   }, [contact, isLoading]);
 
   useEffect(() => {
     if (!isLoading && typeof window !== 'undefined') {
-      localStorage.setItem('cake-craving-messages', JSON.stringify(messages));
+      try { localStorage.setItem('cake-craving-messages', JSON.stringify(messages)); } catch {}
     }
   }, [messages, isLoading]);
 
   // Products functions
-  const addProduct = async (productData: Omit<Product, 'id'>) => {
+  const addProduct = (productData: Omit<Product, 'id'>) => {
     const newId = (Math.max(...products.map(p => parseInt(p.id) || 0), 0) + 1).toString();
     const newProduct: Product = { ...productData, id: newId };
 
     setProducts(prev => [...prev, newProduct]);
 
-    if (useSupabase && supabase) {
-      await supabase.from('products').insert({
+    if (sbActive && supabase) {
+      supabase.from('products').insert({
         id: newId,
         name: productData.name,
         description: productData.description,
@@ -278,16 +263,16 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
         category: productData.type,
         is_bestseller: productData.isBestSeller || false,
         sort_order: products.length + 1
-      });
+      }).then(null, () => {});
     }
   };
 
-  const updateProduct = async (id: string, productData: Partial<Product>) => {
+  const updateProduct = (id: string, productData: Partial<Product>) => {
     setProducts(prev => prev.map(p =>
       p.id === id ? { ...p, ...productData } : p
     ));
 
-    if (useSupabase && supabase) {
+    if (sbActive && supabase) {
       const updateData: Record<string, unknown> = {};
       if (productData.name !== undefined) updateData.name = productData.name;
       if (productData.description !== undefined) updateData.description = productData.description;
@@ -296,122 +281,121 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       if (productData.type !== undefined) updateData.category = productData.type;
       if (productData.isBestSeller !== undefined) updateData.is_bestseller = productData.isBestSeller;
 
-      await supabase.from('products').update(updateData).eq('id', id);
+      supabase.from('products').update(updateData).eq('id', id).then(null, () => {});
     }
   };
 
-  const deleteProduct = async (id: string) => {
+  const deleteProduct = (id: string) => {
     setProducts(prev => prev.filter(p => p.id !== id));
 
-    if (useSupabase && supabase) {
-      await supabase.from('products').delete().eq('id', id);
+    if (sbActive && supabase) {
+      supabase.from('products').delete().eq('id', id).then(null, () => {});
     }
   };
 
-  const reorderProducts = async (newProducts: Product[]) => {
+  const reorderProducts = (newProducts: Product[]) => {
     setProducts(newProducts);
 
-    if (useSupabase && supabase) {
-      // Update sort_order for all products
+    if (sbActive && supabase) {
       const sb = supabase;
       const updates = newProducts.map((p, index) =>
         sb.from('products').update({ sort_order: index + 1 }).eq('id', p.id)
       );
-      await Promise.all(updates);
+      Promise.all(updates).then(null, () => {});
     }
   };
 
-  const resetProducts = async () => {
+  const resetProducts = () => {
     setProducts(initialProducts);
     setHero(defaultHero);
     setTestimonials(defaultTestimonials);
     setContact(defaultContact);
 
     if (typeof window !== 'undefined') {
-      localStorage.setItem('cake-craving-products', JSON.stringify(initialProducts));
-      localStorage.setItem('cake-craving-hero', JSON.stringify(defaultHero));
-      localStorage.setItem('cake-craving-testimonials', JSON.stringify(defaultTestimonials));
-      localStorage.setItem('cake-craving-contact', JSON.stringify(defaultContact));
+      try {
+        localStorage.setItem('cake-craving-products', JSON.stringify(initialProducts));
+        localStorage.setItem('cake-craving-hero', JSON.stringify(defaultHero));
+        localStorage.setItem('cake-craving-testimonials', JSON.stringify(defaultTestimonials));
+        localStorage.setItem('cake-craving-contact', JSON.stringify(defaultContact));
+      } catch {}
     }
-
-    // Note: Supabase reset would need to be handled separately if needed
   };
 
   // Hero functions
-  const updateHero = async (heroData: Partial<HeroSettings>) => {
+  const updateHero = (heroData: Partial<HeroSettings>) => {
     const newHero = { ...hero, ...heroData };
     setHero(newHero);
 
-    if (useSupabase && supabase) {
-      await supabase.from('hero_settings').upsert({
+    if (sbActive && supabase) {
+      supabase.from('hero_settings').upsert({
         id: 1,
         title: newHero.title,
         subtitle: newHero.subtitle,
         cta_text: newHero.ctaText,
         background_image: newHero.backgroundImage
-      });
+      }).then(null, () => {});
     }
   };
 
   // Testimonials functions
-  const addTestimonial = async (testimonialData: Omit<Testimonial, 'id'>) => {
+  const addTestimonial = (testimonialData: Omit<Testimonial, 'id'>) => {
     const newId = (Math.max(...testimonials.map(t => parseInt(t.id) || 0), 0) + 1).toString();
     const newTestimonial: Testimonial = { ...testimonialData, id: newId };
     setTestimonials(prev => [...prev, newTestimonial]);
 
-    if (useSupabase && supabase) {
-      await supabase.from('testimonials').insert({
+    if (sbActive && supabase) {
+      supabase.from('testimonials').insert({
         id: newId,
         name: testimonialData.name,
         content: testimonialData.text,
         rating: testimonialData.rating,
         sort_order: testimonials.length + 1
-      });
+      }).then(null, () => {});
     }
   };
 
-  const updateTestimonial = async (id: string, testimonialData: Partial<Testimonial>) => {
+  const updateTestimonial = (id: string, testimonialData: Partial<Testimonial>) => {
     setTestimonials(prev => prev.map(t =>
       t.id === id ? { ...t, ...testimonialData } : t
     ));
 
-    if (useSupabase && supabase) {
+    if (sbActive && supabase) {
       const updateData: Record<string, unknown> = {};
       if (testimonialData.name !== undefined) updateData.name = testimonialData.name;
       if (testimonialData.text !== undefined) updateData.content = testimonialData.text;
       if (testimonialData.rating !== undefined) updateData.rating = testimonialData.rating;
 
-      await supabase.from('testimonials').update(updateData).eq('id', id);
+      supabase.from('testimonials').update(updateData).eq('id', id).then(null, () => {});
     }
   };
 
-  const deleteTestimonial = async (id: string) => {
+  const deleteTestimonial = (id: string) => {
     setTestimonials(prev => prev.filter(t => t.id !== id));
 
-    if (useSupabase && supabase) {
-      await supabase.from('testimonials').delete().eq('id', id);
+    if (sbActive && supabase) {
+      supabase.from('testimonials').delete().eq('id', id).then(null, () => {});
     }
   };
 
   // Contact functions
-  const updateContact = async (contactData: Partial<ContactSettings>) => {
+  const updateContact = (contactData: Partial<ContactSettings>) => {
     const newContact = { ...contact, ...contactData };
     setContact(newContact);
 
-    if (useSupabase && supabase) {
-      await supabase.from('contact_settings').upsert({
+    if (sbActive && supabase) {
+      supabase.from('contact_settings').upsert({
         id: 1,
         address: newContact.address,
         phone: newContact.phone1,
         phone2: newContact.phone2,
         email: newContact.email,
         whatsapp: newContact.whatsappNumber
-      });
+      }).then(null, () => {});
     }
   };
 
   // Messages functions
-  const addMessage = async (messageData: Omit<Message, 'id' | 'date' | 'read'>) => {
+  const addMessage = (messageData: Omit<Message, 'id' | 'date' | 'read'>) => {
     const newId = (Math.max(...messages.map(m => parseInt(m.id) || 0), 0) + 1).toString();
     const newMessage: Message = {
       ...messageData,
@@ -421,33 +405,33 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
     };
     setMessages(prev => [newMessage, ...prev]);
 
-    if (useSupabase && supabase) {
-      await supabase.from('messages').insert({
+    if (sbActive && supabase) {
+      supabase.from('messages').insert({
         id: newId,
         name: messageData.name,
         email: messageData.email,
         phone: messageData.phone,
         message: messageData.message,
         read: false
-      });
+      }).then(null, () => {});
     }
   };
 
-  const markMessageRead = async (id: string) => {
+  const markMessageRead = (id: string) => {
     setMessages(prev => prev.map(m =>
       m.id === id ? { ...m, read: true } : m
     ));
 
-    if (useSupabase && supabase) {
-      await supabase.from('messages').update({ read: true }).eq('id', id);
+    if (sbActive && supabase) {
+      supabase.from('messages').update({ read: true }).eq('id', id).then(null, () => {});
     }
   };
 
-  const deleteMessage = async (id: string) => {
+  const deleteMessage = (id: string) => {
     setMessages(prev => prev.filter(m => m.id !== id));
 
-    if (useSupabase && supabase) {
-      await supabase.from('messages').delete().eq('id', id);
+    if (sbActive && supabase) {
+      supabase.from('messages').delete().eq('id', id).then(null, () => {});
     }
   };
 
@@ -458,7 +442,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       testimonials, addTestimonial, updateTestimonial, deleteTestimonial,
       contact, updateContact,
       messages, addMessage, markMessageRead, deleteMessage,
-      isLoading, useSupabase
+      isLoading, useSupabase: sbActive
     }}>
       {children}
     </ProductsContext.Provider>
