@@ -75,8 +75,8 @@ export default function Hero() {
                 <div className="text-sm text-cream">Prior Order</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-gold">Certified</div>
-                <div className="text-sm text-cream">Home Baker</div>
+                <div className="text-3xl font-bold text-gold">500+</div>
+                <div className="text-sm text-cream">Happy Customers</div>
               </div>
             </div>
           </div>
