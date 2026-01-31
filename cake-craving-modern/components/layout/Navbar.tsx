@@ -21,6 +21,7 @@ export default function Navbar() {
                 fill
                 className="object-contain"
                 priority
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
               />
             </div>
             <div className="text-xl sm:text-2xl font-bold text-gold hover:text-gold-light transition-colors duration-300">

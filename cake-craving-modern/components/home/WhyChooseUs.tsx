@@ -4,8 +4,8 @@ const features = [
   {
     id: 1,
     icon: Award,
-    title: 'Certified Home Baker',
-    description: 'FSSAI certified and trained in professional baking',
+    title: 'Award Winning Taste',
+    description: 'Trained in professional baking with years of experience',
   },
   {
     id: 2,

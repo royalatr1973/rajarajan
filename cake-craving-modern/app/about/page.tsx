@@ -75,9 +75,9 @@ export default function AboutPage() {
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gold/20 rounded-full">
                 <Award size={36} className="text-gold" />
               </div>
-              <h3 className="text-xl font-bold text-cocoa-dark">Certified Baker</h3>
+              <h3 className="text-xl font-bold text-cocoa-dark">Expert Baker</h3>
               <p className="text-cocoa-medium">
-                Certified home baker ensuring quality and food safety standards.
+                Professional baker ensuring quality and food safety standards.
               </p>
             </div>
 
