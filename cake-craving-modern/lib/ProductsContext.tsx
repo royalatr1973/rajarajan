@@ -107,119 +107,109 @@ function loadFromLocalStorage() {
 }
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [hero, setHero] = useState<HeroSettings>(defaultHero);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(defaultTestimonials);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [contact, setContact] = useState<ContactSettings>(defaultContact);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [sbActive, setSbActive] = useState(false);
 
-  // Step 1: Load localStorage instantly on mount (no delay)
-  useEffect(() => {
+  // Fetch from Supabase first, fallback to localStorage only if Supabase fails
+  const loadData = useCallback(async () => {
+    setIsLoading(true);
+
+    if (supabase) {
+      try {
+        // Fetch all data from Supabase in parallel
+        const [productsRes, heroRes, testimonialsRes, contactRes, messagesRes] = await Promise.all([
+          supabase.from('products').select('*').order('sort_order'),
+          supabase.from('hero_settings').select('*').single(),
+          supabase.from('testimonials').select('*').order('sort_order'),
+          supabase.from('contact_settings').select('*').single(),
+          supabase.from('messages').select('*').order('created_at', { ascending: false }),
+        ]);
+
+        if (!productsRes.error && productsRes.data && productsRes.data.length > 0) {
+          setSbActive(true);
+
+          setProducts(productsRes.data.map(p => ({
+            id: p.id,
+            name: p.name,
+            description: p.description || '',
+            price: p.price || 0,
+            image: p.image || '',
+            type: p.category || 'Classic',
+            isBestSeller: p.is_bestseller || false
+          })));
+
+          if (heroRes && !heroRes.error && heroRes.data) {
+            setHero({
+              title: heroRes.data.title,
+              subtitle: heroRes.data.subtitle || '',
+              ctaText: heroRes.data.cta_text || 'Order Now',
+              backgroundImage: heroRes.data.background_image || ''
+            });
+          }
+
+          if (testimonialsRes && !testimonialsRes.error && testimonialsRes.data) {
+            setTestimonials(testimonialsRes.data.map((t: Record<string, unknown>) => ({
+              id: t.id as string,
+              name: t.name as string,
+              text: (t.content as string) || '',
+              rating: (t.rating as number) || 5
+            })));
+          }
+
+          if (contactRes && !contactRes.error && contactRes.data) {
+            setContact({
+              phone1: (contactRes.data.phone as string) || '',
+              phone2: (contactRes.data.phone2 as string) || '',
+              email: (contactRes.data.email as string) || '',
+              address: (contactRes.data.address as string) || '',
+              whatsappNumber: (contactRes.data.whatsapp as string) || ''
+            });
+          }
+
+          if (messagesRes && !messagesRes.error && messagesRes.data) {
+            setMessages(messagesRes.data.map((m: Record<string, unknown>) => ({
+              id: m.id as string,
+              name: m.name as string,
+              email: (m.email as string) || '',
+              phone: (m.phone as string) || '',
+              message: (m.message as string) || '',
+              date: (m.created_at as string) || new Date().toISOString(),
+              read: (m.read as boolean) || false
+            })));
+          }
+
+          setIsLoading(false);
+          return;
+        }
+      } catch (error) {
+        console.warn('Supabase failed:', error);
+      }
+    }
+
+    // Fallback: localStorage or defaults
     const stored = loadFromLocalStorage();
-    if (stored) {
-      if (stored.products) setProducts(stored.products);
+    if (stored && stored.products) {
+      setProducts(stored.products);
       if (stored.hero) setHero(stored.hero);
       if (stored.testimonials) setTestimonials(stored.testimonials);
       if (stored.contact) setContact(stored.contact);
       if (stored.messages) setMessages(stored.messages);
-    }
-  }, []);
-
-  // Step 2: Fetch from Supabase in background and update
-  const syncFromSupabase = useCallback(async () => {
-    if (!supabase) return;
-
-    setIsLoading(true);
-
-    try {
-      // Add 8-second timeout
-      const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), 8000));
-
-      const fetchProducts = supabase.from('products').select('*').order('sort_order');
-      const productsRes = await Promise.race([fetchProducts, timeout]);
-
-      if (!productsRes || ('error' in productsRes && productsRes.error) || !('data' in productsRes) || !productsRes.data || productsRes.data.length === 0) {
-        setIsLoading(false);
-        return;
-      }
-
-      setSbActive(true);
-
-      setProducts(productsRes.data.map(p => ({
-        id: p.id,
-        name: p.name,
-        description: p.description || '',
-        price: p.price || 0,
-        image: p.image || '',
-        type: p.category || 'Classic',
-        isBestSeller: p.is_bestseller || false
-      })));
-
-      // Load remaining data in parallel with timeout
-      const fetchOthers = Promise.all([
-        supabase.from('hero_settings').select('*').single().then(r => r).then(null, () => null),
-        supabase.from('testimonials').select('*').order('sort_order').then(r => r).then(null, () => null),
-        supabase.from('contact_settings').select('*').single().then(r => r).then(null, () => null),
-        supabase.from('messages').select('*').order('created_at', { ascending: false }).then(r => r).then(null, () => null),
-      ]);
-      const timeoutOthers = new Promise<null>((resolve) => setTimeout(() => resolve(null), 8000));
-      const othersResult = await Promise.race([fetchOthers, timeoutOthers]);
-
-      if (othersResult && Array.isArray(othersResult)) {
-        const [heroRes, testimonialsRes, contactRes, messagesRes] = othersResult;
-
-        if (heroRes && !heroRes.error && heroRes.data) {
-          setHero({
-            title: heroRes.data.title,
-            subtitle: heroRes.data.subtitle || '',
-            ctaText: heroRes.data.cta_text || 'Order Now',
-            backgroundImage: heroRes.data.background_image || ''
-          });
-        }
-
-        if (testimonialsRes && !testimonialsRes.error && testimonialsRes.data) {
-          setTestimonials(testimonialsRes.data.map((t: Record<string, unknown>) => ({
-            id: t.id as string,
-            name: t.name as string,
-            text: (t.content as string) || '',
-            rating: (t.rating as number) || 5
-          })));
-        }
-
-        if (contactRes && !contactRes.error && contactRes.data) {
-          setContact({
-            phone1: (contactRes.data.phone as string) || '',
-            phone2: (contactRes.data.phone2 as string) || '',
-            email: (contactRes.data.email as string) || '',
-            address: (contactRes.data.address as string) || '',
-            whatsappNumber: (contactRes.data.whatsapp as string) || ''
-          });
-        }
-
-        if (messagesRes && !messagesRes.error && messagesRes.data) {
-          setMessages(messagesRes.data.map((m: Record<string, unknown>) => ({
-            id: m.id as string,
-            name: m.name as string,
-            email: (m.email as string) || '',
-            phone: (m.phone as string) || '',
-            message: (m.message as string) || '',
-            date: (m.created_at as string) || new Date().toISOString(),
-            read: (m.read as boolean) || false
-          })));
-        }
-      }
-    } catch (error) {
-      console.warn('Supabase sync failed:', error);
+    } else {
+      setProducts(initialProducts);
+      setTestimonials(defaultTestimonials);
     }
 
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    syncFromSupabase();
-  }, [syncFromSupabase]);
+    loadData();
+  }, [loadData]);
 
   // Save to localStorage as backup (always)
   useEffect(() => {
