@@ -1,20 +1,16 @@
 import Image from 'next/image';
 import { Star } from 'lucide-react';
-import { Product } from '@/types/product';
-import { urlFor } from '@/lib/sanity';
 
 interface ProductCardProps {
-  product: any; // Using any to handle both old Product type and Sanity data
+  product: any;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  // Handle both URL string (old) and Sanity image object (new)
-  const imageUrl = typeof product.image === 'string'
-    ? product.image
-    : urlFor(product.image).width(800).url();
+  const imageUrl = typeof product.image === 'string' ? product.image : '';
 
   const getTypeColor = (type: string) => {
     switch (type) {
+      // Cake categories
       case 'Chocolate':
         return 'bg-cocoa-dark text-cream-light';
       case 'Classic':
@@ -23,6 +19,31 @@ export default function ProductCard({ product }: ProductCardProps) {
         return 'bg-pink-100 text-pink-800';
       case 'Fruit':
         return 'bg-green-100 text-green-800';
+      // Biscuit categories
+      case 'Butter':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'Cookies':
+        return 'bg-amber-100 text-amber-800';
+      case 'Traditional':
+        return 'bg-orange-100 text-orange-800';
+      case 'Savory':
+        return 'bg-red-100 text-red-800';
+      // Chocolate categories
+      case 'Dark':
+        return 'bg-cocoa-dark text-cream-light';
+      case 'Milk':
+        return 'bg-amber-200 text-amber-900';
+      case 'White':
+        return 'bg-gray-100 text-gray-700';
+      case 'Truffle':
+        return 'bg-purple-100 text-purple-800';
+      // Brownie categories
+      case 'Fudge':
+        return 'bg-cocoa-dark text-cream-light';
+      case 'Nutty':
+        return 'bg-amber-100 text-amber-800';
+      case 'Blondie':
+        return 'bg-yellow-100 text-yellow-800';
       default:
         return 'bg-gray-200 text-gray-800';
     }

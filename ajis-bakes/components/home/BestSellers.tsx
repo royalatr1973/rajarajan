@@ -25,17 +25,17 @@ export default function BestSellers() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold text-cocoa-dark mb-4">
-            Popular Cake Varieties
+            Our Best Sellers
           </h2>
           <p className="text-lg text-cocoa-medium max-w-2xl mx-auto">
-            Discover our most loved cakes, handcrafted with passion and the finest ingredients
+            Discover our most loved treats across cakes, biscuits, chocolates & brownies
           </p>
         </div>
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {bestSellers.map((product: any) => (
-            <ProductCard key={product._id || product.id} product={product} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
@@ -45,7 +45,7 @@ export default function BestSellers() {
             href="/products"
             className="inline-flex items-center space-x-2 bg-cocoa-dark hover:bg-cocoa-medium text-gold font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group"
           >
-            <span>View Full Menu</span>
+            <span>View All Products</span>
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

@@ -63,8 +63,8 @@ interface ProductsContextType {
 const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
 
 const defaultHero: HeroSettings = {
-  title: 'Custom cakes crafted for every occasion',
-  subtitle: 'Great Taste in Every Bite! Make your celebrations sweeter with our delectable homemade cakes from Ajis Bakes.',
+  title: 'Homemade treats crafted for every occasion',
+  subtitle: 'Great Taste in Every Bite! Explore our delicious range of cakes, biscuits, chocolates & brownies from Ajis Bakes.',
   ctaText: 'Order Now',
   backgroundImage: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1200&q=80'
 };
@@ -139,6 +139,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
             description: p.description || '',
             price: p.price || 0,
             image: p.image || '',
+            vertical: p.vertical || 'Cakes',
             type: p.category || 'Classic',
             isBestSeller: p.is_bestseller || false
           })));
@@ -256,6 +257,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
         description: productData.description,
         price: productData.price,
         image: productData.image,
+        vertical: productData.vertical,
         category: productData.type,
         is_bestseller: productData.isBestSeller || false,
         sort_order: products.length + 1
@@ -274,6 +276,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       if (productData.description !== undefined) updateData.description = productData.description;
       if (productData.price !== undefined) updateData.price = productData.price;
       if (productData.image !== undefined) updateData.image = productData.image;
+      if (productData.vertical !== undefined) updateData.vertical = productData.vertical;
       if (productData.type !== undefined) updateData.category = productData.type;
       if (productData.isBestSeller !== undefined) updateData.is_bestseller = productData.isBestSeller;
 
