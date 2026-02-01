@@ -6,8 +6,8 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import { useProducts } from '@/lib/ProductsContext';
 
 const defaultHero = {
-  title: 'Custom cakes crafted for every occasion',
-  subtitle: 'Great Taste in Every Bite! Make your celebrations sweeter with our delectable homemade cakes from Ajis Bakes.',
+  title: 'Homemade treats crafted for every occasion',
+  subtitle: 'Great Taste in Every Bite! Explore our delicious range of cakes, biscuits, chocolates & brownies from Ajis Bakes.',
   ctaText: 'Order Now',
   backgroundImage: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1200&q=80'
 };
@@ -60,23 +60,27 @@ export default function Hero() {
                 href="/products"
                 className="inline-flex items-center justify-center space-x-2 bg-transparent hover:bg-cream-light/10 text-cream-light border-2 border-cream-light/30 hover:border-gold font-semibold px-8 py-4 rounded-full transition-all duration-300"
               >
-                <span>View Menu</span>
+                <span>View Products</span>
               </Link>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gold/30">
+            <div className="grid grid-cols-4 gap-4 pt-8 border-t border-gold/30">
               <div>
-                <div className="text-3xl font-bold text-gold">100%</div>
-                <div className="text-sm text-cream">Homemade</div>
+                <div className="text-2xl lg:text-3xl font-bold text-gold">Cakes</div>
+                <div className="text-xs lg:text-sm text-cream">Custom & Classic</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-gold">2 Days</div>
-                <div className="text-sm text-cream">Prior Order</div>
+                <div className="text-2xl lg:text-3xl font-bold text-gold">Biscuits</div>
+                <div className="text-xs lg:text-sm text-cream">Fresh Baked</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-gold">500+</div>
-                <div className="text-sm text-cream">Happy Customers</div>
+                <div className="text-2xl lg:text-3xl font-bold text-gold">Choco</div>
+                <div className="text-xs lg:text-sm text-cream">Handmade</div>
+              </div>
+              <div>
+                <div className="text-2xl lg:text-3xl font-bold text-gold">Brownies</div>
+                <div className="text-xs lg:text-sm text-cream">Rich & Fudgy</div>
               </div>
             </div>
           </div>

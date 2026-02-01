@@ -41,13 +41,13 @@ export default function Navbar() {
               href="/products"
               className="text-cream-light hover:text-gold transition-colors duration-300 font-medium"
             >
-              Menu
+              Products
             </Link>
             <Link
               href="/custom-cakes"
               className="text-cream-light hover:text-gold transition-colors duration-300 font-medium"
             >
-              Custom Cakes
+              Custom Orders
             </Link>
             <Link
               href="/about"
@@ -101,14 +101,14 @@ export default function Navbar() {
               className="block py-3 px-4 text-cream-light hover:bg-cocoa-dark hover:text-gold rounded-lg transition-all"
               onClick={() => setIsMenuOpen(false)}
             >
-              Menu
+              Products
             </Link>
             <Link
               href="/custom-cakes"
               className="block py-3 px-4 text-cream-light hover:bg-cocoa-dark hover:text-gold rounded-lg transition-all"
               onClick={() => setIsMenuOpen(false)}
             >
-              Custom Cakes
+              Custom Orders
             </Link>
             <Link
               href="/about"

@@ -9,7 +9,7 @@ import {
   Cloud, Database
 } from 'lucide-react';
 import { useProducts, HeroSettings, Testimonial, ContactSettings, Message } from '@/lib/ProductsContext';
-import { Product, ChocolateType } from '@/types/product';
+import { Product, ProductVertical, allVerticals, verticalCategories } from '@/types/product';
 
 const ADMIN_PASSWORD = 'ajisbakes2024';
 
@@ -36,6 +36,9 @@ export default function AdminPanel() {
   const [editForm, setEditForm] = useState<Product | null>(null);
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  // Vertical filter for admin product view
+  const [adminVertical, setAdminVertical] = useState<ProductVertical>('Cakes');
 
   // Drag and drop state
   const [draggedItem, setDraggedItem] = useState<Product | null>(null);
@@ -124,12 +127,14 @@ export default function AdminPanel() {
   const handleAdd = () => {
     setShowAddForm(true);
     setEditingId(null);
+    const categories = verticalCategories[adminVertical] || [];
     setEditForm({
       id: '',
       name: '',
       description: '',
       price: 0,
-      type: 'Chocolate' as ChocolateType,
+      vertical: adminVertical,
+      type: categories[0] || 'Classic',
       image: '',
       isBestSeller: false
     });
@@ -306,6 +311,7 @@ ${products.map(p => `  {
     name: '${p.name.replace(/'/g, "\\'")}',
     description: '${p.description.replace(/'/g, "\\'")}',
     price: ${p.price},
+    vertical: '${p.vertical}',
     type: '${p.type}',
     image: '${p.image.startsWith('data:') ? '/images/uploaded-image.jpg' : p.image}',
     isBestSeller: ${p.isBestSeller || false},
@@ -474,17 +480,37 @@ ${products.map(p => `  {
         {/* PRODUCTS TAB */}
         {activeTab === 'products' && (
           <>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <div>
-                <h2 className="text-2xl font-bold text-cocoa-dark">Menu Items</h2>
+                <h2 className="text-2xl font-bold text-cocoa-dark">Products</h2>
                 <p className="text-cocoa-medium text-sm">Drag items to reorder. Changes save automatically.</p>
               </div>
               <button
                 onClick={handleAdd}
                 className="flex items-center gap-2 bg-gold hover:bg-gold-light text-cocoa-dark px-4 py-2 rounded-lg font-semibold transition-all shadow-md"
               >
-                <Plus size={20} /> Add Cake
+                <Plus size={20} /> Add Product
               </button>
+            </div>
+
+            {/* Vertical Filter Tabs */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {allVerticals.map((v) => {
+                const count = products.filter(p => p.vertical === v).length;
+                return (
+                  <button
+                    key={v}
+                    onClick={() => { setAdminVertical(v); handleCancel(); }}
+                    className={`px-4 py-2 rounded-lg font-semibold transition-all text-sm ${
+                      adminVertical === v
+                        ? 'bg-cocoa-dark text-gold shadow-md'
+                        : 'bg-white text-cocoa-dark border border-gold/30 hover:border-gold'
+                    }`}
+                  >
+                    {v} ({count})
+                  </button>
+                );
+              })}
             </div>
 
             {/* Edit/Add Form */}
@@ -492,7 +518,7 @@ ${products.map(p => `  {
               <div className="bg-white rounded-xl shadow-lg p-6 mb-6 border-2 border-gold">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-xl font-bold text-cocoa-dark">
-                    {showAddForm ? 'Add New Cake' : 'Edit Cake'}
+                    {showAddForm ? 'Add New Product' : 'Edit Product'}
                   </h3>
                   <button onClick={handleCancel} className="text-cocoa-medium hover:text-cocoa-dark">
                     <X size={24} />
@@ -503,7 +529,7 @@ ${products.map(p => `  {
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-semibold text-cocoa-dark mb-1">
-                        Cake Name <span className="text-red-500">*</span>
+                        Product Name <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -515,16 +541,32 @@ ${products.map(p => `  {
                     </div>
 
                     <div>
+                      <label className="block text-sm font-semibold text-cocoa-dark mb-1">Product Vertical</label>
+                      <select
+                        value={editForm.vertical}
+                        onChange={(e) => {
+                          const newVertical = e.target.value as ProductVertical;
+                          const cats = verticalCategories[newVertical] || [];
+                          setEditForm({ ...editForm, vertical: newVertical, type: cats[0] || '' });
+                        }}
+                        className="w-full px-4 py-2 border-2 border-cocoa-medium/30 rounded-lg focus:border-gold focus:outline-none"
+                      >
+                        {allVerticals.map(v => (
+                          <option key={v} value={v}>{v}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
                       <label className="block text-sm font-semibold text-cocoa-dark mb-1">Category</label>
                       <select
                         value={editForm.type}
-                        onChange={(e) => setEditForm({ ...editForm, type: e.target.value as ChocolateType })}
+                        onChange={(e) => setEditForm({ ...editForm, type: e.target.value })}
                         className="w-full px-4 py-2 border-2 border-cocoa-medium/30 rounded-lg focus:border-gold focus:outline-none"
                       >
-                        <option value="Chocolate">Chocolate</option>
-                        <option value="Classic">Classic</option>
-                        <option value="Theme">Theme</option>
-                        <option value="Fruit">Fruit</option>
+                        {(verticalCategories[editForm.vertical] || []).map(cat => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
                       </select>
                     </div>
 
@@ -535,7 +577,7 @@ ${products.map(p => `  {
                         onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                         className="w-full px-4 py-2 border-2 border-cocoa-medium/30 rounded-lg focus:border-gold focus:outline-none resize-none"
                         rows={3}
-                        placeholder="Describe your delicious cake..."
+                        placeholder="Describe your product..."
                       />
                     </div>
 
@@ -593,15 +635,15 @@ ${products.map(p => `  {
                     onClick={showAddForm ? handleAddSave : handleSave}
                     className="flex items-center gap-2 px-5 py-2 bg-gold hover:bg-gold-light text-cocoa-dark rounded-lg font-semibold"
                   >
-                    <Save size={18} /> {showAddForm ? 'Add Cake' : 'Save'}
+                    <Save size={18} /> {showAddForm ? 'Add Product' : 'Save'}
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Products Grid with Drag and Drop */}
+            {/* Products Grid with Drag and Drop - filtered by vertical */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {products.map((product, index) => (
+              {products.filter(p => p.vertical === adminVertical).map((product, index) => (
                 <div
                   key={product.id}
                   draggable
@@ -624,6 +666,9 @@ ${products.map(p => `  {
                         Best Seller
                       </span>
                     )}
+                    <span className="absolute bottom-2 left-2 bg-cocoa-dark/80 text-cream-light text-xs px-2 py-1 rounded-full">
+                      {product.type}
+                    </span>
                   </div>
                   <div className="p-3">
                     <h3 className="font-bold text-cocoa-dark text-sm truncate">{product.name}</h3>
@@ -647,12 +692,12 @@ ${products.map(p => `  {
               ))}
             </div>
 
-            {products.length === 0 && (
+            {products.filter(p => p.vertical === adminVertical).length === 0 && (
               <div className="text-center py-16">
                 <ImageIcon size={48} className="mx-auto text-cocoa-medium/30 mb-3" />
-                <h3 className="text-lg font-bold text-cocoa-dark mb-2">No Products Yet</h3>
+                <h3 className="text-lg font-bold text-cocoa-dark mb-2">No {adminVertical} Yet</h3>
                 <button onClick={handleAdd} className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-cocoa-dark px-5 py-2 rounded-lg font-semibold">
-                  <Plus size={18} /> Add Your First Cake
+                  <Plus size={18} /> Add Your First Product
                 </button>
               </div>
             )}

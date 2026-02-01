@@ -1,44 +1,69 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Filter } from 'lucide-react';
+import { Filter, Cake, Cookie, Candy, CakeSlice } from 'lucide-react';
 import ProductCard from './ProductCard';
-import { ChocolateType } from '@/types/product';
+import { ProductVertical, allVerticals, verticalCategories } from '@/types/product';
 import { useProducts } from '@/lib/ProductsContext';
 
 interface ProductsListProps {
   products?: any[];
+  initialVertical?: ProductVertical;
 }
 
-export default function ProductsList({ products: initialProducts }: ProductsListProps) {
+const verticalIcons: Record<ProductVertical, typeof Cake> = {
+  Cakes: Cake,
+  Biscuits: Cookie,
+  Chocolates: Candy,
+  Brownies: CakeSlice,
+};
+
+const verticalDescriptions: Record<ProductVertical, string> = {
+  Cakes: 'Handcrafted cakes for every celebration',
+  Biscuits: 'Freshly baked biscuits and cookies',
+  Chocolates: 'Premium handmade chocolates',
+  Brownies: 'Rich and decadent brownies',
+};
+
+export default function ProductsList({ initialVertical }: ProductsListProps) {
   const { products: contextProducts } = useProducts();
-  const [selectedType, setSelectedType] = useState<ChocolateType | 'All'>('All');
+  const [selectedVertical, setSelectedVertical] = useState<ProductVertical>(initialVertical || 'Cakes');
+  const [selectedType, setSelectedType] = useState<string>('All');
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Use context products on client, fallback to initial products from server
-  const products = isClient ? contextProducts : (initialProducts || []);
+  const products = isClient ? contextProducts : [];
 
-  const filteredProducts =
-    selectedType === 'All'
-      ? products
-      : products.filter((product) => product.type === selectedType);
+  // Filter by vertical first
+  const verticalProducts = products.filter(p => p.vertical === selectedVertical);
 
-  const types: (ChocolateType | 'All')[] = ['All', 'Chocolate', 'Classic', 'Theme', 'Fruit'];
+  // Then filter by sub-category
+  const filteredProducts = selectedType === 'All'
+    ? verticalProducts
+    : verticalProducts.filter(p => p.type === selectedType);
+
+  // Get categories for current vertical
+  const categories = verticalCategories[selectedVertical] || [];
+
+  // Reset sub-category filter when vertical changes
+  const handleVerticalChange = (vertical: ProductVertical) => {
+    setSelectedVertical(vertical);
+    setSelectedType('All');
+  };
 
   return (
     <div className="min-h-screen bg-cream-light py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <h1 className="text-4xl lg:text-5xl font-bold text-cocoa-dark mb-4">
-            Our Cake Menu
+            Our Products
           </h1>
           <p className="text-lg text-cocoa-medium max-w-2xl mx-auto mb-6">
-            Explore our full range of homemade cakes, from classic favorites to custom theme cakes
+            Explore our full range of homemade treats - cakes, biscuits, chocolates & brownies
           </p>
           <a
             href="/contact"
@@ -48,25 +73,73 @@ export default function ProductsList({ products: initialProducts }: ProductsList
           </a>
         </div>
 
-        {/* Filters */}
-        <div className="mb-12">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+        {/* Vertical Tabs */}
+        <div className="mb-8">
+          <div className="flex flex-wrap justify-center gap-3">
+            {allVerticals.map((vertical) => {
+              const Icon = verticalIcons[vertical];
+              const count = products.filter(p => p.vertical === vertical).length;
+              return (
+                <button
+                  key={vertical}
+                  onClick={() => handleVerticalChange(vertical)}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all duration-300 ${
+                    selectedVertical === vertical
+                      ? 'bg-cocoa-dark text-gold shadow-lg scale-105'
+                      : 'bg-white text-cocoa-dark hover:bg-cream border-2 border-gold/30 hover:border-gold'
+                  }`}
+                >
+                  <Icon size={22} />
+                  <span>{vertical}</span>
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${
+                    selectedVertical === vertical
+                      ? 'bg-gold/30 text-gold-light'
+                      : 'bg-cream text-cocoa-medium'
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Vertical Description */}
+        <div className="text-center mb-8">
+          <p className="text-cocoa-medium text-lg">
+            {verticalDescriptions[selectedVertical]}
+          </p>
+        </div>
+
+        {/* Sub-category Filters */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center space-x-3">
               <Filter size={20} className="text-cocoa-dark" />
-              <span className="text-sm font-semibold text-cocoa-dark">Filter by type:</span>
+              <span className="text-sm font-semibold text-cocoa-dark">Filter by category:</span>
             </div>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {types.map((type) => (
+            <div className="flex flex-wrap gap-2 justify-center">
+              <button
+                onClick={() => setSelectedType('All')}
+                className={`px-5 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${
+                  selectedType === 'All'
+                    ? 'bg-cocoa-dark text-gold shadow-lg scale-105'
+                    : 'bg-white text-cocoa-dark hover:bg-cream border border-gold/30 hover:border-gold'
+                }`}
+              >
+                All
+              </button>
+              {categories.map((cat) => (
                 <button
-                  key={type}
-                  onClick={() => setSelectedType(type)}
-                  className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
-                    selectedType === type
+                  key={cat}
+                  onClick={() => setSelectedType(cat)}
+                  className={`px-5 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${
+                    selectedType === cat
                       ? 'bg-cocoa-dark text-gold shadow-lg scale-105'
                       : 'bg-white text-cocoa-dark hover:bg-cream border border-gold/30 hover:border-gold'
                   }`}
                 >
-                  {type}
+                  {cat}
                 </button>
               ))}
             </div>
@@ -84,7 +157,7 @@ export default function ProductsList({ products: initialProducts }: ProductsList
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {filteredProducts.map((product) => (
-            <ProductCard key={product._id || product.id} product={product} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
