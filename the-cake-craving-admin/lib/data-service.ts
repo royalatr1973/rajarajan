@@ -22,7 +22,7 @@ export async function getProducts() {
       name: p.name,
       description: p.description,
       price: 0,
-      type: p.type,
+      type: p.product_type,
       image: p.image,
       isBestSeller: p.is_best_seller,
       category: p.category,

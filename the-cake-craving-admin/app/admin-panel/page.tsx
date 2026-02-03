@@ -94,7 +94,10 @@ export default function AdminPanel() {
         };
         data.forEach((p: any) => {
           if (grouped[p.category as Category]) {
-            grouped[p.category as Category].push(p);
+            grouped[p.category as Category].push({
+              ...p,
+              type: p.product_type,
+            });
           }
         });
         setAllProducts(grouped);
@@ -142,7 +145,7 @@ export default function AdminPanel() {
         .update({
           name: editForm.name,
           description: editForm.description,
-          type: editForm.type,
+          product_type: editForm.type,
           image: editForm.image,
           is_featured: editForm.is_featured,
           is_best_seller: editForm.is_best_seller,
@@ -196,7 +199,7 @@ export default function AdminPanel() {
         name: editForm.name,
         description: editForm.description,
         category: editForm.category,
-        type: editForm.type,
+        product_type: editForm.type,
         image: editForm.image,
         is_featured: editForm.is_featured,
         is_best_seller: editForm.is_best_seller,
