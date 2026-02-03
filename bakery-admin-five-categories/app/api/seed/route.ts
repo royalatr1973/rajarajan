@@ -15,8 +15,8 @@ export async function POST() {
 
   try {
     // Seed site settings
-    const { data: existingSettings } = await supabase.from('site_settings').select('id').single()
-    if (!existingSettings) {
+    const { data: existingSettings } = await supabase.from('site_settings').select('id').limit(1)
+    if (!existingSettings || existingSettings.length === 0) {
       const { id, ...settingsData } = defaultSiteSettings
       void id
       const { error } = await supabase.from('site_settings').insert(settingsData)
@@ -26,8 +26,8 @@ export async function POST() {
     }
 
     // Seed hero section
-    const { data: existingHero } = await supabase.from('hero_section').select('id').single()
-    if (!existingHero) {
+    const { data: existingHero } = await supabase.from('hero_section').select('id').limit(1)
+    if (!existingHero || existingHero.length === 0) {
       const { id, ...heroData } = defaultHeroSection
       void id
       const { error } = await supabase.from('hero_section').insert(heroData)

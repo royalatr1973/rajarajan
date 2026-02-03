@@ -14,8 +14,8 @@ export default function Hero() {
     async function fetchHero() {
       if (!isSupabaseConfigured()) return
       try {
-        const { data } = await supabase.from('hero_section').select('*').single()
-        if (data) setHero(data)
+        const { data } = await supabase.from('hero_section').select('*').limit(1)
+        if (data && data.length > 0) setHero(data[0])
       } catch {}
     }
     fetchHero()
