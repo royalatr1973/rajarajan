@@ -19,8 +19,8 @@ export default function SiteSettingsTab() {
   async function fetchSettings() {
     if (!isSupabaseConfigured()) return
     try {
-      const { data } = await supabase.from('site_settings').select('*').single()
-      if (data) setSettings(data)
+      const { data } = await supabase.from('site_settings').select('*').limit(1)
+      if (data && data.length > 0) setSettings(data[0])
     } catch {}
   }
 
@@ -32,9 +32,9 @@ export default function SiteSettingsTab() {
     setSaving(true)
     try {
       const { id, created_at, updated_at, ...updateData } = settings
-      const { data: existing } = await supabase.from('site_settings').select('id').single()
-      if (existing) {
-        await supabase.from('site_settings').update({ ...updateData, updated_at: new Date().toISOString() }).eq('id', existing.id)
+      const { data: existing } = await supabase.from('site_settings').select('id').limit(1)
+      if (existing && existing.length > 0) {
+        await supabase.from('site_settings').update({ ...updateData, updated_at: new Date().toISOString() }).eq('id', existing[0].id)
       } else {
         await supabase.from('site_settings').insert(updateData)
       }
@@ -53,7 +53,7 @@ export default function SiteSettingsTab() {
     try {
       const ext = file.name.split('.').pop()
       const path = `logos/logo-${Date.now()}.${ext}`
-      const { error: uploadError } = await supabase.storage.from('images').upload(path, file)
+      const { error: uploadError } = await supabase.storage.from('images').upload(path, file, { upsert: true })
       if (uploadError) throw uploadError
       const { data: urlData } = supabase.storage.from('images').getPublicUrl(path)
       setSettings({ ...settings, logo_url: urlData.publicUrl })

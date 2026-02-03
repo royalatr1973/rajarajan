@@ -19,8 +19,8 @@ export default function HeroTab() {
   async function fetchHero() {
     if (!isSupabaseConfigured()) return
     try {
-      const { data } = await supabase.from('hero_section').select('*').single()
-      if (data) setHero(data)
+      const { data } = await supabase.from('hero_section').select('*').limit(1)
+      if (data && data.length > 0) setHero(data[0])
     } catch {}
   }
 
@@ -32,9 +32,9 @@ export default function HeroTab() {
     setSaving(true)
     try {
       const { id, created_at, updated_at, ...updateData } = hero
-      const { data: existing } = await supabase.from('hero_section').select('id').single()
-      if (existing) {
-        await supabase.from('hero_section').update({ ...updateData, updated_at: new Date().toISOString() }).eq('id', existing.id)
+      const { data: existing } = await supabase.from('hero_section').select('id').limit(1)
+      if (existing && existing.length > 0) {
+        await supabase.from('hero_section').update({ ...updateData, updated_at: new Date().toISOString() }).eq('id', existing[0].id)
       } else {
         await supabase.from('hero_section').insert(updateData)
       }
@@ -53,7 +53,7 @@ export default function HeroTab() {
     try {
       const ext = file.name.split('.').pop()
       const path = `hero/hero-${Date.now()}.${ext}`
-      const { error: uploadError } = await supabase.storage.from('images').upload(path, file)
+      const { error: uploadError } = await supabase.storage.from('images').upload(path, file, { upsert: true })
       if (uploadError) throw uploadError
       const { data: urlData } = supabase.storage.from('images').getPublicUrl(path)
       setHero({ ...hero, image_url: urlData.publicUrl })

@@ -111,14 +111,27 @@ CREATE INDEX IF NOT EXISTS idx_messages_is_read ON messages(is_read);
 CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at DESC);
 
 -- ============================================
--- Storage Bucket
+-- Storage Bucket & Policies
 -- ============================================
--- Create a public bucket called "images" in Supabase Dashboard:
--- 1. Go to Storage in your Supabase Dashboard
--- 2. Click "New Bucket"
--- 3. Name it "images"
--- 4. Check "Public bucket"
--- 5. Click "Create bucket"
---
--- Or run this in SQL:
+-- If you already created the "images" bucket in the Dashboard, skip the INSERT.
+-- Otherwise uncomment the next line:
 -- INSERT INTO storage.buckets (id, name, public) VALUES ('images', 'images', true);
+
+-- IMPORTANT: Storage policies are required for uploads to work!
+-- These allow anyone to upload, read, update, and delete files in the "images" bucket.
+
+CREATE POLICY "Allow public uploads to images"
+  ON storage.objects FOR INSERT
+  WITH CHECK (bucket_id = 'images');
+
+CREATE POLICY "Allow public reads from images"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'images');
+
+CREATE POLICY "Allow public updates to images"
+  ON storage.objects FOR UPDATE
+  USING (bucket_id = 'images');
+
+CREATE POLICY "Allow public deletes from images"
+  ON storage.objects FOR DELETE
+  USING (bucket_id = 'images');

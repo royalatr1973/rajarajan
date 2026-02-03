@@ -99,7 +99,7 @@ export default function ProductsTab() {
     try {
       const ext = file.name.split('.').pop()
       const path = `products/${activeCategory}/${Date.now()}.${ext}`
-      const { error } = await supabase.storage.from('images').upload(path, file)
+      const { error } = await supabase.storage.from('images').upload(path, file, { upsert: true })
       if (error) throw error
       const { data: urlData } = supabase.storage.from('images').getPublicUrl(path)
       setForm({ ...form, image_url: urlData.publicUrl })
