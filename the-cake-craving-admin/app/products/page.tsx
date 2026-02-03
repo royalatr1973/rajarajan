@@ -1,4 +1,4 @@
-import { getProducts } from '@/lib/sanity';
+import { getProducts } from '@/lib/data-service';
 import ProductsList from '@/components/products/ProductsList';
 
 export default async function ProductsPage() {

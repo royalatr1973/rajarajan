@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { getProducts } from '@/lib/sanity';
+import { getProducts } from '@/lib/data-service';
 import ProductCard from '../products/ProductCard';
 
 export default async function BestSellers() {
@@ -10,7 +10,6 @@ export default async function BestSellers() {
   return (
     <section className="py-20 bg-cream-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold text-cocoa-dark mb-4">
             Popular Cake Varieties
@@ -20,14 +19,12 @@ export default async function BestSellers() {
           </p>
         </div>
 
-        {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {bestSellers.map((product: any) => (
-            <ProductCard key={product._id || product.id} product={product} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
-        {/* View All Button */}
         <div className="text-center">
           <Link
             href="/products"

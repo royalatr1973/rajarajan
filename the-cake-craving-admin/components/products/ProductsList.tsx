@@ -22,7 +22,6 @@ export default function ProductsList({ products }: ProductsListProps) {
   return (
     <div className="min-h-screen bg-cream-light py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl lg:text-5xl font-bold text-cocoa-dark mb-4">
             Our Cake Menu
@@ -38,7 +37,6 @@ export default function ProductsList({ products }: ProductsListProps) {
           </a>
         </div>
 
-        {/* Filters */}
         <div className="mb-12">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center space-x-3">
@@ -63,7 +61,6 @@ export default function ProductsList({ products }: ProductsListProps) {
           </div>
         </div>
 
-        {/* Products Count */}
         <div className="mb-6 text-center">
           <p className="text-cocoa-medium">
             Showing <span className="font-bold text-cocoa-dark">{filteredProducts.length}</span>{' '}
@@ -71,14 +68,12 @@ export default function ProductsList({ products }: ProductsListProps) {
           </p>
         </div>
 
-        {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {filteredProducts.map((product) => (
-            <ProductCard key={product._id || product.id} product={product} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
-        {/* Empty State */}
         {filteredProducts.length === 0 && (
           <div className="text-center py-20">
             <p className="text-xl text-cocoa-medium">

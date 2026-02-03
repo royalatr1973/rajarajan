@@ -1,17 +1,12 @@
 import Image from 'next/image';
 import { Star } from 'lucide-react';
-import { Product } from '@/types/product';
-import { urlFor } from '@/lib/sanity';
 
 interface ProductCardProps {
-  product: any; // Using any to handle both old Product type and Sanity data
+  product: any;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  // Handle both URL string (old) and Sanity image object (new)
-  const imageUrl = typeof product.image === 'string'
-    ? product.image
-    : urlFor(product.image).width(800).url();
+  const imageUrl = typeof product.image === 'string' ? product.image : '';
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -30,7 +25,6 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gold/20 hover:border-gold/50">
-      {/* Image */}
       <div className="relative h-64 overflow-hidden bg-cream">
         <Image
           src={imageUrl}
@@ -49,7 +43,6 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
 
-      {/* Content */}
       <div className="p-5">
         <h3 className="text-lg font-bold text-cocoa-dark mb-2">
           {product.name}
