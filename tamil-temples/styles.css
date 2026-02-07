@@ -1589,11 +1589,84 @@ img {
     margin-bottom: 0;
 }
 
+/* Temple Timings Section */
+.dd108-timings-section {
+    background: rgba(201, 168, 76, 0.08);
+    border-radius: 8px;
+    padding: 12px !important;
+    margin-top: 12px;
+    border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.dd108-timings-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.dd108-timings-header svg {
+    color: var(--gold);
+}
+
 /* Travel Info Separator */
 .dd108-travel-separator {
     border: none;
     border-top: 1px dashed rgba(255, 255, 255, 0.1);
     margin: 12px 0;
+}
+
+/* Map Action Buttons */
+.dd108-map-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+}
+
+.dd108-map-btn,
+.dd108-directions-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.dd108-map-btn {
+    background: rgba(66, 133, 244, 0.15);
+    color: #8ab4f8;
+    border: 1px solid rgba(66, 133, 244, 0.3);
+}
+
+.dd108-map-btn:hover {
+    background: rgba(66, 133, 244, 0.25);
+    transform: translateY(-2px);
+}
+
+.dd108-directions-btn {
+    background: rgba(52, 168, 83, 0.15);
+    color: #81c995;
+    border: 1px solid rgba(52, 168, 83, 0.3);
+}
+
+.dd108-directions-btn:hover {
+    background: rgba(52, 168, 83, 0.25);
+    transform: translateY(-2px);
+}
+
+.dd108-map-btn svg,
+.dd108-directions-btn svg {
+    flex-shrink: 0;
 }
 
 /* Celestial Temple Styling */
@@ -2230,6 +2303,61 @@ img {
     .dd-explore-btn {
         padding: 12px 28px;
         font-size: 0.92rem;
+    }
+
+    /* Mobile: Map action buttons */
+    .dd108-map-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .dd108-map-btn,
+    .dd108-directions-btn {
+        justify-content: center;
+        padding: 12px;
+        font-size: 0.8rem;
+    }
+
+    /* Mobile: Search dropdown */
+    .search-dropdown {
+        max-height: 300px;
+    }
+
+    .search-dropdown-item {
+        padding: 10px 12px;
+    }
+
+    .search-dropdown-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+
+    .search-dropdown-title {
+        font-size: 0.85rem;
+    }
+
+    .search-dropdown-meta {
+        font-size: 0.7rem;
+    }
+
+    /* Mobile: Timings section */
+    .dd108-timings-section {
+        padding: 10px !important;
+    }
+
+    .dd108-timings-header {
+        font-size: 0.8rem;
+    }
+
+    /* Mobile: Dark mode toggle */
+    .dark-mode-toggle {
+        padding: 6px;
+    }
+
+    .dark-mode-toggle svg {
+        width: 18px;
+        height: 18px;
     }
 }
 
