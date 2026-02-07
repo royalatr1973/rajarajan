@@ -461,6 +461,113 @@ img {
     color: var(--text-light);
 }
 
+/* Search Dropdown Autocomplete */
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+    margin-top: 4px;
+    border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.search-dropdown.active {
+    display: block;
+}
+
+.search-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: var(--transition);
+    border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+.search-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.search-dropdown-item:hover,
+.search-dropdown-item.selected {
+    background: rgba(201, 168, 76, 0.1);
+}
+
+.search-dropdown-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--primary), var(--gold));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.search-dropdown-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-dropdown-title {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-dropdown-title mark {
+    background: rgba(201, 168, 76, 0.4);
+    color: inherit;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.search-dropdown-meta {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-dropdown-badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--primary);
+    color: var(--white);
+    margin-left: 8px;
+    flex-shrink: 0;
+}
+
+.search-dropdown-empty {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-light);
+}
+
+.search-dropdown-header {
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+    background: rgba(201, 168, 76, 0.05);
+    font-weight: 600;
+}
+
 .filter-tags {
     display: flex;
     gap: 10px;
@@ -1148,6 +1255,45 @@ img {
     border-color: var(--gold);
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+}
+
+/* DD108 Search Dropdown (dark theme) */
+.dd108-dropdown {
+    background: #2a1f1a;
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: var(--radius-md);
+    max-height: 350px;
+}
+
+.dd108-dropdown .search-dropdown-header {
+    background: rgba(201, 168, 76, 0.15);
+    color: var(--gold-light);
+}
+
+.dd108-dropdown .search-dropdown-item {
+    border-bottom-color: rgba(201, 168, 76, 0.1);
+}
+
+.dd108-dropdown .search-dropdown-item:hover,
+.dd108-dropdown .search-dropdown-item.selected {
+    background: rgba(201, 168, 76, 0.15);
+}
+
+.dd108-dropdown .search-dropdown-title {
+    color: var(--white);
+}
+
+.dd108-dropdown .search-dropdown-meta {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.dd108-dropdown .search-dropdown-empty {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.dd108-dropdown .search-dropdown-badge {
+    background: var(--gold);
+    color: var(--text-dark);
 }
 
 /* Region Tabs */
@@ -2117,4 +2263,121 @@ img {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-medium);
+}
+
+/* ========================================
+   Dark Mode Toggle Button
+   ======================================== */
+.dark-mode-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.dark-mode-toggle:hover {
+    background: rgba(201, 168, 76, 0.15);
+}
+
+.dark-mode-toggle svg {
+    width: 22px;
+    height: 22px;
+    color: var(--text-dark);
+    transition: var(--transition);
+}
+
+.navbar.scrolled .dark-mode-toggle svg,
+.dark-mode-toggle svg {
+    color: var(--white);
+}
+
+.navbar.scrolled .dark-mode-toggle svg {
+    color: var(--text-dark);
+}
+
+.dark-mode-toggle .moon-icon {
+    display: none;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+    --cream: #1a1410;
+    --warm-gray: #252019;
+    --white: #2a211a;
+    --text-dark: #f5f0eb;
+    --text-medium: #c9bfb3;
+    --text-light: #9a8b7a;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .dark-mode-toggle .sun-icon {
+    display: none;
+}
+
+[data-theme="dark"] .dark-mode-toggle .moon-icon {
+    display: block;
+}
+
+[data-theme="dark"] .navbar.scrolled {
+    background: rgba(26, 20, 16, 0.95);
+}
+
+[data-theme="dark"] .nav-links {
+    background: var(--cream);
+}
+
+[data-theme="dark"] .nav-links a {
+    color: var(--text-dark) !important;
+}
+
+[data-theme="dark"] .category-card,
+[data-theme="dark"] .temple-card,
+[data-theme="dark"] .modal {
+    background: var(--white);
+    border-color: rgba(201, 168, 76, 0.15);
+}
+
+[data-theme="dark"] .search-box input,
+[data-theme="dark"] .filter-tag {
+    background: var(--white);
+    color: var(--text-dark);
+    border-color: rgba(201, 168, 76, 0.2);
+}
+
+[data-theme="dark"] .filter-tag:hover,
+[data-theme="dark"] .filter-tag.active {
+    background: var(--primary);
+}
+
+[data-theme="dark"] .about-facts {
+    background: var(--white);
+}
+
+[data-theme="dark"] .planet-card,
+[data-theme="dark"] .element-card {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .sources a {
+    color: var(--gold);
+}
+
+[data-theme="dark"] .footer {
+    background: #0f0c0a;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--cream);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--text-light);
 }
