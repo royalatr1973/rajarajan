@@ -464,6 +464,231 @@ let activeFilter = 'all';
 let searchQuery = '';
 
 // ========================================
+// Fuzzy Search with Fuse.js
+// ========================================
+let templeFuse = null;
+let dd108Fuse = null;
+const searchDropdown = document.getElementById('searchDropdown');
+const dd108SearchDropdown = document.getElementById('dd108SearchDropdown');
+
+// Initialize Fuse.js for temples
+function initializeFuseSearch() {
+    // Fuse options for temple search
+    const fuseOptions = {
+        keys: [
+            { name: 'name', weight: 0.4 },
+            { name: 'location', weight: 0.2 },
+            { name: 'deity', weight: 0.2 },
+            { name: 'district', weight: 0.1 },
+            { name: 'dynasty', weight: 0.05 },
+            { name: 'shortDesc', weight: 0.05 }
+        ],
+        threshold: 0.3,
+        includeMatches: true,
+        minMatchCharLength: 2
+    };
+
+    templeFuse = new Fuse(temples, fuseOptions);
+
+    // Initialize DD108 Fuse if data is available
+    if (typeof divyaDesam108 !== 'undefined') {
+        const dd108Options = {
+            keys: [
+                { name: 'temple', weight: 0.3 },
+                { name: 'tamilName', weight: 0.2 },
+                { name: 'deity', weight: 0.15 },
+                { name: 'thayar', weight: 0.1 },
+                { name: 'location', weight: 0.1 },
+                { name: 'district', weight: 0.05 },
+                { name: 'legend', weight: 0.05 },
+                { name: 'significance', weight: 0.05 }
+            ],
+            threshold: 0.35,
+            includeMatches: true,
+            minMatchCharLength: 2
+        };
+        dd108Fuse = new Fuse(divyaDesam108, dd108Options);
+    }
+}
+
+// Highlight matching text
+function highlightMatch(text, matches, key) {
+    if (!matches) return text;
+    const match = matches.find(m => m.key === key);
+    if (!match || !match.indices.length) return text;
+
+    let result = '';
+    let lastIndex = 0;
+
+    match.indices.forEach(([start, end]) => {
+        result += text.slice(lastIndex, start);
+        result += `<mark>${text.slice(start, end + 1)}</mark>`;
+        lastIndex = end + 1;
+    });
+    result += text.slice(lastIndex);
+
+    return result;
+}
+
+// Render search dropdown for temples
+function renderSearchDropdown(query) {
+    if (!query || query.length < 2) {
+        searchDropdown.classList.remove('active');
+        return;
+    }
+
+    const results = templeFuse.search(query).slice(0, 6);
+
+    if (results.length === 0) {
+        searchDropdown.innerHTML = '<div class="search-dropdown-empty">No temples found</div>';
+        searchDropdown.classList.add('active');
+        return;
+    }
+
+    const categoryIcons = {
+        unesco: '🏛️',
+        chola: '👑',
+        navagraha: '☀️',
+        pancha: '🔥',
+        divyadesam: '🙏',
+        major: '⭐'
+    };
+
+    let html = '<div class="search-dropdown-header">Suggestions</div>';
+
+    results.forEach(({ item, matches }) => {
+        const icon = categoryIcons[item.categories[0]] || '🛕';
+        const highlightedName = highlightMatch(item.name, matches, 'name');
+
+        html += `
+            <div class="search-dropdown-item" data-id="${item.id}">
+                <div class="search-dropdown-icon">${icon}</div>
+                <div class="search-dropdown-content">
+                    <div class="search-dropdown-title">${highlightedName}</div>
+                    <div class="search-dropdown-meta">${item.location}, ${item.district} • ${item.deity}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    searchDropdown.innerHTML = html;
+    searchDropdown.classList.add('active');
+
+    // Add click handlers
+    searchDropdown.querySelectorAll('.search-dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const id = parseInt(item.dataset.id);
+            const temple = temples.find(t => t.id === id);
+            if (temple) {
+                openModal(temple);
+                searchDropdown.classList.remove('active');
+                searchInput.value = '';
+            }
+        });
+    });
+}
+
+// Render search dropdown for 108 Divya Desams
+function renderDD108SearchDropdown(query) {
+    if (!dd108Fuse || !query || query.length < 2) {
+        if (dd108SearchDropdown) dd108SearchDropdown.classList.remove('active');
+        return;
+    }
+
+    const results = dd108Fuse.search(query).slice(0, 8);
+
+    if (results.length === 0) {
+        dd108SearchDropdown.innerHTML = '<div class="search-dropdown-empty">No Divya Desam found</div>';
+        dd108SearchDropdown.classList.add('active');
+        return;
+    }
+
+    let html = '<div class="search-dropdown-header">Quick Results</div>';
+
+    results.forEach(({ item, matches }) => {
+        const highlightedName = highlightMatch(item.temple, matches, 'temple');
+
+        html += `
+            <div class="search-dropdown-item" data-n="${item.n}">
+                <div class="search-dropdown-icon">🙏</div>
+                <div class="search-dropdown-content">
+                    <div class="search-dropdown-title">${highlightedName}</div>
+                    <div class="search-dropdown-meta">#${item.n} • ${item.location} • ${item.deity?.split('(')[0] || ''}</div>
+                </div>
+                <span class="search-dropdown-badge">${item.state}</span>
+            </div>
+        `;
+    });
+
+    dd108SearchDropdown.innerHTML = html;
+    dd108SearchDropdown.classList.add('active');
+
+    // Add click handlers to scroll to and expand the temple
+    dd108SearchDropdown.querySelectorAll('.search-dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const n = parseInt(item.dataset.n);
+            const templeCard = document.querySelector(`.dd108-item[data-n="${n}"]`);
+            if (templeCard) {
+                // Expand the card
+                templeCard.classList.add('expanded');
+                // Scroll to it
+                templeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Highlight briefly
+                templeCard.style.boxShadow = '0 0 0 3px var(--gold)';
+                setTimeout(() => {
+                    templeCard.style.boxShadow = '';
+                }, 2000);
+            }
+            dd108SearchDropdown.classList.remove('active');
+        });
+    });
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-box')) {
+        searchDropdown.classList.remove('active');
+    }
+    if (!e.target.closest('.dd108-search')) {
+        if (dd108SearchDropdown) dd108SearchDropdown.classList.remove('active');
+    }
+});
+
+// ========================================
+// Dark Mode Toggle
+// ========================================
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+// Check for saved theme preference or default to light
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    } else if (prefersDark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+}
+
+// Toggle theme
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+}
+
+// Initialize theme on load
+initTheme();
+
+// Add click handler
+if (darkModeToggle) {
+    darkModeToggle.addEventListener('click', toggleTheme);
+}
+
+// ========================================
 // Navigation
 // ========================================
 window.addEventListener('scroll', () => {
@@ -604,7 +829,18 @@ searchInput.addEventListener('input', (e) => {
     searchTimeout = setTimeout(() => {
         searchQuery = e.target.value;
         renderTemples();
-    }, 200);
+        // Show fuzzy search dropdown
+        if (templeFuse) {
+            renderSearchDropdown(e.target.value);
+        }
+    }, 150);
+});
+
+// Focus shows recent/popular searches
+searchInput.addEventListener('focus', () => {
+    if (searchInput.value.length >= 2 && templeFuse) {
+        renderSearchDropdown(searchInput.value);
+    }
 });
 
 // ========================================
@@ -697,4 +933,33 @@ function initAnimations() {
 document.addEventListener('DOMContentLoaded', () => {
     renderTemples();
     initAnimations();
+    // Initialize fuzzy search
+    if (typeof Fuse !== 'undefined') {
+        initializeFuseSearch();
+    }
+});
+
+// Initialize DD108 search after divyadesam-data.js loads
+window.addEventListener('load', () => {
+    if (typeof Fuse !== 'undefined' && typeof divyaDesam108 !== 'undefined') {
+        initializeFuseSearch();
+
+        // Set up DD108 search input
+        const dd108SearchInput = document.getElementById('dd108SearchInput');
+        if (dd108SearchInput) {
+            let dd108SearchTimeout;
+            dd108SearchInput.addEventListener('input', (e) => {
+                clearTimeout(dd108SearchTimeout);
+                dd108SearchTimeout = setTimeout(() => {
+                    renderDD108SearchDropdown(e.target.value);
+                }, 150);
+            });
+
+            dd108SearchInput.addEventListener('focus', () => {
+                if (dd108SearchInput.value.length >= 2) {
+                    renderDD108SearchDropdown(dd108SearchInput.value);
+                }
+            });
+        }
+    }
 });
