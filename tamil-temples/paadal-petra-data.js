@@ -191,12 +191,12 @@ window.paadalPetraSthalams = paadalPetraSthalams;
             item.className = 'dd108-item pps276-item';
             item.setAttribute('data-n', t.n);
 
-            const photoUrl = window.getPaadalPetraPhoto ? window.getPaadalPetraPhoto(t.n) : (window.defaultTempleImage || '');
+            const photoUrl = window.getPaadalPetraPhoto ? window.getPaadalPetraPhoto(t.n) : '';
 
             item.innerHTML = `
                 <div class="dd108-item-header">
                     <div class="dd108-item-photo pps276-photo">
-                        <img src="${photoUrl}" alt="${t.temple}" loading="lazy" onerror="this.src='${window.defaultTempleImage || ''}'">
+                        <img src="${photoUrl}" alt="${t.temple}">
                     </div>
                     <span class="dd108-num pps276-num">${t.n}</span>
                     <div class="dd108-item-info">

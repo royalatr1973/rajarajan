@@ -203,7 +203,7 @@ const divyaDesams = [
             item.innerHTML = `
                 <div class="dd108-item-header">
                     <div class="dd108-item-photo">
-                        <img src="${photoUrl}" alt="${d.temple}" loading="lazy" onerror="this.src='${window.defaultTempleImage || ''}'">
+                        <img src="${photoUrl}" alt="${d.temple}">
                     </div>
                     <span class="dd108-num">${d.n}</span>
                     <div class="dd108-item-info">
