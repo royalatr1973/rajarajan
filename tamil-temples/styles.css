@@ -2509,3 +2509,213 @@ img {
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
     background: var(--text-light);
 }
+
+/* ========================================
+   276 Paadal Petra Sthalams Section
+   ======================================== */
+.pps276-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #1a0a0a 0%, #2d1515 50%, #1a0a0a 100%);
+}
+
+.pps276-section .section-header h2 {
+    color: var(--gold);
+    font-size: 2.5rem;
+}
+
+.pps276-section .section-header p {
+    color: rgba(255, 248, 240, 0.85);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.pps276-stats {
+    margin-bottom: 40px;
+}
+
+.pps276-stat-other {
+    background: linear-gradient(135deg, #2d5a2d 0%, #1a3a1a 100%) !important;
+}
+
+.pps276-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.pps276-info-grid .dd-info-card {
+    background: rgba(255, 248, 240, 0.05);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+}
+
+.pps276-info-grid .dd-info-card h4 {
+    color: var(--gold);
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.pps276-info-grid .dd-info-card p {
+    color: rgba(255, 248, 240, 0.8);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.pps276-search input {
+    background: rgba(255, 248, 240, 0.1);
+    border-color: rgba(201, 168, 76, 0.3);
+    color: var(--cream);
+}
+
+.pps276-search input::placeholder {
+    color: rgba(255, 248, 240, 0.5);
+}
+
+.pps276-tabs {
+    margin-bottom: 30px;
+}
+
+.pps276-tabs .dd108-tab {
+    background: rgba(255, 248, 240, 0.08);
+    color: rgba(255, 248, 240, 0.7);
+    border-color: rgba(201, 168, 76, 0.2);
+}
+
+.pps276-tabs .dd108-tab:hover {
+    background: rgba(201, 168, 76, 0.2);
+    color: var(--cream);
+}
+
+.pps276-tabs .dd108-tab.active {
+    background: var(--gold);
+    color: var(--text-dark);
+    border-color: var(--gold);
+}
+
+.pps276-list {
+    margin-bottom: 50px;
+}
+
+.pps276-region-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    margin: 24px 0 12px;
+    background: linear-gradient(90deg, rgba(201, 168, 76, 0.2) 0%, transparent 100%);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.pps276-region-header h3 {
+    color: var(--gold);
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.pps276-region-type {
+    color: rgba(255, 248, 240, 0.6);
+    font-size: 0.9rem;
+    padding: 4px 12px;
+    background: rgba(255, 248, 240, 0.1);
+    border-radius: var(--radius-sm);
+}
+
+.pps276-item {
+    background: rgba(255, 248, 240, 0.05);
+    border-color: rgba(201, 168, 76, 0.15);
+}
+
+.pps276-item:hover {
+    border-color: rgba(201, 168, 76, 0.4);
+    background: rgba(255, 248, 240, 0.08);
+}
+
+.pps276-item .dd108-item-info .dd108-item-tamil {
+    color: var(--cream);
+}
+
+.pps276-item .dd108-item-info .dd108-item-temple {
+    color: var(--gold-light);
+}
+
+.pps276-item .dd108-item-info .dd108-item-loc {
+    color: rgba(255, 248, 240, 0.6);
+}
+
+.pps276-num {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: var(--text-dark);
+}
+
+.pps276-item .dd108-expand svg {
+    color: var(--gold);
+}
+
+.pps276-item .dd108-item-details {
+    background: rgba(0, 0, 0, 0.2);
+    border-top-color: rgba(201, 168, 76, 0.2);
+}
+
+.pps276-item .dd108-deity-label,
+.pps276-item .dd108-legend-title,
+.pps276-item .dd108-detail-label,
+.pps276-item .dd108-timings-header {
+    color: var(--gold);
+}
+
+.pps276-item .dd108-deity-value,
+.pps276-item .dd108-legend-text,
+.pps276-item .dd108-detail-value {
+    color: rgba(255, 248, 240, 0.85);
+}
+
+.pps276-item .dd108-deity-item {
+    background: rgba(255, 248, 240, 0.05);
+    border-color: rgba(201, 168, 76, 0.15);
+}
+
+.pps276-tips {
+    background: rgba(255, 248, 240, 0.05);
+    border-color: rgba(201, 168, 76, 0.2);
+}
+
+.pps276-tips h3 {
+    color: var(--gold);
+}
+
+.pps276-tips .dd108-tip {
+    background: rgba(255, 248, 240, 0.05);
+    border-color: rgba(201, 168, 76, 0.15);
+}
+
+.pps276-tips .dd108-tip strong {
+    color: var(--gold-light);
+}
+
+.pps276-tips .dd108-tip p {
+    color: rgba(255, 248, 240, 0.75);
+}
+
+/* PPS276 Mobile Responsive */
+@media (max-width: 768px) {
+    .pps276-section .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .pps276-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pps276-tabs {
+        flex-wrap: wrap;
+    }
+
+    .pps276-region-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
