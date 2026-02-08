@@ -1,69 +1,17 @@
 // ========================================
-// Temple Photos - Enhanced SVG Temple Icons
+// Temple Photos - Simple SVG Placeholders
 // ========================================
 
-// Create temple gopuram SVG icon
-function createTempleIcon(name, type, isSpecial = false) {
-    const bgColor = type === 'shiva' ? '#5c1a1a' : '#1e3a5f';
-    const accentColor = type === 'shiva' ? '#8b2323' : '#2d5a8f';
-    const goldColor = '#c9a84c';
-    const displayName = name.length > 10 ? name.substring(0, 10) : name;
+// Create simple SVG placeholder
+function createTempleImage(name, type) {
+    const bgColor = type === 'shiva' ? '%235c1a1a' : '%231e3a5f';
+    const textColor = '%23c9a84c';
+    const displayName = name.length > 12 ? name.substring(0, 12) : name;
+    const label = type === 'shiva' ? 'Shiva' : 'Vishnu';
 
-    // Special colorful design for famous temples
-    if (isSpecial) {
-        return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#87CEEB"/>
-      <stop offset="100%" style="stop-color:#f0f8ff"/>
-    </linearGradient>
-  </defs>
-  <rect width="100" height="100" fill="url(#sky)"/>
-  <!-- Base -->
-  <rect x="20" y="75" width="60" height="15" fill="#8B4513" stroke="#654321" stroke-width="1"/>
-  <!-- Main tower body -->
-  <polygon points="25,75 30,35 70,35 75,75" fill="#c9a84c" stroke="#8b7355" stroke-width="1"/>
-  <!-- Tower tiers -->
-  <rect x="28" y="55" width="44" height="5" fill="#e74c3c"/>
-  <rect x="30" y="45" width="40" height="5" fill="#3498db"/>
-  <rect x="32" y="35" width="36" height="5" fill="#2ecc71"/>
-  <!-- Top structure -->
-  <polygon points="35,35 50,10 65,35" fill="#9b59b6" stroke="#8e44ad" stroke-width="1"/>
-  <!-- Kalasam -->
-  <ellipse cx="50" cy="8" rx="4" ry="3" fill="#FFD700"/>
-  <!-- Windows/details -->
-  <rect x="38" y="60" width="8" height="10" fill="#2c3e50"/>
-  <rect x="54" y="60" width="8" height="10" fill="#2c3e50"/>
-  <rect x="45" y="42" width="10" height="8" fill="#2c3e50"/>
-  <!-- Temple name -->
-  <text x="50" y="96" font-family="Arial" font-size="8" fill="#333" text-anchor="middle" font-weight="bold">${displayName}</text>
-</svg>`)}`;
-    }
-
-    // Standard temple gopuram design
-    return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" fill="${bgColor}"/>
-  <!-- Gopuram outline -->
-  <polygon points="25,85 30,40 50,15 70,40 75,85" fill="${accentColor}" stroke="${goldColor}" stroke-width="1.5"/>
-  <!-- Tiers -->
-  <line x1="28" y1="55" x2="72" y2="55" stroke="${goldColor}" stroke-width="1"/>
-  <line x1="30" y1="45" x2="70" y2="45" stroke="${goldColor}" stroke-width="1"/>
-  <line x1="35" y1="35" x2="65" y2="35" stroke="${goldColor}" stroke-width="1"/>
-  <line x1="40" y1="25" x2="60" y2="25" stroke="${goldColor}" stroke-width="1"/>
-  <!-- Kalasam -->
-  <ellipse cx="50" cy="12" rx="5" ry="4" fill="${goldColor}"/>
-  <!-- Base -->
-  <rect x="20" y="80" width="60" height="10" fill="${accentColor}" stroke="${goldColor}" stroke-width="1"/>
-  <!-- Door -->
-  <rect x="40" y="65" width="20" height="20" fill="#1a1a1a" rx="2"/>
-  <!-- Temple name -->
-  <text x="50" y="96" font-family="Arial" font-size="7" fill="${goldColor}" text-anchor="middle">${displayName}</text>
-</svg>`)}`;
+    // Simple SVG without special characters
+    return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='${bgColor}'/%3E%3Ctext x='50' y='45' font-size='10' fill='${textColor}' text-anchor='middle'%3E${encodeURIComponent(displayName)}%3C/text%3E%3Ctext x='50' y='65' font-size='8' fill='${textColor}' text-anchor='middle' opacity='0.7'%3E${label}%3C/text%3E%3C/svg%3E`;
 }
-
-// Special famous temples list (indices)
-const famousDivyaDesams = [1, 13, 14, 15, 43, 58, 67, 72, 85, 96]; // Srirangam, Sarangapani, etc.
-const famousPaadalPetra = [3, 34, 66, 70, 71, 72, 74, 75, 78, 81, 82]; // Chidambaram, Jambukeswarar, Meenakshi, etc.
 
 // Temple names for 108 Divya Desam
 const dd108Names = {
@@ -71,7 +19,7 @@ const dd108Names = {
     11:'Pullam',12:'Aadhanoor',13:'Sarangapani',14:'Oppiliappan',15:'Nachiyar',16:'Thiruccherai',17:'Kannamangai',18:'Nathan',19:'Velliyankudi',20:'Indhaloor',
     21:'Vazhunthoor',22:'Sirupuliyur',23:'Kannapuram',24:'Naagai',25:'Kannankudi',26:'Akkur',27:'Sirkazhi',28:'Nangur',29:'Devanaar',30:'Thiruvaali',
     31:'Kavalampaadi',32:'Manikkoodam',33:'Paarthanpalli',34:'Manimaada',35:'Arimeya',36:'Thetri',37:'Sempon',38:'Purushothaman',39:'Vaikunda',40:'Chidambaram',
-    41:'Vaheendrapuram',42:'Thirukkoviloor',43:'Varadharaja',44:'Ashtabhuja',45:'Thiru Vekka',46:'Velukkai',47:'Thiruthanka',48:'Aadhi Varaha',49:'Ooragam',50:'Neeragam',
+    41:'Vaheendrapuram',42:'Thirukkoviloor',43:'Varadaraja',44:'Ashtabhuja',45:'Thiru Vekka',46:'Velukkai',47:'Thiruthanka',48:'Aadhi Varaha',49:'Ooragam',50:'Neeragam',
     51:'Kaaragam',52:'Kaar Vaanam',53:'Vaikunda',54:'Pavala',55:'Nilathingal',56:'Pandava',57:'Thiruputkuzhi',58:'Parthasarathy',59:'Thiruneermalai',60:'Thiruvedanthai',
     61:'Mahabalipuram',62:'Thirunindravur',63:'Tiruvallur',64:'Sholingur',65:'Koodal',66:'Moghur',67:'Alagar Kovil',68:'Thirukottiyur',69:'Thirumayam',70:'Thiruppullani',
     71:'Sivakasi',72:'Srivilliputhur',73:'Vaikundam',74:'Varagunamangai',75:'Pulingudu',76:'Kulanthai',77:'Villimangalam',78:'Thirupperai',79:'Kurungudi',80:'Thiruvankadu',
@@ -99,16 +47,14 @@ const divyaDesamPhotos = {};
 const paadalPetraPhotos = {};
 
 for (let i = 1; i <= 108; i++) {
-    const isSpecial = famousDivyaDesams.includes(i);
-    divyaDesamPhotos[i] = createTempleIcon(dd108Names[i] || 'Temple', 'vishnu', isSpecial);
+    divyaDesamPhotos[i] = createTempleImage(dd108Names[i] || 'Temple', 'vishnu');
 }
 
 for (let i = 1; i <= 276; i++) {
-    const isSpecial = famousPaadalPetra.includes(i);
-    paadalPetraPhotos[i] = createTempleIcon(pps276Names[i] || 'Temple', 'shiva', isSpecial);
+    paadalPetraPhotos[i] = createTempleImage(pps276Names[i] || 'Temple', 'shiva');
 }
 
-const defaultTempleImage = createTempleIcon('Temple', 'vishnu', false);
+const defaultTempleImage = createTempleImage('Temple', 'vishnu');
 
 function getDivyaDesamPhoto(n) {
     return divyaDesamPhotos[n] || defaultTempleImage;
