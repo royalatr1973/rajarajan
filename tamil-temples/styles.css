@@ -1396,6 +1396,37 @@ img {
     user-select: none;
 }
 
+/* Temple Photo in List */
+.dd108-item-photo {
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(201, 168, 76, 0.3);
+    box-shadow: var(--shadow-sm);
+}
+
+.dd108-item-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.dd108-item:hover .dd108-item-photo img {
+    transform: scale(1.1);
+}
+
+.pps276-photo {
+    border-color: rgba(201, 168, 76, 0.4);
+}
+
+.pps276-item:hover .pps276-photo img {
+    transform: scale(1.1);
+}
+
 .dd108-num {
     display: flex;
     align-items: center;
@@ -2187,6 +2218,12 @@ img {
     .dd108-item-header {
         gap: 12px;
         padding: 12px 16px;
+    }
+
+    .dd108-item-photo {
+        width: 55px;
+        height: 55px;
+        min-width: 55px;
     }
 
     .dd108-item-details {
