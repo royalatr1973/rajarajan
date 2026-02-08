@@ -198,8 +198,13 @@ const divyaDesams = [
             item.className = 'dd108-item';
             if (d.region === 'celestial') item.classList.add('dd108-celestial');
 
+            const photoUrl = window.getDivyaDesamPhoto ? window.getDivyaDesamPhoto(d.n) : '';
+
             item.innerHTML = `
                 <div class="dd108-item-header">
+                    <div class="dd108-item-photo">
+                        <img src="${photoUrl}" alt="${d.temple}" loading="lazy" onerror="this.src='${window.defaultTempleImage || ''}'">
+                    </div>
                     <span class="dd108-num">${d.n}</span>
                     <div class="dd108-item-info">
                         <div class="dd108-item-tamil">${d.tamilName}</div>
