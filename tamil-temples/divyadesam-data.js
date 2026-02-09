@@ -199,11 +199,12 @@ const divyaDesams = [
             if (d.region === 'celestial') item.classList.add('dd108-celestial');
 
             const photoUrl = window.getDivyaDesamPhoto ? window.getDivyaDesamPhoto(d.n) : '';
+            const fallbackUrl = window.getDivyaDesamFallback ? window.getDivyaDesamFallback(d.n) : '';
 
             item.innerHTML = `
                 <div class="dd108-item-header">
                     <div class="dd108-item-photo">
-                        <img src="${photoUrl}" alt="${d.temple}">
+                        <img src="${photoUrl}" alt="${d.temple}" onerror="this.onerror=null; this.src='${fallbackUrl}'">
                     </div>
                     <span class="dd108-num">${d.n}</span>
                     <div class="dd108-item-info">
