@@ -36,7 +36,7 @@ const temples = [
         builder: "Vishwanatha Nayak (rebuilt)",
         year: "17th century (ancient origins)",
         categories: ["major"],
-        image: "images/featured/meenakshi.jpg",
+        image: "https://raw.githubusercontent.com/royalatr1973/rajarajan/main/tamil-temples/images/featured/meenakshi.jpg",
         shortDesc: "An iconic masterpiece of Dravidian architecture in the heart of Madurai, with 14 magnificent gopurams covered in thousands of colorful sculptures.",
         fullDesc: "The Meenakshi Amman Temple is a historic Hindu temple located on the southern bank of the Vaigai River in Madurai. It is dedicated to Goddess Meenakshi (a form of Parvati) and her consort Lord Sundareswarar (a form of Shiva). The temple is the heart and lifeline of Madurai and has been a significant symbol of Tamil culture for centuries.\n\nThe current structure was largely rebuilt by Vishwanatha Nayak in the 17th century after the original was destroyed during Malik Kafur's invasion. The temple complex covers 14 acres and has 14 gopurams (gateway towers), the tallest being the southern tower at 170 feet. The gopurams are adorned with thousands of mythological figures painted in vivid colors.\n\nThe temple contains the famous Hall of Thousand Pillars (actually 985 pillars), each exquisitely carved. The Ashta Shakti Mandapam, Meenakshi Nayakkar Mandapam, and the Golden Lotus Tank are other notable features. The temple attracts 15,000 visitors daily and about 25,000 on Fridays.",
         highlights: [
