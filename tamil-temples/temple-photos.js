@@ -1,15 +1,13 @@
 // ========================================
-// Temple Photos - Simple SVG Placeholders
+// Temple Photos - Local Images with SVG Fallback
 // ========================================
 
-// Create simple SVG placeholder
+// Create SVG placeholder fallback
 function createTempleImage(name, type) {
     const bgColor = type === 'shiva' ? '%235c1a1a' : '%231e3a5f';
     const textColor = '%23c9a84c';
     const displayName = name.length > 12 ? name.substring(0, 12) : name;
     const label = type === 'shiva' ? 'Shiva' : 'Vishnu';
-
-    // Simple SVG without special characters
     return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='${bgColor}'/%3E%3Ctext x='50' y='45' font-size='10' fill='${textColor}' text-anchor='middle'%3E${encodeURIComponent(displayName)}%3C/text%3E%3Ctext x='50' y='65' font-size='8' fill='${textColor}' text-anchor='middle' opacity='0.7'%3E${label}%3C/text%3E%3C/svg%3E`;
 }
 
@@ -42,26 +40,39 @@ const pps276Names = {
     91:'Karur',92:'Srisailam',93:'Kedarnath',94:'Koneswaram',95:'Ketheeswaram'
 };
 
-// Generate all photos
+// Generate photos - use local images with fallback to SVG
 const divyaDesamPhotos = {};
 const paadalPetraPhotos = {};
 
+// For Divya Desam: images/divyadesam/1.jpg, 2.jpg, etc.
 for (let i = 1; i <= 108; i++) {
-    divyaDesamPhotos[i] = createTempleImage(dd108Names[i] || 'Temple', 'vishnu');
+    divyaDesamPhotos[i] = `images/divyadesam/${i}.jpg`;
 }
 
+// For Paadal Petra: images/paadalpetra/1.jpg, 2.jpg, etc.
 for (let i = 1; i <= 276; i++) {
-    paadalPetraPhotos[i] = createTempleImage(pps276Names[i] || 'Temple', 'shiva');
+    paadalPetraPhotos[i] = `images/paadalpetra/${i}.jpg`;
 }
 
-const defaultTempleImage = createTempleImage('Temple', 'vishnu');
+// Default/fallback images
+const defaultDDImage = createTempleImage('Temple', 'vishnu');
+const defaultPPSImage = createTempleImage('Temple', 'shiva');
 
 function getDivyaDesamPhoto(n) {
-    return divyaDesamPhotos[n] || defaultTempleImage;
+    return divyaDesamPhotos[n] || defaultDDImage;
 }
 
 function getPaadalPetraPhoto(n) {
-    return paadalPetraPhotos[n] || defaultTempleImage;
+    return paadalPetraPhotos[n] || defaultPPSImage;
+}
+
+// Get fallback SVG for when image fails to load
+function getDivyaDesamFallback(n) {
+    return createTempleImage(dd108Names[n] || 'Temple', 'vishnu');
+}
+
+function getPaadalPetraFallback(n) {
+    return createTempleImage(pps276Names[n] || 'Temple', 'shiva');
 }
 
 // Expose globally
@@ -69,6 +80,9 @@ window.divyaDesamPhotos = divyaDesamPhotos;
 window.paadalPetraPhotos = paadalPetraPhotos;
 window.getDivyaDesamPhoto = getDivyaDesamPhoto;
 window.getPaadalPetraPhoto = getPaadalPetraPhoto;
-window.defaultTempleImage = defaultTempleImage;
+window.getDivyaDesamFallback = getDivyaDesamFallback;
+window.getPaadalPetraFallback = getPaadalPetraFallback;
+window.defaultDDImage = defaultDDImage;
+window.defaultPPSImage = defaultPPSImage;
 
-console.log('Temple photos loaded!', Object.keys(divyaDesamPhotos).length, 'Divya Desam,', Object.keys(paadalPetraPhotos).length, 'Paadal Petra');
+console.log('Temple photos configured:', Object.keys(divyaDesamPhotos).length, 'Divya Desam,', Object.keys(paadalPetraPhotos).length, 'Paadal Petra');

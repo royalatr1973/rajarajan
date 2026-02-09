@@ -192,11 +192,12 @@ window.paadalPetraSthalams = paadalPetraSthalams;
             item.setAttribute('data-n', t.n);
 
             const photoUrl = window.getPaadalPetraPhoto ? window.getPaadalPetraPhoto(t.n) : '';
+            const fallbackUrl = window.getPaadalPetraFallback ? window.getPaadalPetraFallback(t.n) : '';
 
             item.innerHTML = `
                 <div class="dd108-item-header">
                     <div class="dd108-item-photo pps276-photo">
-                        <img src="${photoUrl}" alt="${t.temple}">
+                        <img src="${photoUrl}" alt="${t.temple}" onerror="this.onerror=null; this.src='${fallbackUrl}'">
                     </div>
                     <span class="dd108-num pps276-num">${t.n}</span>
                     <div class="dd108-item-info">
