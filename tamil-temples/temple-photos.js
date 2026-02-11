@@ -1,5 +1,5 @@
 // ========================================
-// Temple Photos - Local Images with SVG Fallback
+// Temple Photos - Raw GitHub URLs with SVG Fallback
 // ========================================
 
 // Create SVG placeholder fallback
@@ -40,18 +40,21 @@ const pps276Names = {
     91:'Karur',92:'Srisailam',93:'Kedarnath',94:'Koneswaram',95:'Ketheeswaram'
 };
 
-// Generate photos - use local images with fallback to SVG
+// Generate photos - use raw GitHub URLs with fallback to SVG
 const divyaDesamPhotos = {};
 const paadalPetraPhotos = {};
 
-// For Divya Desam: images/divyadesam/1.jpg, 2.jpg, etc.
+// Base URL for raw GitHub content
+const githubRawBase = 'https://raw.githubusercontent.com/royalatr1973/rajarajan/main/tamil-temples';
+
+// For Divya Desam: raw GitHub URLs
 for (let i = 1; i <= 108; i++) {
-    divyaDesamPhotos[i] = `images/divyadesam/${i}.jpg`;
+    divyaDesamPhotos[i] = `${githubRawBase}/images/divyadesam/${i}.jpg`;
 }
 
-// For Paadal Petra: images/paadalpetra/1.jpg, 2.jpg, etc.
+// For Paadal Petra: raw GitHub URLs
 for (let i = 1; i <= 276; i++) {
-    paadalPetraPhotos[i] = `images/paadalpetra/${i}.jpg`;
+    paadalPetraPhotos[i] = `${githubRawBase}/images/paadalpetra/${i}.jpg`;
 }
 
 // Default/fallback images
