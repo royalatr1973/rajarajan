@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Temple Details</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo">🕉 Temples of Tamil Nadu</a>
+      <nav><a href="index.html">Home</a></nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / <a id="breadcrumbSection" href="#">Section</a> / Temple</div>
+      <h1 id="templeTitle">Temple</h1>
+    </section>
+
+    <section class="detail">
+      <img id="templeImage" src="" alt="Temple gopuram" />
+      <article class="detail-card">
+        <p id="templeSummary"></p>
+        <div id="templeMeta" class="detail-grid"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="temple-photos.js"></script>
+  <script src="divyadesam-data.js"></script>
+  <script src="paadal-petra-data.js"></script>
+  <script src="site-data.js"></script>
+  <script src="detail.js"></script>
+</body>
+</html>
