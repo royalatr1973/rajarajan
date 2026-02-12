@@ -5,6 +5,22 @@ window.extraSections = {
     { id: 'f3', name: 'Ramanathaswamy Temple', location: 'Rameswaram', district: 'Ramanathapuram', deity: 'Lord Shiva', image: 'images/featured/rameswaram.jpg', summary: 'Pilgrimage center known for long corridors.' }
   ],
   navagraha: [
+    { id: 'n1', name: 'Suryanar Kovil', location: 'Aduthurai', district: 'Mayiladuthurai', deity: 'Surya', image: 'images/navagraha/1.jpg', summary: 'Dedicated Surya sthalam in the Navagraha circuit.' },
+    { id: 'n2', name: 'Thingalur Kailasanathar Temple', location: 'Thingalur', district: 'Thanjavur', deity: 'Chandra', image: 'images/navagraha/2.jpg', summary: 'Moon-associated temple in the Navagraha route.' },
+    { id: 'n3', name: 'Vaitheeswaran Koil', location: 'Vaitheeswaran Koil', district: 'Mayiladuthurai', deity: 'Angaraka (Sevvai)', image: 'images/navagraha/3.jpg', summary: 'Mars (Sevvai) sthalam; also famed Shiva temple.' },
+    { id: 'n4', name: 'Thiruvenkadu Swetharanyeswarar Temple', location: 'Thiruvenkadu', district: 'Mayiladuthurai', deity: 'Budhan', image: 'images/navagraha/4.jpg', summary: 'Mercury (Budhan) sthalam with rich sthala puranam.' },
+    { id: 'n5', name: 'Alangudi Apatsahayeswarar Temple', location: 'Alangudi', district: 'Thiruvarur', deity: 'Guru', image: 'images/navagraha/5.jpg', summary: 'Jupiter (Guru) sthalam in Kumbakonam belt.' },
+    { id: 'n6', name: 'Kanjanur Agneeswarar Temple', location: 'Kanjanur', district: 'Thanjavur', deity: 'Sukran', image: 'images/navagraha/6.jpg', summary: 'Venus (Sukran) sthalam near Aduthurai.' },
+    { id: 'n7', name: 'Thirunallar Dharbaranyeswarar Temple', location: 'Thirunallar', district: 'Karaikal', deity: 'Sani', image: 'images/navagraha/7.jpg', summary: 'Saturn (Sani) sthalam, one of the most visited.' },
+    { id: 'n8', name: 'Thirunageswaram Naganathaswamy Temple', location: 'Thirunageswaram', district: 'Thanjavur', deity: 'Rahu', image: 'images/navagraha/8.jpg', summary: 'Rahu sthalam known for milk abhishekam phenomenon.' },
+    { id: 'n9', name: 'Keezhaperumpallam Naganathar Temple', location: 'Keezhaperumpallam', district: 'Mayiladuthurai', deity: 'Ketu', image: 'images/navagraha/9.jpg', summary: 'Ketu sthalam completing the Navagraha nine.' }
+  ],
+  panchabhootha: [
+    { id: 'p1', name: 'Ekambareswarar Temple', location: 'Kanchipuram', district: 'Kanchipuram', deity: 'Prithvi (Earth)', image: 'images/panchabhootha/1.jpg', summary: 'Earth element (Prithvi Lingam) among Pancha Bhootha temples.' },
+    { id: 'p2', name: 'Jambukeswarar Temple', location: 'Thiruvanaikaval', district: 'Tiruchirapalli', deity: 'Appu (Water)', image: 'images/panchabhootha/2.jpg', summary: 'Water element (Appu Lingam) temple near Srirangam.' },
+    { id: 'p3', name: 'Arunachaleswarar Temple', location: 'Thiruvannamalai', district: 'Thiruvannamalai', deity: 'Agni (Fire)', image: 'images/panchabhootha/3.jpg', summary: 'Fire element (Agni Lingam), famed for Karthigai Deepam.' },
+    { id: 'p4', name: 'Srikalahasteeswara Temple', location: 'Srikalahasti', district: 'Tirupati Region', deity: 'Vayu (Air)', image: 'images/panchabhootha/4.jpg', summary: 'Air element (Vayu Lingam), ancient Shaivite shrine.' },
+    { id: 'p5', name: 'Thillai Natarajar Temple', location: 'Chidambaram', district: 'Cuddalore', deity: 'Akasha (Space)', image: 'images/panchabhootha/5.jpg', summary: 'Space element (Akasha Lingam) at Chidambaram.' }
     { id: 'n1', name: 'Suryanar Kovil', location: 'Aduthurai', district: 'Thanjavur', deity: 'Surya', image: 'images/navagraha/1.jpg', summary: 'Sun temple among Navagraha circuit.' },
     { id: 'n2', name: 'Thingalur Kailasanathar', location: 'Thingalur', district: 'Thanjavur', deity: 'Chandra', image: 'images/navagraha/2.jpg', summary: 'Moon-associated temple.' }
   ],
