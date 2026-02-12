@@ -21,6 +21,12 @@ window.extraSections = {
     { id: 'p3', name: 'Arunachaleswarar Temple', location: 'Thiruvannamalai', district: 'Thiruvannamalai', deity: 'Agni (Fire)', image: 'images/panchabhootha/3.jpg', summary: 'Fire element (Agni Lingam), famed for Karthigai Deepam.' },
     { id: 'p4', name: 'Srikalahasteeswara Temple', location: 'Srikalahasti', district: 'Tirupati Region', deity: 'Vayu (Air)', image: 'images/panchabhootha/4.jpg', summary: 'Air element (Vayu Lingam), ancient Shaivite shrine.' },
     { id: 'p5', name: 'Thillai Natarajar Temple', location: 'Chidambaram', district: 'Cuddalore', deity: 'Akasha (Space)', image: 'images/panchabhootha/5.jpg', summary: 'Space element (Akasha Lingam) at Chidambaram.' }
+    { id: 'n1', name: 'Suryanar Kovil', location: 'Aduthurai', district: 'Thanjavur', deity: 'Surya', image: 'images/navagraha/1.jpg', summary: 'Sun temple among Navagraha circuit.' },
+    { id: 'n2', name: 'Thingalur Kailasanathar', location: 'Thingalur', district: 'Thanjavur', deity: 'Chandra', image: 'images/navagraha/2.jpg', summary: 'Moon-associated temple.' }
+  ],
+  panchabhootha: [
+    { id: 'p1', name: 'Ekambareswarar Temple', location: 'Kanchipuram', district: 'Kanchipuram', deity: 'Prithvi (Earth)', image: 'images/panchabhootha/1.jpg', summary: 'Earth element among Pancha Bhootha temples.' },
+    { id: 'p2', name: 'Jambukeswarar Temple', location: 'Thiruvanaikaval', district: 'Trichy', deity: 'Water', image: 'images/panchabhootha/2.jpg', summary: 'Water element temple in Trichy.' }
   ],
   vinayagar: [],
   murugan: []
