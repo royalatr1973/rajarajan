@@ -1,669 +1,81 @@
 <!DOCTYPE html>
-<!-- v2.1 - Images from GitHub raw URLs -->
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temples of Tamil Nadu - Sacred Heritage of South India</title>
-    <meta name="description" content="Explore the magnificent temples of Tamil Nadu - UNESCO World Heritage Sites, Navagraha Temples, Pancha Bootha Stalam, Divya Desam, and more.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <!-- Fuse.js for fuzzy search -->
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Temples of Tamil Nadu</title>
+  <meta name="description" content="Explore Tamil temples with dedicated section pages, global search, and per-temple detail pages." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <span class="logo-icon">🕉</span>
-                <span class="logo-text">Temples of Tamil Nadu</span>
-            </a>
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-                <span></span><span></span><span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#categories">Categories</a></li>
-                <li><a href="#temples">Temples</a></li>
-                <li><a href="#divyadesam-108">108 Divya Desam</a></li>
-                <li><a href="#paadal-petra-276">276 Shiva Temples</a></li>
-                <li><a href="#heritage">UNESCO Heritage</a></li>
-                <li><a href="#about">About</a></li>
-                <li>
-                    <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-                        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <p class="hero-subtitle">Discover the Sacred Heritage of</p>
-            <h1 class="hero-title">Tamil Nadu Temples</h1>
-            <p class="hero-description">Journey through thousands of years of spiritual architecture, divine artistry, and living traditions across the temple land of South India</p>
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-number">33,000+</span>
-                    <span class="stat-label">Ancient Temples</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">4</span>
-                    <span class="stat-label">UNESCO Sites</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">108</span>
-                    <span class="stat-label">Divya Desams</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">9</span>
-                    <span class="stat-label">Navagraha Temples</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">276</span>
-                    <span class="stat-label">Paadal Petra Sthalams</span>
-                </div>
-            </div>
-            <a href="#temples" class="hero-btn">Explore Temples</a>
-        </div>
-        <div class="hero-scroll">
-            <span>Scroll to explore</span>
-            <div class="scroll-arrow"></div>
-        </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section class="categories" id="categories">
-        <div class="container">
-            <div class="section-header">
-                <h2>Temple Categories</h2>
-                <p>Tamil Nadu's temples are organized into sacred groupings, each with unique spiritual significance</p>
-            </div>
-            <div class="category-grid">
-                <div class="category-card" data-category="unesco">
-                    <div class="category-icon">🏛️</div>
-                    <h3>UNESCO World Heritage</h3>
-                    <p>Temples recognized for their outstanding universal value and architectural magnificence</p>
-                    <span class="category-count">4 Sites</span>
-                </div>
-                <div class="category-card" data-category="navagraha">
-                    <div class="category-icon">☀️</div>
-                    <h3>Navagraha Temples</h3>
-                    <p>Nine temples dedicated to the celestial planetary deities, clustered near Kumbakonam</p>
-                    <span class="category-count">9 Temples</span>
-                </div>
-                <div class="category-card" data-category="pancha">
-                    <div class="category-icon">🔥</div>
-                    <h3>Pancha Bootha Stalam</h3>
-                    <p>Five Shiva temples representing the five prime elements of nature</p>
-                    <span class="category-count">5 Temples</span>
-                </div>
-                <div class="category-card" data-category="divyadesam">
-                    <div class="category-icon">🙏</div>
-                    <h3>Divya Desam</h3>
-                    <p>108 sacred Vishnu temples glorified by the Alvar saints in their hymns</p>
-                    <span class="category-count">84 in Tamil Nadu</span>
-                </div>
-                <div class="category-card" data-category="chola">
-                    <div class="category-icon">👑</div>
-                    <h3>Great Chola Temples</h3>
-                    <p>Masterpieces of Chola architecture representing the golden age of temple building</p>
-                    <span class="category-count">3 Temples</span>
-                </div>
-                <div class="category-card" data-category="major">
-                    <div class="category-icon">⭐</div>
-                    <h3>Major Temples</h3>
-                    <p>Iconic temples of Tamil Nadu renowned for their grandeur and spiritual significance</p>
-                    <span class="category-count">Featured</span>
-                </div>
-                <div class="category-card" data-category="paadalpetrastalam">
-                    <div class="category-icon">🔱</div>
-                    <h3>Paadal Petra Sthalams</h3>
-                    <p>276 sacred Shiva temples glorified by the 63 Nayanar saints in the Thevaram hymns</p>
-                    <span class="category-count">276 Temples</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Search and Filter -->
-    <section class="temples-section" id="temples">
-        <div class="container">
-            <div class="section-header">
-                <h2>Explore All Temples</h2>
-                <p>Discover the divine architecture and spiritual heritage of Tamil Nadu</p>
-            </div>
-            <div class="filter-bar">
-                <div class="search-box">
-                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                    <input type="text" id="searchInput" placeholder="Search temples by name, location, deity..." autocomplete="off">
-                    <div class="search-dropdown" id="searchDropdown"></div>
-                </div>
-                <div class="filter-tags">
-                    <button class="filter-tag active" data-filter="all">All Temples</button>
-                    <button class="filter-tag" data-filter="unesco">UNESCO Heritage</button>
-                    <button class="filter-tag" data-filter="chola">Chola Temples</button>
-                    <button class="filter-tag" data-filter="navagraha">Navagraha</button>
-                    <button class="filter-tag" data-filter="pancha">Pancha Bootha</button>
-                    <button class="filter-tag" data-filter="divyadesam">Divya Desam</button>
-                    <button class="filter-tag" data-filter="major">Major Temples</button>
-                </div>
-            </div>
-
-            <!-- Temple Cards Grid -->
-            <div class="temple-grid" id="templeGrid">
-                <!-- Cards rendered by JavaScript -->
-            </div>
-            <div class="no-results" id="noResults" style="display:none;">
-                <div class="no-results-icon">🔍</div>
-                <h3>No temples found</h3>
-                <p>Try adjusting your search or filter criteria</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- UNESCO Heritage Section -->
-    <section class="heritage-section" id="heritage">
-        <div class="container">
-            <div class="section-header light">
-                <h2>UNESCO World Heritage Temples</h2>
-                <p>Tamil Nadu is home to some of India's most significant UNESCO World Heritage Sites</p>
-            </div>
-            <div class="heritage-timeline">
-                <div class="timeline-item">
-                    <div class="timeline-year">1984</div>
-                    <div class="timeline-content">
-                        <h3>Group of Monuments at Mahabalipuram</h3>
-                        <p>Founded by the Pallava kings, these rathas (temples in the form of chariots), mandapas (cave sanctuaries), giant open-air rock reliefs such as the Descent of the Ganges, and the Shore Temple with thousands of sculptures to the glory of Shiva, constitute the most magnificent achievement of Pallava art.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">1987</div>
-                    <div class="timeline-content">
-                        <h3>Brihadeeswarar Temple, Thanjavur</h3>
-                        <p>The Great Living Chola Temple was first inscribed in 1987. Built by Raja Raja Chola I between 1003 and 1010 AD, this temple is a brilliant testimony to the heights achieved by the Cholas in temple architecture. The vimana tower stands 66 meters tall, one of the tallest in the world.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2004</div>
-                    <div class="timeline-content">
-                        <h3>Gangaikonda Cholapuram & Airavatesvara Temple</h3>
-                        <p>The Great Living Chola Temples designation was extended to include these two masterpieces. Together, the three temples demonstrate a progressive development of high Chola architecture and represent the pinnacle of Tamil cultural achievement.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Navagraha Section -->
-    <section class="navagraha-section" id="navagraha-detail">
-        <div class="container">
-            <div class="section-header">
-                <h2>The Nine Planetary Temples</h2>
-                <p>The Navagraha temples near Kumbakonam are dedicated to the nine celestial bodies that influence human destiny according to Hindu astrology</p>
-            </div>
-            <div class="planet-grid">
-                <div class="planet-card">
-                    <div class="planet-symbol" style="--planet-color: #FF6B00;">☉</div>
-                    <h4>Surya (Sun)</h4>
-                    <p class="planet-temple">Suryanar Kovil</p>
-                    <p class="planet-location">Near Aduthurai</p>
-                </div>
-                <div class="planet-card">
-                    <div class="planet-symbol" style="--planet-color: #C0C0C0;">☽</div>
-                    <h4>Chandra (Moon)</h4>
-                    <p class="planet-temple">Kailasanathar Temple</p>
-                    <p class="planet-location">Thingalur</p>
-                </div>
-                <div class="planet-card">
-                    <div class="planet-symbol" style="--planet-color: #E53935;">♂</div>
-                    <h4>Angaraka (Mars)</h4>
-                    <p class="planet-temple">Vaitheeswaran Kovil</p>
-                    <p class="planet-location">Near Mayiladuthurai</p>
-                </div>
-                <div class="planet-card">
-                    <div class="planet-symbol" style="--planet-color: #43A047;">☿</div>
-                    <h4>Budha (Mercury)</h4>
-                    <p class="planet-temple">Swetharanyeswarar Temple</p>
-                    <p class="planet-location">Thiruvenkadu</p>
-                </div>
-                <div class="planet-card">
-                    <div class="planet-symbol" style="--planet-color: #FFB300;">♃</div>
-                    <h4>Guru (Jupiter)</h4>
-                    <p class="planet-temple">Apatsahayesvarar Temple</p>
-                    <p class="planet-location">Alangudi</p>
-                </div>
-                <div class="planet-card">
-                    <div class="planet-symbol" style="--planet-color: #E91E63;">♀</div>
-                    <h4>Shukra (Venus)</h4>
-                    <p class="planet-temple">Agniswarar Temple</p>
-                    <p class="planet-location">Kanjanoor</p>
-                </div>
-                <div class="planet-card">
-                    <div class="planet-symbol" style="--planet-color: #1A237E;">♄</div>
-                    <h4>Shani (Saturn)</h4>
-                    <p class="planet-temple">Saniswarar Temple</p>
-                    <p class="planet-location">Tirunallar</p>
-                </div>
-                <div class="planet-card">
-                    <div class="planet-symbol" style="--planet-color: #4A148C;">☊</div>
-                    <h4>Rahu</h4>
-                    <p class="planet-temple">Naganathar Temple</p>
-                    <p class="planet-location">Tirunageswaram</p>
-                </div>
-                <div class="planet-card">
-                    <div class="planet-symbol" style="--planet-color: #795548;">☋</div>
-                    <h4>Ketu</h4>
-                    <p class="planet-temple">Naganatha Swamy Temple</p>
-                    <p class="planet-location">Keezhaperumpallam</p>
-                </div>
-            </div>
-            <div class="navagraha-info">
-                <p>Six of these temples are located on the northern bank of the river Kaveri and three on the southern bank. They are all within a 30 km radius of Kumbakonam and Mayiladuthurai in the erstwhile Tanjore region. Traditionally these are Shiva temples with a dedicated shrine for each planetary deity.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pancha Bootha Section -->
-    <section class="pancha-section" id="pancha-detail">
-        <div class="container">
-            <div class="section-header">
-                <h2>Pancha Bootha Stalam</h2>
-                <p>Five sacred Shiva temples representing the five prime elements of nature - Earth, Water, Fire, Air, and Ether</p>
-            </div>
-            <div class="element-grid">
-                <div class="element-card earth">
-                    <div class="element-icon">🌍</div>
-                    <div class="element-name">Earth (Prithvi)</div>
-                    <h4>Ekambareswarar Temple</h4>
-                    <p class="element-location">Kanchipuram</p>
-                    <p class="element-detail">Houses the Prithvi Lingam. The temple has a 3,000+ year old mango tree. In existence since at least 600 AD. Spread over 25 acres with a 59-meter tall Rajagopuram.</p>
-                </div>
-                <div class="element-card water">
-                    <div class="element-icon">💧</div>
-                    <div class="element-name">Water (Appu)</div>
-                    <h4>Jambukeswarar Temple</h4>
-                    <p class="element-location">Thiruvanaikaval, Trichy</p>
-                    <p class="element-detail">Houses the Appu Lingam. A stream of water flows under the Lingam, perpetually engulfing it. One of the largest temple complexes in Tamil Nadu with five enclosures.</p>
-                </div>
-                <div class="element-card fire">
-                    <div class="element-icon">🔥</div>
-                    <div class="element-name">Fire (Agni)</div>
-                    <h4>Arunachaleshwarar Temple</h4>
-                    <p class="element-location">Thiruvannamalai</p>
-                    <p class="element-detail">Houses the Agni Lingam. Spread over 25 acres, one of the largest temples in India. The annual Karthigai Deepam festival lights a massive fire atop Annamalai hill visible for miles.</p>
-                </div>
-                <div class="element-card air">
-                    <div class="element-icon">💨</div>
-                    <div class="element-name">Air (Vayu)</div>
-                    <h4>Srikalahasti Temple</h4>
-                    <p class="element-location">Srikalahasti, Andhra Pradesh</p>
-                    <p class="element-detail">Houses the Vayu Lingam, a self-manifested (Swayambhu) white lingam. The lamp inside the inner sanctum flickers constantly due to the air element, even without wind.</p>
-                </div>
-                <div class="element-card space">
-                    <div class="element-icon">✨</div>
-                    <div class="element-name">Ether (Akasha)</div>
-                    <h4>Thillai Nataraja Temple</h4>
-                    <p class="element-location">Chidambaram</p>
-                    <p class="element-detail">Houses the Akasha Lingam. Unlike other temples, Shiva is represented as Nataraja (cosmic dancer). Features the famous Chidambara Rahasyam (secret of Chidambaram).</p>
-                </div>
-            </div>
-            <div class="pancha-info">
-                <p>Remarkably, all five Pancha Bootha Stalam temples are geographically aligned in almost a straight line across South India. This positioning is astonishing as the temples were built centuries ago without modern surveying technology. The presiding deities are revered in the 7th century Tevaram, composed by the Nayanar saint poets.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Divya Desam Overview -->
-    <section class="divyadesam-section" id="divyadesam-detail">
-        <div class="container">
-            <div class="section-header light">
-                <h2>108 Divya Desam</h2>
-                <p>The 108 sacred abodes of Lord Vishnu, glorified in the hymns of the twelve Alvar saint-poets</p>
-            </div>
-            <div class="divyadesam-overview">
-                <div class="dd-info-grid">
-                    <div class="dd-info-card">
-                        <h4>What are Divya Desams?</h4>
-                        <p>The 108 Divya Desam ("Divine Abodes") are sacred Vishnu temples revered in the Naalayira Divya Prabandham, a collection of 4,000 Tamil verses composed by the twelve Alvars between the 5th and 8th centuries CE. In Sanskrit, "divya" means divine and "desam" indicates realm or temple.</p>
-                    </div>
-                    <div class="dd-info-card">
-                        <h4>The Alvars</h4>
-                        <p>The twelve Alvar saint-poets were instrumental in popularising Vaishnavism during the early medieval period. Their devotional hymns (pasurams) describing these temples form the foundation of Sri Vaishnava tradition. The temples mentioned in their songs are classified as Divya Desams.</p>
-                    </div>
-                    <div class="dd-info-card">
-                        <h4>Distribution</h4>
-                        <p>Of the 108 temples, 84 are in Tamil Nadu, 11 in Kerala, 4 in Uttar Pradesh, 3 in Uttarakhand, 2 in Andhra Pradesh, 1 in Gujarat, 1 in Nepal, and 2 are believed to be in the celestial realm (Tirupparkadal and Vaikuntham).</p>
-                    </div>
-                    <div class="dd-info-card">
-                        <h4>Postures of Vishnu</h4>
-                        <p>Lord Vishnu appears in three sacred postures across the 108 temples: Standing (Nindra Thirukkolam) in 60 temples, Sleeping (Kidantha Thirukkolam) in 27 temples, and Sitting (Veetrirundha Thirukkolam) in 21 temples.</p>
-                    </div>
-                </div>
-                <div class="dd-cta">
-                    <a href="#divyadesam-108" class="dd-explore-btn">Explore All 108 Divya Desams with Travel Guide</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 108 Divya Desam Complete List -->
-    <section class="dd108-section" id="divyadesam-108">
-        <div class="container">
-            <div class="section-header">
-                <h2>|| Om Namo Narayanaya ||</h2>
-                <p>Complete guide to all 108 Divya Desam temples with travel details — arranged geographically for pilgrimage planning</p>
-            </div>
-
-            <!-- Region Stats -->
-            <div class="dd108-stats">
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">84</span>
-                    <span class="dd108-stat-label">Tamil Nadu</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">11</span>
-                    <span class="dd108-stat-label">Kerala</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">4</span>
-                    <span class="dd108-stat-label">Uttar Pradesh</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">3</span>
-                    <span class="dd108-stat-label">Uttarakhand</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">2</span>
-                    <span class="dd108-stat-label">Andhra Pradesh</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">1</span>
-                    <span class="dd108-stat-label">Gujarat</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">1</span>
-                    <span class="dd108-stat-label">Nepal</span>
-                </div>
-                <div class="dd108-stat-item dd108-stat-celestial">
-                    <span class="dd108-stat-num">2</span>
-                    <span class="dd108-stat-label">Celestial</span>
-                </div>
-            </div>
-
-            <!-- Search -->
-            <div class="dd108-search">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" id="dd108SearchInput" placeholder="Search by temple name, deity, location, legend..." autocomplete="off">
-                <div class="search-dropdown dd108-dropdown" id="dd108SearchDropdown"></div>
-            </div>
-
-            <!-- Region Filter -->
-            <div class="dd108-region-tabs">
-                <button class="dd108-tab active" data-region="all">All (108)</button>
-                <button class="dd108-tab" data-region="tamil-nadu">Tamil Nadu (84)</button>
-                <button class="dd108-tab" data-region="kerala">Kerala (11)</button>
-                <button class="dd108-tab" data-region="andhra-pradesh">Andhra Pradesh (2)</button>
-                <button class="dd108-tab" data-region="gujarat">Gujarat (1)</button>
-                <button class="dd108-tab" data-region="uttar-pradesh">Uttar Pradesh (4)</button>
-                <button class="dd108-tab" data-region="uttarakhand">Uttarakhand (3)</button>
-                <button class="dd108-tab" data-region="nepal">Nepal (1)</button>
-                <button class="dd108-tab" data-region="celestial">Celestial (2)</button>
-            </div>
-
-            <!-- Temple List -->
-            <div class="dd108-list" id="dd108List">
-                <!-- Rendered by JavaScript -->
-            </div>
-            <div class="dd108-no-results" id="dd108NoResults" style="display:none;">
-                <p>No Divya Desam temples found matching your search.</p>
-            </div>
-
-            <!-- Travel Tips -->
-            <div class="dd108-travel-tips">
-                <h3>Pilgrimage Travel Tips</h3>
-                <div class="dd108-tips-grid">
-                    <div class="dd108-tip">
-                        <strong>Tamil Nadu (84 temples)</strong>
-                        <p>Plan 12 days minimum. Start from Srirangam (Trichy) and move through Thanjavur, Kumbakonam, Mayiladuthurai, Sirkazhi, Cuddalore, Kanchipuram, Chennai, Madurai, and Tirunelveli.</p>
-                    </div>
-                    <div class="dd108-tip">
-                        <strong>Kerala (11 temples)</strong>
-                        <p>Plan 3 days. Start from Thiruvananthapuram, move through Chengannur (6 temples in one day), then to Ernakulam, and finally Thrissur region.</p>
-                    </div>
-                    <div class="dd108-tip">
-                        <strong>North India & Nepal</strong>
-                        <p>Andhra Pradesh (2-3 days), Gujarat (1 day), Uttar Pradesh (4 days), Uttarakhand (4 days), Nepal (8 days). Plan separately based on season.</p>
-                    </div>
-                    <div class="dd108-tip">
-                        <strong>General Advice</strong>
-                        <p>After visiting a temple, ask the priest for directions to the next Divya Desam. Carry Indian currency in small denominations. Best visiting hours: 7 AM to 12 PM and 4 PM to 7 PM.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 276 Paadal Petra Sthalams Section -->
-    <section class="pps276-section" id="paadal-petra-276">
-        <div class="container">
-            <div class="section-header">
-                <h2>|| Om Namah Shivaya ||</h2>
-                <p>276 Paadal Petra Sthalams — Sacred Shiva temples glorified by the 63 Nayanar saints in the Thevaram hymns</p>
-            </div>
-
-            <!-- Region Stats -->
-            <div class="dd108-stats pps276-stats">
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">63</span>
-                    <span class="dd108-stat-label">Chola Naadu I (Vadakarai)</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">128</span>
-                    <span class="dd108-stat-label">Chola Naadu II (Thenkarai)</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">33</span>
-                    <span class="dd108-stat-label">Thondai Naadu</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">22</span>
-                    <span class="dd108-stat-label">Nadu Naadu</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">14</span>
-                    <span class="dd108-stat-label">Pandiya Naadu</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">7</span>
-                    <span class="dd108-stat-label">Kongu Naadu</span>
-                </div>
-                <div class="dd108-stat-item">
-                    <span class="dd108-stat-num">5</span>
-                    <span class="dd108-stat-label">Vada Naadu</span>
-                </div>
-                <div class="dd108-stat-item pps276-stat-other">
-                    <span class="dd108-stat-num">2</span>
-                    <span class="dd108-stat-label">Eela Naadu (Sri Lanka)</span>
-                </div>
-            </div>
-
-            <!-- Info Cards -->
-            <div class="pps276-info-grid">
-                <div class="dd-info-card">
-                    <h4>What are Paadal Petra Sthalams?</h4>
-                    <p>The 276 Paadal Petra Sthalams are sacred Shiva temples glorified in the Thevaram, a collection of Tamil devotional hymns composed by the three prominent Nayanar saints: Thirugnanasambandar, Thirunavukkarasar (Appar), and Sundarar between the 7th and 8th centuries CE.</p>
-                </div>
-                <div class="dd-info-card">
-                    <h4>The 63 Nayanmars</h4>
-                    <p>The Nayanmars were 63 Shaivite saints who lived during the 6th-8th centuries and were instrumental in the Bhakti movement. Their devotional songs (Thevaram and Thiruvasagam) form the foundation of Shaiva Siddhanta tradition and are still sung in these temples today.</p>
-                </div>
-                <div class="dd-info-card">
-                    <h4>Geographic Distribution</h4>
-                    <p>The 276 temples are distributed across different "Nadu" regions: Chola Naadu (191 temples in Vadakarai and Thenkarai), Thondai Naadu (33), Nadu Naadu (22), Pandiya Naadu (14), Kongu Naadu (7), Vada Naadu (5), and Eela Naadu in Sri Lanka (2).</p>
-                </div>
-                <div class="dd-info-card">
-                    <h4>Significance</h4>
-                    <p>These temples are considered among the holiest Shiva temples. Visiting all 276 is a revered pilgrimage. Each temple has unique legends, architectural beauty, and spiritual significance mentioned in the ancient Thevaram hymns.</p>
-                </div>
-            </div>
-
-            <!-- Search -->
-            <div class="dd108-search pps276-search">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" id="pps276SearchInput" placeholder="Search by temple name, deity, location, legend..." autocomplete="off">
-            </div>
-
-            <!-- Nadu Filter Tabs -->
-            <div class="dd108-region-tabs pps276-tabs">
-                <button class="dd108-tab pps276-tab active" data-nadu="all">All (276)</button>
-                <button class="dd108-tab pps276-tab" data-nadu="chola-1">Chola I (63)</button>
-                <button class="dd108-tab pps276-tab" data-nadu="chola-2">Chola II (128)</button>
-                <button class="dd108-tab pps276-tab" data-nadu="thondai">Thondai (33)</button>
-                <button class="dd108-tab pps276-tab" data-nadu="nadu">Nadu (22)</button>
-                <button class="dd108-tab pps276-tab" data-nadu="pandiya">Pandiya (14)</button>
-                <button class="dd108-tab pps276-tab" data-nadu="kongu">Kongu (7)</button>
-                <button class="dd108-tab pps276-tab" data-nadu="other">Others (7)</button>
-            </div>
-
-            <!-- Temple List -->
-            <div class="dd108-list pps276-list" id="pps276-list">
-                <!-- Rendered by JavaScript -->
-            </div>
-            <div class="dd108-no-results" id="pps276-no-results" style="display:none;">
-                <p>No Paadal Petra Sthalam temples found matching your search.</p>
-            </div>
-
-            <!-- Pilgrimage Tips -->
-            <div class="dd108-travel-tips pps276-tips">
-                <h3>Thevara Paadal Petra Sthalams Pilgrimage Tips</h3>
-                <div class="dd108-tips-grid">
-                    <div class="dd108-tip">
-                        <strong>Chola Naadu (191 temples)</strong>
-                        <p>Plan 15-20 days. Cover Thanjavur, Kumbakonam, Mayiladuthurai, Nagapattinam, and Tiruchi regions systematically. Most temples are concentrated around the Kaveri delta.</p>
-                    </div>
-                    <div class="dd108-tip">
-                        <strong>Thondai & Nadu Naadu (55 temples)</strong>
-                        <p>Plan 7-10 days. Cover Kanchipuram, Chennai, Thiruvannamalai, and surrounding areas. Include the famous Pancha Bootha Sthalams.</p>
-                    </div>
-                    <div class="dd108-tip">
-                        <strong>Pandiya & Kongu Naadu (21 temples)</strong>
-                        <p>Plan 5-7 days. Cover Madurai, Tirunelveli, Courtallam, Erode, and Coimbatore regions. These temples have unique Pandyan and Chera architecture.</p>
-                    </div>
-                    <div class="dd108-tip">
-                        <strong>Best Time to Visit</strong>
-                        <p>October to March is ideal. Visit during Maha Shivaratri for grand celebrations. Many temples have special festivals during Thai (January-February) and Panguni (March-April).</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about-section" id="about">
-        <div class="container">
-            <div class="section-header">
-                <h2>About Tamil Nadu Temples</h2>
-                <p>The temple land of India</p>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Tamil Nadu is often called the <strong>"Land of Temples"</strong> and rightly so. The state is home to over <strong>33,000 ancient temples</strong>, many of which are over a thousand years old. These temples are not just places of worship but living museums of art, architecture, and cultural heritage.</p>
-                    <p>The temple-building tradition in Tamil Nadu spans over two millennia, from the Sangam period to the Pallava, Chola, Pandya, and Nayak dynasties. Each dynasty left its distinctive architectural mark, creating a rich tapestry of styles from the rock-cut caves of the Pallavas to the towering gopurams of the Nayaks.</p>
-                    <p>The Chola dynasty (9th-13th century CE) is widely regarded as the golden age of Tamil temple architecture. The Brihadeeswarar Temple in Thanjavur, built by Raja Raja Chola I, remains one of the most magnificent temples ever built, with its 66-meter vimana that was the tallest structure in India for centuries.</p>
-                    <p>These temples are also the birthplace of the Bhakti movement, where saint-poets like the Nayanars (Shaivite) and Alvars (Vaishnavite) composed devotional hymns that continue to be sung today, preserving Tamil literary heritage spanning 1,500 years.</p>
-                </div>
-                <div class="about-facts">
-                    <h3>Quick Facts</h3>
-                    <ul class="fact-list">
-                        <li><strong>Oldest Temple:</strong> Saluvankuppam Murugan Temple (c. 300 BCE)</li>
-                        <li><strong>Largest Temple:</strong> Sri Ranganathaswamy, Srirangam (156 acres)</li>
-                        <li><strong>Tallest Gopuram:</strong> Murdeshwar Temple Rajagopuram (72m)</li>
-                        <li><strong>Tallest Vimana:</strong> Brihadeeswarar Temple (66m)</li>
-                        <li><strong>Major Dynasties:</strong> Pallava, Chola, Pandya, Nayak, Vijayanagara</li>
-                        <li><strong>UNESCO Sites:</strong> 4 temple-related World Heritage Sites</li>
-                        <li><strong>Paadal Petra Sthalam:</strong> 276 Shiva temples glorified by Nayanars</li>
-                        <li><strong>Divya Desams:</strong> 84 of 108 Vishnu temples are in Tamil Nadu</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="sources">
-                <h3>References & Sources</h3>
-                <ul>
-                    <li><a href="https://www.tamilnadutourism.tn.gov.in/destinations/temples" target="_blank" rel="noopener">Official Tamil Nadu Tourism - Temples Section</a></li>
-                    <li><a href="https://en.wikipedia.org/wiki/List_of_Hindu_temples_in_Tamil_Nadu" target="_blank" rel="noopener">Wikipedia - List of Hindu Temples in Tamil Nadu</a></li>
-                    <li><a href="https://en.wikipedia.org/wiki/Navagraha_temples_in_Tamil_Nadu" target="_blank" rel="noopener">Wikipedia - Navagraha Temples in Tamil Nadu</a></li>
-                    <li><a href="https://en.wikipedia.org/wiki/Pancha_Bhuta_Sthalam" target="_blank" rel="noopener">Wikipedia - Pancha Bhuta Sthalam</a></li>
-                    <li><a href="https://en.wikipedia.org/wiki/Divya_Desam" target="_blank" rel="noopener">Wikipedia - 108 Divya Desam</a></li>
-                    <li><a href="https://whc.unesco.org/en/list/250/" target="_blank" rel="noopener">UNESCO - Great Living Chola Temples</a></li>
-                    <li><a href="https://www.templepurohit.com/" target="_blank" rel="noopener">Temple Purohit - Hindu Temple Database</a></li>
-                    <li><a href="https://www.divyadesam.org/travel.html" target="_blank" rel="noopener">Divya Desam - 108 Divya Desams Travel Guide</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <span class="logo-icon">🕉</span>
-                    <span class="footer-title">Temples of Tamil Nadu</span>
-                    <p>A tribute to the sacred heritage and architectural grandeur of Tamil Nadu's ancient temples.</p>
-                </div>
-                <div class="footer-links">
-                    <h4>Explore</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#categories">Categories</a></li>
-                        <li><a href="#temples">All Temples</a></li>
-                        <li><a href="#heritage">UNESCO Heritage</a></li>
-                    </ul>
-                </div>
-                <div class="footer-links">
-                    <h4>Categories</h4>
-                    <ul>
-                        <li><a href="#navagraha-detail">Navagraha Temples</a></li>
-                        <li><a href="#pancha-detail">Pancha Bootha Stalam</a></li>
-                        <li><a href="#divyadesam-108">108 Divya Desam</a></li>
-                        <li><a href="#paadal-petra-276">276 Shiva Temples</a></li>
-                        <li><a href="#about">About</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>Information sourced from Tamil Nadu Tourism, Wikipedia, and Temple databases. For educational purposes.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Temple Detail Modal -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="templeModal">
-            <button class="modal-close" id="modalClose">&times;</button>
-            <div class="modal-image" id="modalImage"></div>
-            <div class="modal-body">
-                <div class="modal-badges" id="modalBadges"></div>
-                <h2 class="modal-title" id="modalTitle"></h2>
-                <div class="modal-meta" id="modalMeta"></div>
-                <div class="modal-description" id="modalDescription"></div>
-                <div class="modal-details" id="modalDetails"></div>
-            </div>
-        </div>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo">🕉 Temples of Tamil Nadu</a>
+      <nav>
+        <a href="divyadesam.html">108 Divya Desam</a>
+        <a href="paadalpetra.html">276 Shiva Temples</a>
+        <a href="navagraha.html">Navagraha</a>
+        <a href="panchabhootha.html">Pancha Bhootha</a>
+      </nav>
     </div>
+  </header>
 
-    <script src="script.js"></script>
-    <script src="temple-photos.js"></script>
-    <script src="divyadesam-data.js"></script>
-    <script src="paadal-petra-data.js"></script>
+  <main>
+    <section class="hero hero-home">
+      <div class="hero-overlay"></div>
+      <div class="container hero-layout">
+        <div>
+          <p class="eyebrow">Sacred Heritage of South India</p>
+          <h1>Experience Timeless Temple Grandeur</h1>
+          <p class="hero-text">A curated temple discovery portal with global search, dedicated section pages, and detailed temple profiles with gopuram images.</p>
+          <div class="hero-cta-row">
+            <a class="hero-btn" href="divyadesam.html">Explore Divya Desam</a>
+            <a class="hero-btn ghost" href="paadalpetra.html">Explore Shiva Temples</a>
+          </div>
+        </div>
+
+        <div class="hero-search-card">
+          <h3>Global Temple Search</h3>
+          <p>Search across all available sections from one place.</p>
+          <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search temple name, location, deity..." autocomplete="off" />
+            <div id="globalResults" class="results"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container stats-grid">
+      <article><strong>108</strong><span>Divya Desam</span></article>
+      <article><strong>276</strong><span>Paadal Petra Sthalams</span></article>
+      <article><strong>9</strong><span>Navagraha Temples</span></article>
+      <article><strong>5</strong><span>Pancha Bhootha Temples</span></article>
+    </section>
+
+    <section class="container page-header">
+      <p class="eyebrow">Temple Categories</p>
+      <h2>Browse by Sacred Tradition</h2>
+      <p>Each category opens as a separate page with section-specific temple search and card listing.</p>
+    </section>
+
+    <section class="container section-grid home-sections">
+      <a class="section-card" href="divyadesam.html"><h3>108 Divya Desam</h3><p>Vaishnavite pilgrimage temples with full searchable list.</p></a>
+      <a class="section-card" href="paadalpetra.html"><h3>276 Paadal Petra Sthalams</h3><p>Shaivite Thevaram temples with dedicated detail pages.</p></a>
+      <a class="section-card" href="featured.html"><h3>Featured Temples</h3><p>Important landmarks and highly visited temples.</p></a>
+      <a class="section-card" href="navagraha.html"><h3>Navagraha Temples</h3><p>All 9 planetary temples are available in one section.</p></a>
+      <a class="section-card" href="panchabhootha.html"><h3>Pancha Bhootha Temples</h3><p>All 5 elemental Shiva temples are listed.</p></a>
+      <a class="section-card" href="vinayagar.html"><h3>Vinayagar Temples</h3><p>Ready for your custom data population.</p></a>
+      <a class="section-card" href="murugan.html"><h3>Murugan Temples</h3><p>Ready for your custom data population.</p></a>
+    </section>
+  </main>
+
+  <script src="temple-photos.js"></script>
+  <script src="divyadesam-data.js"></script>
+  <script src="paadal-petra-data.js"></script>
+  <script src="site-data.js"></script>
+  <script src="home.js"></script>
 </body>
 </html>
-<!-- Deployed: Mon Feb  9 16:06:01 UTC 2026 -->
