@@ -634,7 +634,7 @@ function renderDD108SearchDropdown(query) {
                 // Scroll to it
                 templeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 // Highlight briefly
-                templeCard.style.boxShadow = '0 0 0 3px var(--gold)';
+                templeCard.style.boxShadow = '0 0 0 3px var(--saffron)';
                 setTimeout(() => {
                     templeCard.style.boxShadow = '';
                 }, 2000);
@@ -738,7 +738,7 @@ function createTempleCard(temple) {
     card.dataset.categories = temple.categories.join(',');
     card.innerHTML = `
         <div class="temple-card-image">
-            <img src="${temple.image}" alt="${temple.name}" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg, var(--primary), var(--gold))'; this.style.display='none';">
+            <img src="${temple.image}" alt="${temple.name}" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg, var(--saffron), var(--saffron-light))'; this.style.display='none';">
             <div class="card-badges">${badges}</div>
         </div>
         <div class="temple-card-content">
