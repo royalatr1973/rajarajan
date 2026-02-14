@@ -8,6 +8,8 @@
   const summaryEl = document.getElementById('templeSummary');
   const metaEl = document.getElementById('templeMeta');
   const breadcrumbSection = document.getElementById('breadcrumbSection');
+  const sthalaEl = document.getElementById('sthalaVaralaru');
+  const sthalaText = document.getElementById('sthalaVaralaruText');
   if (!type || !id || !titleEl) return;
 
   const data = window.getSectionData(type);
@@ -36,10 +38,16 @@
     ['Deity', temple.deity || '-'],
     ['Consort', raw.thayar || raw.amman || '-'],
     ['Theertham', raw.theertham || '-'],
-    ['Legend', raw.legend || '-'],
     ['Festivals', raw.festivals || '-'],
     ['Significance', raw.significance || '-']
   ];
 
   metaEl.innerHTML = pairs.map(([k, v]) => `<div><strong>${k}</strong>${v}</div>`).join('');
+
+  // Sthala Varalaru (Temple History)
+  var varalaru = raw.sthalaVaralaru || raw.legend || '';
+  if (varalaru && sthalaEl && sthalaText) {
+    sthalaText.textContent = varalaru;
+    sthalaEl.style.display = '';
+  }
 })();
