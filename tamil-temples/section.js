@@ -10,7 +10,7 @@
   const meta = window.sectionMeta[type] || { title: 'Temples' };
   titleEl.textContent = meta.title;
   if (breadcrumbEl) breadcrumbEl.textContent = meta.title;
-  descEl.textContent = 'Search and open any temple to view full details on a dedicated page.';
+  descEl.textContent = meta.desc || 'Search and open any temple to view full details on a dedicated page.';
 
   const data = window.getSectionData(type);
 

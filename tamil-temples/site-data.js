@@ -38,8 +38,8 @@ window.sectionMeta = {
   featured: { title: 'Featured Temples', page: 'featured.html' },
   navagraha: { title: 'Navagraha Temples', page: 'navagraha.html' },
   panchabhootha: { title: 'Pancha Bhootha Temples', page: 'panchabhootha.html' },
-  vinayagar: { title: 'Vinayagar Temples', page: 'vinayagar.html' },
-  murugan: { title: 'Murugan Temples', page: 'murugan.html' }
+  vinayagar: { title: 'Vinayagar Temples', desc: 'Sacred temples of Lord Ganesha (Vinayagar) across Tamil Nadu, the remover of obstacles and the god of beginnings.', page: 'vinayagar.html' },
+  murugan: { title: 'Murugan Temples', desc: 'Arupadaiveedu and other revered temples of Lord Murugan (Kartikeya), the beloved deity of Tamil Nadu.', page: 'murugan.html' }
 };
 
 window.getSectionData = function(type) {
