@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=3" />
 </head>
 <body>
   <header class="site-header">
@@ -28,6 +28,14 @@
       <article class="detail-card">
         <p id="templeSummary"></p>
         <div id="templeMeta" class="detail-grid"></div>
+      </article>
+      <article id="timingsCard" class="timings-card" style="display:none;">
+        <h3>Temple Timings</h3>
+        <p id="timingsText"></p>
+        <a id="mapsBtn" class="maps-btn" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Get Directions on Google Maps
+        </a>
       </article>
       <article id="sthalaVaralaru" class="sthala-varalaru" style="display:none;">
         <h2>Sthala Varalaru</h2>
