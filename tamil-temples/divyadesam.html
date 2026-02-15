@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Section</title>
+  <title>108 Divya Desam - Pilgrimage Route Map</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body data-section-type="dd">
   <header class="site-header">
@@ -22,15 +23,32 @@
       <div class="breadcrumb"><a href="index.html">Home</a> / <span id="breadcrumbTitle">Temples</span></div>
       <h1 id="pageTitle">Temples</h1>
       <p id="pageDesc"></p>
+    </section>
+
+    <!-- Pilgrimage Route Map -->
+    <section class="dd-route-section">
+      <h2 class="dd-route-title">Orthodox Pilgrimage Route</h2>
+      <p class="dd-route-desc">Animated route tracing the traditional pilgrimage path through all 106 earthly Divya Desam temples — from Srirangam through Tamil Nadu, Kerala, Andhra Pradesh, and North India to Mukthinath in Nepal.</p>
+      <div class="dd-route-controls">
+        <button id="ddRoutePlay" class="dd-route-btn">Pause</button>
+        <button id="ddRouteSpeed" class="dd-route-btn">1x</button>
+      </div>
+      <div id="ddRouteMap" class="dd-route-map"></div>
+      <div id="ddRouteInfo" class="dd-route-info">Loading map...</div>
+    </section>
+
+    <section class="page-header" style="padding-top:24px;">
       <div class="search-wrap"><input id="sectionSearch" type="text" placeholder="Search temples in this section..." /></div>
     </section>
     <section id="templeList" class="grid"></section>
   </main>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="temple-photos.js"></script>
   <script src="divyadesam-data.js"></script>
   <script src="paadal-petra-data.js"></script>
   <script src="site-data.js"></script>
   <script src="section.js"></script>
+  <script src="divyadesam-map.js"></script>
 </body>
 </html>
