@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Char Dham Temples - Temples of Tamil Nadu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=3" />
+</head>
+<body data-section-type="chardham">
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo">🕉 Temples of Tamil Nadu</a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="divyadesam.html">108 Divya Desam</a>
+        <a href="paadalpetra.html">276 Shiva Temples</a>
+        <a href="jyotirlinga.html">12 Jyotirlinga</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / <span id="breadcrumbTitle">Temples</span></div>
+      <h1 id="pageTitle">Temples</h1>
+      <p id="pageDesc"></p>
+      <div class="search-wrap"><input id="sectionSearch" type="text" placeholder="Search temples in this section..." /></div>
+    </section>
+    <section id="templeList" class="grid"></section>
+  </main>
+
+  <script src="temple-photos.js"></script>
+  <script src="divyadesam-data.js"></script>
+  <script src="paadal-petra-data.js"></script>
+  <script src="site-data.js"></script>
+  <script src="section.js"></script>
+</body>
+</html>

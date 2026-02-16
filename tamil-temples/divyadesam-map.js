@@ -156,6 +156,51 @@
     markers.push(marker);
   });
 
+  // ---------- Cumulative distances (Haversine * 1.3 road factor) ----------
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Earth radius in km
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  var cumulativeKm = [0]; // temple 1 = 0 km
+  for (var d = 1; d < temples.length; d++) {
+    var segKm = haversineKm(temples[d - 1][0], temples[d - 1][1], temples[d][0], temples[d][1]) * 1.3;
+    cumulativeKm.push(cumulativeKm[d - 1] + segKm);
+  }
+
+  // ---------- Populate route table ----------
+  var tableBody = document.getElementById('ddRouteTableBody');
+  var tableContainer = document.getElementById('ddRouteTableContainer');
+  if (tableBody) {
+    var html = '';
+    for (var r = 0; r < temples.length; r++) {
+      html += '<tr data-idx="' + r + '"><td>' + temples[r][2] + '</td><td>' + temples[r][3] + '</td><td>' + Math.round(cumulativeKm[r]) + '</td></tr>';
+    }
+    tableBody.innerHTML = html;
+  }
+
+  // Helper: highlight active row in table and scroll it into view
+  var prevActiveRow = null;
+  function updateTableRow(segIdx) {
+    if (!tableBody || !tableContainer) return;
+    if (prevActiveRow) prevActiveRow.classList.remove('active');
+    var row = tableBody.querySelector('tr[data-idx="' + segIdx + '"]');
+    if (row) {
+      row.classList.add('active');
+      // Center the active row in the visible area
+      var rowTop = row.offsetTop;
+      var rowHeight = row.offsetHeight;
+      var containerHeight = tableContainer.clientHeight;
+      tableContainer.scrollTop = rowTop - (containerHeight / 2) + (rowHeight / 2);
+      prevActiveRow = row;
+    }
+  }
+
   // Build the full route coordinates
   var routeCoords = temples.map(function (t) { return [t[0], t[1]]; });
 
@@ -221,6 +266,7 @@
           progress = 0;
           animatedLine.setLatLngs([]);
           if (infoEl) infoEl.textContent = 'Starting pilgrimage from Srirangam...';
+          updateTableRow(0);
           animate();
         }, 2000);
         return;
@@ -238,10 +284,11 @@
     // Move dot
     movingDot.setLatLng(current);
 
-    // Highlight current temple marker
+    // Highlight current temple marker and update table row
     if (progress < SPEED * 2) {
       markers[currentSegment].setIcon(activeIcon);
       if (currentSegment > 0) markers[currentSegment - 1].setIcon(templeIcon);
+      updateTableRow(currentSegment);
     }
 
     // Update info text
