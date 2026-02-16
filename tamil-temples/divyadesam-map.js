@@ -201,6 +201,32 @@
     }
   }
 
+  // ---------- Auto-zoom regions ----------
+  // Tamil Nadu temples: index 0-83 (temples 1-84)
+  // Kerala temples: index 84-94 (temples 85-95)
+  // Rest of India: index 95-105 (temples 96-106)
+  var currentRegion = null;
+
+  function getRegion(segIdx) {
+    if (segIdx <= 83) return 'TN';
+    if (segIdx <= 94) return 'KERALA';
+    return 'INDIA';
+  }
+
+  function autoZoom(segIdx) {
+    var region = getRegion(segIdx);
+    if (region === currentRegion) return;
+    currentRegion = region;
+
+    if (region === 'TN') {
+      map.flyToBounds([[8.0, 77.0], [13.5, 80.5]], { padding: [30, 30], duration: 1.5, maxZoom: 7 });
+    } else if (region === 'KERALA') {
+      map.flyToBounds([[8.2, 75.5], [11.0, 77.2]], { padding: [30, 30], duration: 1.5, maxZoom: 8 });
+    } else {
+      map.flyTo([20.5, 79.0], 5, { duration: 1.5 });
+    }
+  }
+
   // Build the full route coordinates
   var routeCoords = temples.map(function (t) { return [t[0], t[1]]; });
 
@@ -264,9 +290,11 @@
         setTimeout(function () {
           currentSegment = 0;
           progress = 0;
+          currentRegion = null;
           animatedLine.setLatLngs([]);
           if (infoEl) infoEl.textContent = 'Starting pilgrimage from Srirangam...';
           updateTableRow(0);
+          autoZoom(0);
           animate();
         }, 2000);
         return;
@@ -284,11 +312,12 @@
     // Move dot
     movingDot.setLatLng(current);
 
-    // Highlight current temple marker and update table row
+    // Highlight current temple marker, update table row, and auto-zoom
     if (progress < SPEED * 2) {
       markers[currentSegment].setIcon(activeIcon);
       if (currentSegment > 0) markers[currentSegment - 1].setIcon(templeIcon);
       updateTableRow(currentSegment);
+      autoZoom(currentSegment);
     }
 
     // Update info text
@@ -321,8 +350,9 @@
     });
   }
 
-  // Start animation
+  // Start animation — zoom into Tamil Nadu initially
   if (infoEl) infoEl.textContent = 'Starting pilgrimage from Srirangam...';
+  autoZoom(0);
   animate();
 
   // Enable scroll zoom when map is clicked
