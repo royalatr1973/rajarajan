@@ -185,12 +185,12 @@ input[type='text']:focus { border-color: var(--saffron); box-shadow: 0 0 0 3px r
   flex: 1 1 0; min-width: 0;
 }
 .dd-route-table-container {
-  flex: 0 0 280px; height: 480px; overflow-y: auto;
+  flex: 0 0 320px; height: 480px; overflow-y: auto;
   border: 1px solid var(--border); border-radius: 14px;
   background: #fff; font-size: 13px;
 }
 .dd-route-table {
-  width: 100%; border-collapse: collapse;
+  width: 100%; border-collapse: collapse; table-layout: fixed;
 }
 .dd-route-table thead {
   position: sticky; top: 0; z-index: 2;
@@ -200,11 +200,14 @@ input[type='text']:focus { border-color: var(--saffron); box-shadow: 0 0 0 3px r
   padding: 7px 8px; text-align: left; color: #3E2723;
   font-weight: 600; font-size: 12px; border-bottom: 2px solid var(--border);
 }
+.dd-route-table th:first-child { width: 32px; }
+.dd-route-table th:last-child { width: 48px; }
 .dd-route-table td {
-  padding: 5px 8px; border-bottom: 1px solid var(--border); white-space: nowrap;
+  padding: 5px 8px; border-bottom: 1px solid var(--border);
 }
-.dd-route-table td:first-child,
-.dd-route-table td:last-child { text-align: right; }
+.dd-route-table td:first-child { text-align: right; white-space: nowrap; }
+.dd-route-table td:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dd-route-table td:last-child { text-align: right; white-space: nowrap; }
 .dd-route-table tbody tr:hover { background: #FFF3E0; }
 .dd-route-table tbody tr.active {
   background: rgba(21,101,192,.12); font-weight: 600;
