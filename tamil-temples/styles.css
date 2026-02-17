@@ -156,6 +156,17 @@ input[type='text']:focus { border-color: var(--saffron); box-shadow: 0 0 0 3px r
 }
 .dd-route-title { color: var(--saffron); font-size: 1.4rem; margin-bottom: 6px; }
 .dd-route-desc { color: var(--muted); font-size: 14px; margin: 0 0 12px; line-height: 1.5; }
+.dd-route-selector { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.dd-route-sel-btn {
+  padding: 7px 16px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--card); color: var(--muted); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+}
+.dd-route-sel-btn:hover { border-color: var(--saffron-light); color: var(--saffron); }
+.dd-route-sel-btn.active {
+  background: linear-gradient(180deg, #FF6F00, #E65100); color: #fff;
+  border-color: #E65100; box-shadow: 0 2px 8px rgba(230,81,0,.25);
+}
 .dd-route-controls { display: flex; gap: 8px; margin-bottom: 10px; }
 .dd-route-btn {
   padding: 6px 16px; border-radius: 999px; border: 1px solid var(--border);
