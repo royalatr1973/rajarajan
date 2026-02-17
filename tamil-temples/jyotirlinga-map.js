@@ -25,6 +25,49 @@
     [20.0263, 75.1790, 12, "Grishneshwar, Ellora, MH", 10200]
   ];
 
+  // --- Haversine for practical route ---
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    var R = 6371;
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  function computeDistances(route) {
+    var km = [0];
+    for (var i = 1; i < route.length; i++) {
+      km.push(km[i-1] + haversineKm(route[i-1][0], route[i-1][1], route[i][0], route[i][1]) * 1.3);
+    }
+    return km;
+  }
+
+  function nearestNeighborRoute(tmps) {
+    var remaining = tmps.slice();
+    remaining.sort(function(a, b) { return b[0] - a[0]; });
+    var result = [remaining.shift()];
+    while (remaining.length > 0) {
+      var last = result[result.length - 1];
+      var bestDist = Infinity, bestIdx = 0;
+      for (var i = 0; i < remaining.length; i++) {
+        var d = haversineKm(last[0], last[1], remaining[i][0], remaining[i][1]);
+        if (d < bestDist) { bestDist = d; bestIdx = i; }
+      }
+      result.push(remaining.splice(bestIdx, 1)[0]);
+    }
+    return result.map(function(t, i) {
+      return [t[0], t[1], i + 1, t[3], 0]; // distances recomputed below
+    });
+  }
+
+  var orthodoxRoute = temples;
+  var practicalRouteBase = nearestNeighborRoute(temples);
+  var practicalKm = computeDistances(practicalRouteBase);
+  practicalRouteBase.forEach(function(t, i) { t[4] = Math.round(practicalKm[i]); });
+  var routeType = 'orthodox';
+
   // Initialize Leaflet map centered on India
   var map = L.map('ddRouteMap', {
     center: [22.5, 78.0],
@@ -53,50 +96,78 @@
     iconAnchor: [7, 7]
   });
 
-  // Add markers for all temples
-  var markers = [];
-  temples.forEach(function (t) {
-    var marker = L.marker([t[0], t[1]], { icon: templeIcon })
-      .addTo(map)
-      .bindPopup('<strong>#' + t[2] + '</strong><br>' + t[3]);
-    markers.push(marker);
-  });
-
-  // Build the full route coordinates
-  var routeCoords = temples.map(function (t) { return [t[0], t[1]]; });
-
-  // Static faint route (full path shown lightly)
-  L.polyline(routeCoords, {
-    color: '#90CAF9',
-    weight: 2,
-    opacity: 0.35,
-    dashArray: '4 6'
-  }).addTo(map);
-
-  // Animated blue route line
-  var animatedLine = L.polyline([], {
-    color: '#1565C0',
-    weight: 3.5,
-    opacity: 0.85
-  }).addTo(map);
-
-  // Moving dot marker
+  // Moving dot marker icon
   var dotIcon = L.divIcon({
     className: 'dd-map-dot',
     html: '<span></span>',
     iconSize: [12, 12],
     iconAnchor: [6, 6]
   });
-  var movingDot = L.marker(routeCoords[0], { icon: dotIcon, zIndexOffset: 1000 }).addTo(map);
+
+  // Shared state for map elements
+  var markers = [];
+  var routeCoords = [];
+  var faintLine = null;
+  var animatedLine = null;
+  var movingDot = null;
 
   // Info display
   var infoEl = document.getElementById('ddRouteInfo');
-
-  // Populate the side table with all 12 rows on init
   var tableBody = document.getElementById('ddRouteTableBody');
-  if (tableBody) {
+
+  // --- Reusable build functions ---
+
+  function getActiveTemples() {
+    return routeType === 'orthodox' ? orthodoxRoute : practicalRouteBase;
+  }
+
+  function buildMapElements() {
+    var activeTemples = getActiveTemples();
+
+    // Remove old markers
+    markers.forEach(function(m) { map.removeLayer(m); });
+    markers = [];
+
+    // Remove old lines
+    if (faintLine) { map.removeLayer(faintLine); faintLine = null; }
+    if (animatedLine) { map.removeLayer(animatedLine); animatedLine = null; }
+    if (movingDot) { map.removeLayer(movingDot); movingDot = null; }
+
+    // Build route coordinates
+    routeCoords = activeTemples.map(function(t) { return [t[0], t[1]]; });
+
+    // Add markers for all temples
+    activeTemples.forEach(function(t) {
+      var marker = L.marker([t[0], t[1]], { icon: templeIcon })
+        .addTo(map)
+        .bindPopup('<strong>#' + t[2] + '</strong><br>' + t[3]);
+      markers.push(marker);
+    });
+
+    // Static faint route (full path shown lightly)
+    faintLine = L.polyline(routeCoords, {
+      color: '#90CAF9',
+      weight: 2,
+      opacity: 0.35,
+      dashArray: '4 6'
+    }).addTo(map);
+
+    // Animated blue route line
+    animatedLine = L.polyline([], {
+      color: '#1565C0',
+      weight: 3.5,
+      opacity: 0.85
+    }).addTo(map);
+
+    // Moving dot marker
+    movingDot = L.marker(routeCoords[0], { icon: dotIcon, zIndexOffset: 1000 }).addTo(map);
+  }
+
+  function buildTable() {
+    if (!tableBody) return;
+    var activeTemples = getActiveTemples();
     var html = '';
-    temples.forEach(function (t, idx) {
+    activeTemples.forEach(function(t, idx) {
       html += '<tr data-idx="' + idx + '">'
             + '<td>' + t[2] + '</td>'
             + '<td>' + t[3] + '</td>'
@@ -135,6 +206,8 @@
       return;
     }
 
+    var activeTemples = getActiveTemples();
+
     progress += SPEED;
 
     if (progress >= 1) {
@@ -142,16 +215,16 @@
       currentSegment++;
 
       // Update marker style for reached temple
-      if (currentSegment < temples.length && currentSegment > 0) {
+      if (currentSegment < activeTemples.length && currentSegment > 0) {
         markers[currentSegment - 1].setIcon(templeIcon);
       }
 
       if (currentSegment >= routeCoords.length - 1) {
         // Highlight last temple before looping
-        highlightRow(temples.length - 1);
-        markers[temples.length - 1].setIcon(activeIcon);
+        highlightRow(activeTemples.length - 1);
+        markers[activeTemples.length - 1].setIcon(activeIcon);
         if (infoEl) {
-          var last = temples[temples.length - 1];
+          var last = activeTemples[activeTemples.length - 1];
           infoEl.textContent = '#' + last[2] + ' ' + last[3] + ' — Pilgrimage complete. Restarting...';
         }
 
@@ -160,9 +233,9 @@
           currentSegment = 0;
           progress = 0;
           animatedLine.setLatLngs([]);
-          markers[temples.length - 1].setIcon(templeIcon);
+          markers[activeTemples.length - 1].setIcon(templeIcon);
           highlightRow(0);
-          if (infoEl) infoEl.textContent = 'Starting pilgrimage from Somnath...';
+          if (infoEl) infoEl.textContent = 'Starting pilgrimage from ' + activeTemples[0][3] + '...';
           animate();
         }, 2000);
         return;
@@ -189,12 +262,43 @@
 
     // Update info text
     if (infoEl) {
-      var t = temples[currentSegment];
-      var next = temples[Math.min(currentSegment + 1, temples.length - 1)];
+      var t = activeTemples[currentSegment];
+      var next = activeTemples[Math.min(currentSegment + 1, activeTemples.length - 1)];
       infoEl.textContent = '#' + t[2] + ' ' + t[3] + '  \u2192  #' + next[2] + ' ' + next[3];
     }
 
     animFrame = requestAnimationFrame(animate);
+  }
+
+  // --- Switch route ---
+  function switchRoute(type) {
+    // Cancel current animation
+    if (animFrame) {
+      cancelAnimationFrame(animFrame);
+      animFrame = null;
+    }
+
+    routeType = type;
+
+    // Reset animation state
+    currentSegment = 0;
+    progress = 0;
+    paused = false;
+
+    // Update play button text
+    var playBtn = document.getElementById('ddRoutePlay');
+    if (playBtn) playBtn.textContent = 'Pause';
+
+    // Rebuild everything
+    buildMapElements();
+    buildTable();
+    highlightRow(0);
+
+    var activeTemples = getActiveTemples();
+    if (infoEl) infoEl.textContent = 'Starting pilgrimage from ' + activeTemples[0][3] + '...';
+
+    // Restart animation
+    animate();
   }
 
   // Controls
@@ -218,7 +322,22 @@
     });
   }
 
-  // Start animation
+  // Route selector
+  var selectorEl = document.getElementById('routeSelector');
+  if (selectorEl) {
+    var btns = selectorEl.querySelectorAll('.dd-route-sel-btn');
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        btns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        switchRoute(btn.getAttribute('data-route'));
+      });
+    });
+  }
+
+  // Initial build and start animation
+  buildMapElements();
+  buildTable();
   highlightRow(0);
   if (infoEl) infoEl.textContent = 'Starting pilgrimage from Somnath...';
   animate();
