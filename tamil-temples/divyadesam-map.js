@@ -1,6 +1,7 @@
 // ============================================================
 // Divya Desam Pilgrimage Route Map - Animated Blue Trace
 // Orthodox sequence: Temples 1-106 (earthly temples only)
+// Practical route: Nearest-neighbor area coverage
 // Uses Leaflet.js (OpenStreetMap, no API key needed)
 // ============================================================
 
@@ -119,6 +120,64 @@
     [28.8186, 83.8714, 106, "Sri Moorthy, Mukthinath, Nepal"]
   ];
 
+  // ---------- Haversine distance ----------
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Earth radius in km
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  // ---------- Nearest-neighbor practical route ----------
+  function nearestNeighborRoute(srcTemples) {
+    // Start from the northernmost temple
+    var startIdx = 0;
+    for (var i = 1; i < srcTemples.length; i++) {
+      if (srcTemples[i][0] > srcTemples[startIdx][0]) startIdx = i;
+    }
+
+    var visited = [];
+    var remaining = srcTemples.slice(); // shallow copy
+    var current = remaining.splice(startIdx, 1)[0];
+    visited.push(current);
+
+    while (remaining.length > 0) {
+      var nearestIdx = 0;
+      var nearestDist = Infinity;
+      for (var j = 0; j < remaining.length; j++) {
+        var dist = haversineKm(current[0], current[1], remaining[j][0], remaining[j][1]);
+        if (dist < nearestDist) {
+          nearestDist = dist;
+          nearestIdx = j;
+        }
+      }
+      current = remaining.splice(nearestIdx, 1)[0];
+      visited.push(current);
+    }
+    return visited;
+  }
+
+  // Precompute routes
+  var orthodoxRoute = temples;
+  var practicalRoute = nearestNeighborRoute(temples);
+  var routeType = 'orthodox';
+  var activeTemples = orthodoxRoute;
+
+  // Compute cumulative distances for a given route
+  function computeCumulativeKm(routeTemples) {
+    var km = [0];
+    for (var d = 1; d < routeTemples.length; d++) {
+      var segKm = haversineKm(routeTemples[d - 1][0], routeTemples[d - 1][1], routeTemples[d][0], routeTemples[d][1]) * 1.3;
+      km.push(km[d - 1] + segKm);
+    }
+    return km;
+  }
+
+  var cumulativeKm = computeCumulativeKm(activeTemples);
+
   // Initialize Leaflet map centered on India
   var map = L.map('ddRouteMap', {
     center: [20.5, 79.0],
@@ -147,39 +206,71 @@
     iconAnchor: [7, 7]
   });
 
-  // Add markers for all temples
-  var markers = [];
-  temples.forEach(function (t) {
-    var marker = L.marker([t[0], t[1]], { icon: templeIcon })
-      .addTo(map)
-      .bindPopup('<strong>#' + t[2] + '</strong><br>' + t[3]);
-    markers.push(marker);
+  // Moving dot icon
+  var dotIcon = L.divIcon({
+    className: 'dd-map-dot',
+    html: '<span></span>',
+    iconSize: [12, 12],
+    iconAnchor: [6, 6]
   });
 
-  // ---------- Cumulative distances (Haversine * 1.3 road factor) ----------
-  function haversineKm(lat1, lon1, lat2, lon2) {
-    var R = 6371; // Earth radius in km
-    var dLat = (lat2 - lat1) * Math.PI / 180;
-    var dLon = (lon2 - lon1) * Math.PI / 180;
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  }
+  // Map layer references (rebuilt on route switch)
+  var markers = [];
+  var faintLine = null;
+  var animatedLine = null;
+  var movingDot = null;
+  var routeCoords = [];
 
-  var cumulativeKm = [0]; // temple 1 = 0 km
-  for (var d = 1; d < temples.length; d++) {
-    var segKm = haversineKm(temples[d - 1][0], temples[d - 1][1], temples[d][0], temples[d][1]) * 1.3;
-    cumulativeKm.push(cumulativeKm[d - 1] + segKm);
+  // ---------- Build map elements (markers, polylines, dot) ----------
+  function buildMapElements() {
+    // Remove existing markers
+    markers.forEach(function (m) { map.removeLayer(m); });
+    markers = [];
+
+    // Remove existing polylines and dot
+    if (faintLine) map.removeLayer(faintLine);
+    if (animatedLine) map.removeLayer(animatedLine);
+    if (movingDot) map.removeLayer(movingDot);
+
+    // Build route coordinates from active temples
+    routeCoords = activeTemples.map(function (t) { return [t[0], t[1]]; });
+
+    // Add markers for all temples in route order
+    activeTemples.forEach(function (t, idx) {
+      var marker = L.marker([t[0], t[1]], { icon: templeIcon })
+        .addTo(map)
+        .bindPopup('<strong>#' + (idx + 1) + '</strong><br>' + t[3]);
+      markers.push(marker);
+    });
+
+    // Static faint route (full path shown lightly)
+    faintLine = L.polyline(routeCoords, {
+      color: '#90CAF9',
+      weight: 2,
+      opacity: 0.35,
+      dashArray: '4 6'
+    }).addTo(map);
+
+    // Animated blue route line
+    animatedLine = L.polyline([], {
+      color: '#1565C0',
+      weight: 3.5,
+      opacity: 0.85
+    }).addTo(map);
+
+    // Moving dot marker
+    movingDot = L.marker(routeCoords[0], { icon: dotIcon, zIndexOffset: 1000 }).addTo(map);
   }
 
   // ---------- Populate route table ----------
   var tableBody = document.getElementById('ddRouteTableBody');
   var tableContainer = document.getElementById('ddRouteTableContainer');
-  if (tableBody) {
+
+  function buildTable() {
+    if (!tableBody) return;
     var html = '';
-    for (var r = 0; r < temples.length; r++) {
-      html += '<tr data-idx="' + r + '"><td>' + temples[r][2] + '</td><td>' + temples[r][3] + '</td><td>' + Math.round(cumulativeKm[r]) + '</td></tr>';
+    for (var r = 0; r < activeTemples.length; r++) {
+      html += '<tr data-idx="' + r + '"><td>' + (r + 1) + '</td><td>' + activeTemples[r][3] + '</td><td>' + Math.round(cumulativeKm[r]) + '</td></tr>';
     }
     tableBody.innerHTML = html;
   }
@@ -201,7 +292,7 @@
     }
   }
 
-  // ---------- Auto-zoom regions ----------
+  // ---------- Auto-zoom regions (orthodox route only) ----------
   // Tamil Nadu temples: index 0-83 (temples 1-84)
   // Kerala temples: index 84-94 (temples 85-95)
   // Rest of India: index 95-105 (temples 96-106)
@@ -214,6 +305,9 @@
   }
 
   function autoZoom(segIdx) {
+    // Only apply region-based auto-zoom for the orthodox route
+    if (routeType !== 'orthodox') return;
+
     var region = getRegion(segIdx);
     if (region === currentRegion) return;
     currentRegion = region;
@@ -226,33 +320,6 @@
       map.flyTo([20.5, 79.0], 5, { duration: 1.5 });
     }
   }
-
-  // Build the full route coordinates
-  var routeCoords = temples.map(function (t) { return [t[0], t[1]]; });
-
-  // Static faint route (full path shown lightly)
-  L.polyline(routeCoords, {
-    color: '#90CAF9',
-    weight: 2,
-    opacity: 0.35,
-    dashArray: '4 6'
-  }).addTo(map);
-
-  // Animated blue route line
-  var animatedLine = L.polyline([], {
-    color: '#1565C0',
-    weight: 3.5,
-    opacity: 0.85
-  }).addTo(map);
-
-  // Moving dot marker
-  var dotIcon = L.divIcon({
-    className: 'dd-map-dot',
-    html: '<span></span>',
-    iconSize: [12, 12],
-    iconAnchor: [6, 6]
-  });
-  var movingDot = L.marker(routeCoords[0], { icon: dotIcon, zIndexOffset: 1000 }).addTo(map);
 
   // Info display
   var infoEl = document.getElementById('ddRouteInfo');
@@ -281,7 +348,7 @@
       currentSegment++;
 
       // Update marker style for reached temple
-      if (currentSegment < temples.length && currentSegment > 0) {
+      if (currentSegment < activeTemples.length && currentSegment > 0) {
         markers[currentSegment - 1].setIcon(templeIcon);
       }
 
@@ -292,7 +359,7 @@
           progress = 0;
           currentRegion = null;
           animatedLine.setLatLngs([]);
-          if (infoEl) infoEl.textContent = 'Starting pilgrimage from Srirangam...';
+          if (infoEl) infoEl.textContent = 'Starting pilgrimage from ' + activeTemples[0][3].split(',')[0] + '...';
           updateTableRow(0);
           autoZoom(0);
           animate();
@@ -322,11 +389,67 @@
 
     // Update info text
     if (infoEl) {
-      var t = temples[currentSegment];
-      infoEl.textContent = '#' + t[2] + ' ' + t[3] + '  \u2192  #' + temples[Math.min(currentSegment + 1, temples.length - 1)][2] + ' ' + temples[Math.min(currentSegment + 1, temples.length - 1)][3];
+      var t = activeTemples[currentSegment];
+      var nextIdx = Math.min(currentSegment + 1, activeTemples.length - 1);
+      infoEl.textContent = '#' + (currentSegment + 1) + ' ' + t[3] + '  \u2192  #' + (nextIdx + 1) + ' ' + activeTemples[nextIdx][3];
     }
 
     animFrame = requestAnimationFrame(animate);
+  }
+
+  // ---------- Route switching ----------
+  function switchRoute(type) {
+    if (type === routeType) return;
+    routeType = type;
+
+    // Cancel current animation
+    if (animFrame) {
+      cancelAnimationFrame(animFrame);
+      animFrame = null;
+    }
+
+    // Switch active temples and recompute distances
+    activeTemples = (routeType === 'orthodox') ? orthodoxRoute : practicalRoute;
+    cumulativeKm = computeCumulativeKm(activeTemples);
+
+    // Reset animation state
+    currentSegment = 0;
+    progress = 0;
+    currentRegion = null;
+    prevActiveRow = null;
+
+    // Rebuild map elements and table
+    buildMapElements();
+    buildTable();
+
+    // Fit map to show all temples for practical route; zoom to TN for orthodox
+    if (routeType === 'practical') {
+      var bounds = L.latLngBounds(routeCoords);
+      map.flyToBounds(bounds, { padding: [30, 30], duration: 1.5, maxZoom: 6 });
+    } else {
+      autoZoom(0);
+    }
+
+    // Restart animation
+    if (infoEl) infoEl.textContent = 'Starting pilgrimage from ' + activeTemples[0][3].split(',')[0] + '...';
+    updateTableRow(0);
+    paused = false;
+    var playBtn = document.getElementById('ddRoutePlay');
+    if (playBtn) playBtn.textContent = 'Pause';
+    animate();
+  }
+
+  // ---------- Route selector button handling ----------
+  var selectorEl = document.getElementById('routeSelector');
+  if (selectorEl) {
+    var btns = selectorEl.querySelectorAll('.dd-route-sel-btn');
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        btns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        switchRoute(btn.getAttribute('data-route'));
+      });
+    });
   }
 
   // Controls
@@ -350,7 +473,9 @@
     });
   }
 
-  // Start animation — zoom into Tamil Nadu initially
+  // ---------- Initial build and start ----------
+  buildMapElements();
+  buildTable();
   if (infoEl) infoEl.textContent = 'Starting pilgrimage from Srirangam...';
   autoZoom(0);
   animate();
