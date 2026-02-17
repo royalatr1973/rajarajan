@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kumbakonam Temples — Temple Town of Tamil Nadu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body data-section-type="kumbakonam">
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo">🕉 Temples of Tamil Nadu</a>
+      <nav><a href="index.html">Home</a></nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / <span id="breadcrumbTitle">Temples</span></div>
+      <h1 id="pageTitle">Temples</h1>
+      <p id="pageDesc"></p>
+      <div class="search-wrap"><input id="sectionSearch" type="text" placeholder="Search temples in this section..." /></div>
+    </section>
+
+    <!-- Interactive Route Map -->
+    <section class="dd-route-section">
+      <h2 class="dd-route-title">Kumbakonam Temples Interactive Route Map</h2>
+      <p class="dd-route-desc">Animated route tracing the pilgrimage path through Kumbakonam temples.</p>
+      <div class="dd-route-selector" id="routeSelector">
+        <button class="dd-route-sel-btn active" data-route="orthodox">Orthodox Route</button>
+        <button class="dd-route-sel-btn" data-route="practical">Practical Area Coverage</button>
+      </div>
+      <div class="dd-route-controls">
+        <button id="ddRoutePlay" class="dd-route-btn">Pause</button>
+        <button id="ddRouteSpeed" class="dd-route-btn">1x</button>
+      </div>
+      <div class="dd-map-table-wrap">
+        <div id="ddRouteMap" class="dd-route-map"></div>
+        <div class="dd-route-table-container" id="ddRouteTableContainer">
+          <table class="dd-route-table" id="ddRouteTable">
+            <thead><tr><th>#</th><th>Temple</th><th>km</th></tr></thead>
+            <tbody id="ddRouteTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="ddRouteInfo" class="dd-route-info">Loading map...</div>
+    </section>
+
+    <section id="templeList" class="grid"></section>
+  </main>
+
+  <script src="temple-photos.js"></script>
+  <script src="divyadesam-data.js"></script>
+  <script src="paadal-petra-data.js"></script>
+  <script src="site-data.js"></script>
+  <script src="section.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="temple-map-engine.js"></script>
+  <script>TempleMapEngine.init('kumbakonam');</script>
+</body>
+</html>
