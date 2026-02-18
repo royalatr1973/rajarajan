@@ -10,7 +10,9 @@
     ...window.getSectionData('navagraha').map(t => ({ ...t, type: 'navagraha' })),
     ...window.getSectionData('panchabhootha').map(t => ({ ...t, type: 'panchabhootha' })),
     ...window.getSectionData('vinayagar').map(t => ({ ...t, type: 'vinayagar' })),
-    ...window.getSectionData('murugan').map(t => ({ ...t, type: 'murugan' }))
+    ...window.getSectionData('murugan').map(t => ({ ...t, type: 'murugan' })),
+    ...window.getSectionData('kumbakonam').map(t => ({ ...t, type: 'kumbakonam' })),
+    ...window.getSectionData('kanchipuram').map(t => ({ ...t, type: 'kanchipuram' }))
   ];
 
   input.addEventListener('input', () => {

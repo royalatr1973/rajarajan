@@ -20,18 +20,21 @@
       return;
     }
 
-    listEl.innerHTML = items.map(t => `
+    listEl.innerHTML = items.map(t => {
+      var fallback = window.getSectionFallback ? window.getSectionFallback(type, t.name) : '';
+      var imgSrc = t.image || fallback;
+      return `
       <article class="temple-card">
         <a href="temple.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(t.id)}">
-          <img src="${t.image || ''}" alt="${t.name}" onerror="this.onerror=null;this.src='${(window.getDivyaDesamFallback ? window.getDivyaDesamFallback(1) : '')}';" />
+          <img src="${imgSrc}" alt="${t.name}" onerror="this.onerror=null;this.src='${fallback.replace(/'/g, "\\'")}';" />
           <div class="content">
             <h3>${t.name}</h3>
             <p>${t.location || ''}${t.district ? ', ' + t.district : ''}</p>
             <span class="badge">${t.deity || 'Temple'}</span>
           </div>
         </a>
-      </article>
-    `).join('');
+      </article>`;
+    }).join('');
   }
 
   searchEl.addEventListener('input', () => {

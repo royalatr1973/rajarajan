@@ -2,13 +2,49 @@
 // Temple Photos - Raw GitHub URLs with SVG Fallback
 // ========================================
 
-// Create SVG placeholder fallback
+// Section theme colors: [bg gradient start, bg gradient end, accent, text]
+var sectionThemes = {
+    dd:              ['%235c1a1a','%233a0f0f','%23c9a84c','Vishnu'],
+    pp:              ['%231a3a5c','%230f1f3a','%23c9a84c','Shiva'],
+    featured:        ['%23b45a00','%23804000','%23FFD54F','Featured'],
+    navagraha:       ['%231a1a5c','%23100f3a','%23FFD700','Navagraha'],
+    panchabhootha:   ['%232d5c1a','%231a3a0f','%2390EE90','Pancha Bhootha'],
+    vinayagar:       ['%235c1a3a','%233a0f20','%23FF9999','Vinayagar'],
+    murugan:         ['%23cc3300','%23991a00','%23FFD54F','Murugan'],
+    amman:           ['%238b0000','%23660000','%23FF6B6B','Amman'],
+    jyotirlinga:     ['%234a2800','%23331a00','%23FFB300','Jyotirlinga'],
+    sapthavidanga:   ['%231a4a5c','%230f2f3a','%2387CEEB','Saptha Vidanga'],
+    sapthasthanam:   ['%23cc3300','%23801a00','%23FFCC80','Sapthasthanam'],
+    ashtaveerattanam:['%234a1a2d','%23330f1a','%23DDA0DD','Ashtaveerattanam'],
+    panchasabhai:    ['%232d1a4a','%231a0f33','%23D8BFD8','Pancha Sabhai'],
+    panchaaranya:    ['%231a4a2d','%230f331a','%2398FB98','Panchaaranya'],
+    chardham:        ['%23cc6600','%23994d00','%23FFE4B5','Char Dham'],
+    shaktipeethas:   ['%238b0000','%23590000','%23FF69B4','Shakti Peethas'],
+    navatirupathi:   ['%231a3a5c','%230f2040','%2387CEEB','Nava Tirupathi']
+};
+
+// Create SVG placeholder fallback with section theming
 function createTempleImage(name, type) {
-    const bgColor = type === 'shiva' ? '%235c1a1a' : '%231e3a5f';
-    const textColor = '%23c9a84c';
-    const displayName = name.length > 12 ? name.substring(0, 12) : name;
-    const label = type === 'shiva' ? 'Shiva' : 'Vishnu';
-    return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='${bgColor}'/%3E%3Ctext x='50' y='45' font-size='10' fill='${textColor}' text-anchor='middle'%3E${encodeURIComponent(displayName)}%3C/text%3E%3Ctext x='50' y='65' font-size='8' fill='${textColor}' text-anchor='middle' opacity='0.7'%3E${label}%3C/text%3E%3C/svg%3E`;
+    var theme = sectionThemes[type] || sectionThemes['dd'];
+    var bgStart = theme[0];
+    var bgEnd = theme[1];
+    var accent = theme[2];
+    var label = theme[3] || 'Temple';
+    var displayName = name.length > 15 ? name.substring(0, 15) + '..' : name;
+    var encodedName = encodeURIComponent(displayName);
+
+    return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='220'%3E" +
+        "%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E" +
+        "%3Cstop offset='0' stop-color='" + bgStart + "'/%3E" +
+        "%3Cstop offset='1' stop-color='" + bgEnd + "'/%3E" +
+        "%3C/linearGradient%3E%3C/defs%3E" +
+        "%3Crect width='400' height='220' fill='url(%23bg)'/%3E" +
+        "%3Ccircle cx='200' cy='70' r='35' fill='none' stroke='" + accent + "' stroke-width='1.5' opacity='0.3'/%3E" +
+        "%3Ctext x='200' y='65' font-family='serif' font-size='28' fill='" + accent + "' text-anchor='middle' opacity='0.5'%3E%E0%AE%93%E0%AE%AE%E0%AF%8D%3C/text%3E" +
+        "%3Ctext x='200' y='130' font-family='sans-serif' font-size='16' fill='%23ffffff' text-anchor='middle' font-weight='600'%3E" + encodedName + "%3C/text%3E" +
+        "%3Ctext x='200' y='155' font-family='sans-serif' font-size='11' fill='" + accent + "' text-anchor='middle' opacity='0.7'%3E" + encodeURIComponent(label) + "%3C/text%3E" +
+        "%3Cline x1='160' y1='170' x2='240' y2='170' stroke='" + accent + "' stroke-width='1' opacity='0.2'/%3E" +
+        "%3C/svg%3E";
 }
 
 // Temple names for 108 Divya Desam
@@ -58,8 +94,8 @@ for (let i = 1; i <= 276; i++) {
 }
 
 // Default/fallback images
-const defaultDDImage = createTempleImage('Temple', 'vishnu');
-const defaultPPSImage = createTempleImage('Temple', 'shiva');
+const defaultDDImage = createTempleImage('Temple', 'dd');
+const defaultPPSImage = createTempleImage('Temple', 'pp');
 
 function getDivyaDesamPhoto(n) {
     return divyaDesamPhotos[n] || defaultDDImage;
@@ -71,11 +107,16 @@ function getPaadalPetraPhoto(n) {
 
 // Get fallback SVG for when image fails to load
 function getDivyaDesamFallback(n) {
-    return createTempleImage(dd108Names[n] || 'Temple', 'vishnu');
+    return createTempleImage(dd108Names[n] || 'Temple', 'dd');
 }
 
 function getPaadalPetraFallback(n) {
-    return createTempleImage(pps276Names[n] || 'Temple', 'shiva');
+    return createTempleImage(pps276Names[n] || 'Temple', 'pp');
+}
+
+// Section-specific fallback generator
+function getSectionFallback(sectionType, templeName) {
+    return createTempleImage(templeName || 'Temple', sectionType);
 }
 
 // Expose globally
@@ -85,6 +126,8 @@ window.getDivyaDesamPhoto = getDivyaDesamPhoto;
 window.getPaadalPetraPhoto = getPaadalPetraPhoto;
 window.getDivyaDesamFallback = getDivyaDesamFallback;
 window.getPaadalPetraFallback = getPaadalPetraFallback;
+window.getSectionFallback = getSectionFallback;
+window.createTempleImage = createTempleImage;
 window.defaultDDImage = defaultDDImage;
 window.defaultPPSImage = defaultPPSImage;
 
