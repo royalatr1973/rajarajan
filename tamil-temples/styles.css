@@ -246,4 +246,45 @@ input[type='text']:focus { border-color: var(--saffron); box-shadow: 0 0 0 3px r
   .dd-map-table-wrap { flex-direction: column; }
   .dd-route-map { height: 350px; }
   .dd-route-table-container { flex: none; height: 260px; }
+  .tour-packages-grid { grid-template-columns: 1fr; }
 }
+
+/* Tour Packages */
+.tour-packages-section { margin: 48px 0 24px; }
+.tour-packages-header { text-align: center; margin-bottom: 24px; }
+.tour-packages-header h2 { color: var(--saffron); font-size: 1.6rem; }
+.tour-packages-header p { color: var(--muted); margin: 6px 0 0; font-size: 15px; }
+.tour-packages-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+.tour-package-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 20px; display: flex; flex-direction: column; gap: 12px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.tour-package-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+.tour-pkg-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.tour-pkg-header h3 { font-size: 1rem; color: var(--text); margin: 0; }
+.tour-pkg-price {
+  white-space: nowrap; font-weight: 700; color: #2E7D32; font-size: 14px;
+  background: rgba(46,125,50,.08); padding: 4px 10px; border-radius: 999px;
+}
+.tour-pkg-meta { display: flex; flex-direction: column; gap: 4px; }
+.tour-pkg-duration {
+  font-size: 13px; font-weight: 600; color: var(--saffron);
+}
+.tour-pkg-temples { font-size: 13px; color: var(--muted); }
+.tour-pkg-highlights {
+  list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px;
+}
+.tour-pkg-highlights li {
+  font-size: 12px; background: var(--bg-soft); color: var(--muted);
+  padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border);
+}
+.tour-pkg-btn {
+  display: inline-block; text-align: center; padding: 10px 20px; margin-top: auto;
+  background: var(--saffron); color: #fff; text-decoration: none; border-radius: 8px;
+  font-size: 14px; font-weight: 600; transition: background .2s ease;
+}
+.tour-pkg-btn:hover { background: var(--saffron-light); }
