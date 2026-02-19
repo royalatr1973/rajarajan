@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Temple Details</title>
+  <title>Temples Near You - Temples of Tamil Nadu</title>
+  <meta name="description" content="Find sacred temples near your current location, sorted by distance across all temple circuits." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -25,38 +26,25 @@
 
   <main class="container">
     <section class="page-header">
-      <div class="breadcrumb"><a href="index.html">Home</a> / <a id="breadcrumbSection" href="#">Section</a> / Temple</div>
-      <h1 id="templeTitle">Temple</h1>
+      <div class="breadcrumb"><a href="index.html">Home</a> / Temples Near You</div>
+      <h1>Temples Near You</h1>
+      <p>Find temples closest to your current location across all sacred circuits.</p>
+      <button id="nearbyBtn" class="nearby-locate-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+        Find Nearby Temples
+      </button>
+      <p id="nearbyStatus" class="nearby-status"></p>
+      <div class="search-wrap"><input id="nearbySearch" type="text" placeholder="Filter results..." style="display:none;" /></div>
     </section>
 
-    <section class="detail">
-      <img id="templeImage" src="" alt="Temple gopuram" />
-      <article class="detail-card">
-        <p id="templeSummary"></p>
-        <div id="templeMeta" class="detail-grid"></div>
-      </article>
-      <article id="timingsCard" class="timings-card" style="display:none;">
-        <h3>Temple Timings</h3>
-        <p id="timingsText"></p>
-        <a id="mapsBtn" class="maps-btn" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Get Directions on Google Maps
-        </a>
-      </article>
-      <article id="sthalaVaralaru" class="sthala-varalaru" style="display:none;">
-        <h2>Sthala Varalaru</h2>
-        <p id="sthalaVaralaruText"></p>
-      </article>
-    </section>
+    <section id="nearbyList" class="grid"></section>
   </main>
 
   <script src="temple-photos.js"></script>
   <script src="divyadesam-data.js"></script>
   <script src="paadal-petra-data.js"></script>
   <script src="site-data.js"></script>
-  <script src="detail.js"></script>
-  <script src="visited-tracker.js"></script>
-  <script src="share-temple.js"></script>
+  <script src="nearby.js"></script>
   <script src="i18n.js"></script>
 </body>
 </html>
