@@ -1,0 +1,27 @@
+{
+  "name": "Temples of Tamil Nadu",
+  "short_name": "TN Temples",
+  "description": "Sacred temple encyclopedia — 20+ pilgrimage circuits across India",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFF8E1",
+  "theme_color": "#E65100",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='24' fill='%23E65100'/%3E%3Ctext x='96' y='120' font-size='100' text-anchor='middle' fill='%23FFD54F' font-family='serif'%3E%E0%AE%93%E0%AE%AE%E0%AF%8D%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='64' fill='%23E65100'/%3E%3Ctext x='256' y='320' font-size='260' text-anchor='middle' fill='%23FFD54F' font-family='serif'%3E%E0%AE%93%E0%AE%AE%E0%AF%8D%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["travel", "lifestyle"],
+  "lang": "en"
+}

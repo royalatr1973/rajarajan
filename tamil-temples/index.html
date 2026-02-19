@@ -8,7 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#E65100" />
 </head>
 <body>
   <header class="site-header">
@@ -21,6 +23,8 @@
         <a href="murugan.html">Murugan</a>
         <a href="amman.html">Amman</a>
         <a href="vinayagar.html">Vinayagar</a>
+        <a href="nearby.html">Nearby</a>
+        <a href="festivals.html">Festivals</a>
       </nav>
     </div>
   </header>
@@ -57,6 +61,9 @@
       <article><strong>5</strong><span>Pancha Bhootha Temples</span></article>
     </section>
 
+    <!-- Daily Panchang Widget -->
+    <section class="container" id="panchangWidget"></section>
+
     <section class="container page-header">
       <p class="eyebrow">Temple Categories</p>
       <h2>Browse by Sacred Tradition</h2>
@@ -91,5 +98,12 @@
   <script src="paadal-petra-data.js"></script>
   <script src="site-data.js"></script>
   <script src="home.js"></script>
+  <script src="panchang.js"></script>
+  <script src="i18n.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    }
+  </script>
 </body>
 </html>
