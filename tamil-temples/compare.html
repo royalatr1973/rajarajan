@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Section</title>
+  <title>Compare Temples - Temples of Tamil Nadu</title>
+  <meta name="description" content="Compare temples side by side — deity, timings, festivals, significance, and more." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -11,36 +12,41 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#E65100" />
 </head>
-<body data-section-type="pps">
+<body>
   <header class="site-header">
     <div class="container nav">
       <a href="index.html" class="logo">🕉 Temples of Tamil Nadu</a>
-      <nav><a href="index.html">Home</a><a href="nearby.html">Nearby</a><a href="festivals.html">Festivals</a><a href="compare.html">Compare</a></nav>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="nearby.html">Nearby</a>
+        <a href="festivals.html">Festivals</a>
+        <a href="compare.html">Compare</a>
+      </nav>
     </div>
   </header>
 
   <main class="container">
     <section class="page-header">
-      <div class="breadcrumb"><a href="index.html">Home</a> / <span id="breadcrumbTitle">Temples</span></div>
-      <h1 id="pageTitle">Temples</h1>
-      <p id="pageDesc"></p>
-      <div class="search-wrap"><input id="sectionSearch" type="text" placeholder="Search temples in this section..." /></div>
+      <div class="breadcrumb"><a href="index.html">Home</a> / Compare Temples</div>
+      <h1>Compare Temples</h1>
+      <p>Search and select 2-3 temples from any section to compare side by side.</p>
     </section>
-    <section id="templeList" class="grid"></section>
+
+    <section id="compareContainer">
+      <div class="search-wrap">
+        <input id="compareSearch" type="text" placeholder="Search temple name, location, or deity..." autocomplete="off" />
+        <div id="compareResults" class="compare-results"></div>
+      </div>
+      <div id="compareSelected" class="compare-selected"></div>
+      <div id="compareTable" class="compare-table-wrap" style="display:none;"></div>
+    </section>
   </main>
 
   <script src="temple-photos.js"></script>
   <script src="divyadesam-data.js"></script>
   <script src="paadal-petra-data.js"></script>
   <script src="site-data.js"></script>
-  <script src="section.js"></script>
-  <script src="tour-packages.js"></script>
-  <script src="visited-tracker.js"></script>
-  <script src="trip-planner.js"></script>
-  <script src="pdf-guide.js"></script>
-  <script src="temple-rules.js"></script>
-  <script src="itinerary.js"></script>
-  <script src="accessibility.js"></script>
+  <script src="compare.js"></script>
   <script src="i18n.js"></script>
 </body>
 </html>

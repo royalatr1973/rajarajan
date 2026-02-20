@@ -2,7 +2,7 @@
 // Service Worker for Temples of Tamil Nadu PWA
 // Caches all static assets for offline use
 // ========================================
-var CACHE_NAME = 'tn-temples-v1';
+var CACHE_NAME = 'tn-temples-v2';
 var ASSETS = [
   './',
   './index.html',
@@ -25,6 +25,17 @@ var ASSETS = [
   './nearby.js',
   './trip-planner.js',
   './temple-map-engine.js',
+  './how-to-reach.js',
+  './accommodation.js',
+  './temple-rules.js',
+  './weather.js',
+  './pooja-booking.js',
+  './itinerary.js',
+  './photo-gallery.js',
+  './emergency.js',
+  './compare.js',
+  './accessibility.js',
+  './compare.html',
   './festivals.html',
   './nearby.html',
   './divyadesam.html',
