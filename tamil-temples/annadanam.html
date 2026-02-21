@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Annadanam Finder - Free Meals at Temples</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#E65100" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo">&#x1F549; Temples of Tamil Nadu</a>
+      <nav><a href="index.html">Home</a><a href="nearby.html">Nearby</a><a href="festivals.html">Festivals</a><a href="compare.html">Compare</a></nav>
+      <button class="dark-mode-toggle" aria-label="Toggle dark mode"></button>
+      <button class="hamburger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <section class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Annadanam Finder</div>
+      <h1>Annadanam (Free Meal) Finder</h1>
+      <p>Find temples offering free meals to devotees. Filter by district or meal timing.</p>
+      <div class="annadanam-filters">
+        <input id="annadanamSearch" type="text" placeholder="Search by temple name or district..." />
+        <select id="annadanamFilter" class="festival-select">
+          <option value="">All Meals</option>
+          <option value="breakfast">Breakfast</option>
+          <option value="lunch">Lunch</option>
+          <option value="dinner">Dinner</option>
+          <option value="all-day">All Day</option>
+        </select>
+      </div>
+    </section>
+    <section id="annadanamList" class="grid"></section>
+  </main>
+
+  <script src="temple-photos.js"></script>
+  <script src="divyadesam-data.js"></script>
+  <script src="paadal-petra-data.js"></script>
+  <script src="site-data.js"></script>
+  <script src="annadanam.js"></script>
+  <button class="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg></button>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-col"><h4>Major Sections</h4><a href="divyadesam.html">108 Divya Desam</a><a href="paadalpetra.html">276 Paadal Petra</a><a href="jyotirlinga.html">12 Jyotirlinga</a><a href="chardham.html">Char Dham</a><a href="shaktipeethas.html">Shakti Peethas</a></div><div class="footer-col"><h4>Temple Circuits</h4><a href="navagraha.html">Navagraha</a><a href="panchabhootha.html">Pancha Bhootha</a><a href="kumbakonam.html">Kumbakonam</a><a href="kanchipuram.html">Kanchipuram</a><a href="featured.html">Featured Temples</a></div><div class="footer-col"><h4>Tools</h4><a href="nearby.html">Find Nearby Temples</a><a href="festivals.html">Festival Calendar</a><a href="annadanam.html">Annadanam Finder</a><a href="nakshatra.html">Nakshatra Finder</a></div><div class="footer-col"><h4>About</h4><p>A curated encyclopedia of sacred Hindu temples across India.</p></div></div><div class="footer-bottom">Temples of Tamil Nadu &amp; India &mdash; Sacred Heritage Encyclopedia</div></div></footer>
+  <script src="site-enhancements.js"></script>
+</body>
+</html>

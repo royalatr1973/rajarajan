@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Temple Architecture Explorer - Temples of Tamil Nadu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#E65100" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo">&#x1F549; Temples of Tamil Nadu</a>
+      <nav><a href="index.html">Home</a><a href="nearby.html">Nearby</a><a href="festivals.html">Festivals</a><a href="compare.html">Compare</a></nav>
+      <button class="dark-mode-toggle" aria-label="Toggle dark mode"></button>
+      <button class="hamburger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <section class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Architecture Explorer</div>
+      <h1>Temple Architecture Explorer</h1>
+      <p>Learn about the structural elements of Hindu temples. Click any element to explore its name, purpose, and symbolism.</p>
+    </section>
+
+    <section class="arch-style-selector">
+      <button class="dd-route-sel-btn active" data-style="dravidian">Dravidian Style</button>
+      <button class="dd-route-sel-btn" data-style="nagara">Nagara Style</button>
+      <button class="dd-route-sel-btn" data-style="vesara">Vesara Style</button>
+    </section>
+
+    <section id="archDiagram" class="arch-diagram"></section>
+    <section id="archDetail" class="arch-detail-panel" style="display:none;"></section>
+    <section id="archElements" class="grid" style="margin-top:20px;"></section>
+  </main>
+
+  <script src="architecture.js"></script>
+  <button class="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg></button>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-col"><h4>Major Sections</h4><a href="divyadesam.html">108 Divya Desam</a><a href="paadalpetra.html">276 Paadal Petra</a><a href="jyotirlinga.html">12 Jyotirlinga</a><a href="chardham.html">Char Dham</a></div><div class="footer-col"><h4>Tools</h4><a href="nearby.html">Nearby</a><a href="festivals.html">Festivals</a><a href="nakshatra.html">Nakshatra Finder</a><a href="annadanam.html">Annadanam</a></div><div class="footer-col"><h4>Explore</h4><a href="live-darshan.html">Live Darshan</a><a href="packing.html">Packing List</a><a href="crowd-calendar.html">Crowd Calendar</a><a href="architecture.html">Architecture</a></div><div class="footer-col"><h4>About</h4><p>A curated encyclopedia of sacred Hindu temples across India.</p></div></div><div class="footer-bottom">Temples of Tamil Nadu &amp; India &mdash; Sacred Heritage Encyclopedia</div></div></footer>
+  <script src="site-enhancements.js"></script>
+</body>
+</html>
