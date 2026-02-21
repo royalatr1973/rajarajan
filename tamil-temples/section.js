@@ -7,14 +7,19 @@
   const breadcrumbEl = document.getElementById('breadcrumbTitle');
   if (!type || !listEl || !searchEl) return;
 
+  // Show skeleton loading while data renders
+  if (window.showSkeleton) window.showSkeleton('templeList', 8);
+
   const meta = window.sectionMeta[type] || { title: 'Temples' };
   titleEl.textContent = meta.title;
   if (breadcrumbEl) breadcrumbEl.textContent = meta.title;
   descEl.textContent = meta.desc || 'Search and open any temple to view full details on a dedicated page.';
+  document.title = meta.title + ' - Temples of Tamil Nadu';
 
   const data = window.getSectionData(type);
 
   function render(items) {
+    listEl.className = 'grid';
     if (!items.length) {
       listEl.innerHTML = '<p class="no-data">No temples available yet. You can populate this section data later.</p>';
       return;

@@ -13,6 +13,7 @@
   <meta name="theme-color" content="#E65100" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <div class="container nav">
       <a href="index.html" class="logo">🕉 Temples of Tamil Nadu</a>
@@ -27,10 +28,12 @@
         <a href="festivals.html">Festivals</a>
         <a href="compare.html">Compare</a>
       </nav>
+          <button class="dark-mode-toggle" aria-label="Toggle dark mode"></button>
+      <button class="hamburger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <section class="hero hero-home">
       <div class="hero-overlay"></div>
       <div class="container hero-layout">
@@ -58,8 +61,8 @@
     <section class="container stats-grid">
       <article><strong>108</strong><span>Divya Desam</span></article>
       <article><strong>276</strong><span>Paadal Petra Sthalams</span></article>
-      <article><strong>9</strong><span>Navagraha Temples</span></article>
-      <article><strong>5</strong><span>Pancha Bhootha Temples</span></article>
+      <article><strong>19</strong><span>Temple Circuits</span></article>
+      <article><strong>12</strong><span>Featured Temples</span></article>
     </section>
 
     <!-- Daily Panchang Widget -->
@@ -106,5 +109,42 @@
       navigator.serviceWorker.register('sw.js').catch(function () {});
     }
   </script>
+  <button class="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Major Sections</h4>
+          <a href="divyadesam.html">108 Divya Desam</a>
+          <a href="paadalpetra.html">276 Paadal Petra</a>
+          <a href="jyotirlinga.html">12 Jyotirlinga</a>
+          <a href="chardham.html">Char Dham</a>
+          <a href="shaktipeethas.html">Shakti Peethas</a>
+        </div>
+        <div class="footer-col">
+          <h4>Temple Circuits</h4>
+          <a href="navagraha.html">Navagraha</a>
+          <a href="panchabhootha.html">Pancha Bhootha</a>
+          <a href="kumbakonam.html">Kumbakonam</a>
+          <a href="kanchipuram.html">Kanchipuram</a>
+          <a href="featured.html">Featured Temples</a>
+        </div>
+        <div class="footer-col">
+          <h4>Tools</h4>
+          <a href="nearby.html">Find Nearby Temples</a>
+          <a href="festivals.html">Festival Calendar</a>
+          <a href="compare.html">Compare Temples</a>
+        </div>
+        <div class="footer-col">
+          <h4>About</h4>
+          <p>A curated encyclopedia of sacred Hindu temples across India. Covering 20+ pilgrimage circuits with maps, history, and travel info.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">Temples of Tamil Nadu &amp; India &mdash; Sacred Heritage Encyclopedia</div>
+    </div>
+  </footer>
+  <script src="site-enhancements.js"></script>
 </body>
 </html>
