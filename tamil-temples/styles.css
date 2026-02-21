@@ -656,25 +656,6 @@ input[type='text']:focus { border-color: var(--saffron); box-shadow: 0 0 0 3px r
 }
 .pooja-link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-/* Itinerary */
-.itinerary-result { margin-top: 16px; }
-.itinerary-result h3 { color: var(--saffron); margin-bottom: 12px; }
-.itinerary-day {
-  margin-bottom: 14px; padding: 14px; border: 1px solid var(--border);
-  border-radius: 12px; background: var(--bg-soft);
-}
-.itinerary-day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.itinerary-day-header strong { color: var(--saffron); }
-.itinerary-day-header span { color: var(--muted); font-size: 12px; }
-.itinerary-temples { padding-left: 20px; margin: 0; }
-.itinerary-temples li { padding: 4px 0; font-size: 13px; }
-.itinerary-time { color: var(--saffron); font-size: 12px; font-weight: 600; }
-.itinerary-overnight {
-  margin-top: 8px; padding: 8px 12px; border-radius: 8px;
-  background: rgba(46,125,50,.08); color: #2E7D32; font-size: 13px; font-weight: 500;
-}
-.itinerary-note { color: var(--muted); font-size: 12px; margin-top: 10px; font-style: italic; }
-
 /* Photo Gallery */
 .photo-gallery-card {
   margin-top: 14px; padding: 20px; border: 1px solid var(--border);
