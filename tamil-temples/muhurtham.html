@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auspicious Date Finder - Muhurtham Lookup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#E65100" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo">&#x1F549; Temples of Tamil Nadu</a>
+      <nav><a href="index.html">Home</a><a href="nearby.html">Nearby</a><a href="festivals.html">Festivals</a><a href="compare.html">Compare</a></nav>
+      <button class="dark-mode-toggle" aria-label="Toggle dark mode"></button>
+      <button class="hamburger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <section class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Muhurtham Lookup</div>
+      <h1>Auspicious Date Finder</h1>
+      <p>Find the most auspicious dates for your temple visit, pooja, or ceremony. Based on tithi, nakshatra, and planetary positions.</p>
+    </section>
+
+    <section class="muhurtham-config">
+      <div class="packing-controls">
+        <div class="packing-field">
+          <label for="muhActivity">Activity Type</label>
+          <select id="muhActivity" class="festival-select">
+            <option value="temple-visit">Temple Visit / Darshan</option>
+            <option value="pooja">Special Pooja / Archana</option>
+            <option value="grihapravesham">Grihapravesham (Housewarming)</option>
+            <option value="wedding">Wedding / Engagement</option>
+            <option value="travel">Pilgrimage Travel Start</option>
+            <option value="business">Business / New Venture</option>
+          </select>
+        </div>
+        <div class="packing-field">
+          <label for="muhStart">From Date</label>
+          <input id="muhStart" type="date" class="festival-select" />
+        </div>
+        <div class="packing-field">
+          <label for="muhEnd">To Date</label>
+          <input id="muhEnd" type="date" class="festival-select" />
+        </div>
+      </div>
+      <button id="muhFind" class="hero-btn" style="margin-top:14px">Find Auspicious Dates</button>
+    </section>
+
+    <section id="muhResults" class="muhurtham-results"></section>
+  </main>
+
+  <script src="muhurtham.js"></script>
+  <button class="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg></button>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-col"><h4>Major Sections</h4><a href="divyadesam.html">108 Divya Desam</a><a href="paadalpetra.html">276 Paadal Petra</a><a href="jyotirlinga.html">12 Jyotirlinga</a><a href="chardham.html">Char Dham</a></div><div class="footer-col"><h4>Tools</h4><a href="nearby.html">Nearby</a><a href="festivals.html">Festivals</a><a href="muhurtham.html">Muhurtham Finder</a><a href="nakshatra.html">Nakshatra Finder</a></div><div class="footer-col"><h4>Explore</h4><a href="live-darshan.html">Live Darshan</a><a href="packing.html">Packing List</a><a href="crowd-calendar.html">Crowd Calendar</a><a href="architecture.html">Architecture</a></div><div class="footer-col"><h4>About</h4><p>A curated encyclopedia of sacred Hindu temples across India.</p></div></div><div class="footer-bottom">Temples of Tamil Nadu &amp; India &mdash; Sacred Heritage Encyclopedia</div></div></footer>
+  <script src="site-enhancements.js"></script>
+</body>
+</html>

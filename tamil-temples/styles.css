@@ -900,3 +900,172 @@ input[type='text']:focus { border-color: var(--saffron); box-shadow: 0 0 0 3px r
   a { color: #333 !important; }
   @page { margin: 2cm; }
 }
+
+/* ===== FEATURE: Nakshatra Temple Recommender ===== */
+.nakshatra-finder { padding: 14px 0 50px; }
+.nakshatra-input-card {
+  padding: 20px; border: 1px solid var(--border); border-radius: 16px;
+  background: linear-gradient(180deg, #FFF3E0, var(--card)); margin-bottom: 20px;
+}
+.nakshatra-input-card h3 { color: var(--saffron); }
+.nakshatra-input-card p { color: var(--muted); font-size: 14px; margin: 4px 0 14px; }
+.nakshatra-controls { display: flex; gap: 12px; flex-wrap: wrap; }
+.nakshatra-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;
+}
+.nakshatra-card {
+  padding: 14px; border: 1px solid var(--border); border-radius: 12px;
+  background: var(--card); cursor: pointer; transition: all .2s;
+}
+.nakshatra-card:hover { border-color: var(--saffron); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(230,81,0,.1); }
+.nakshatra-num { display: inline-block; width: 28px; height: 28px; border-radius: 50%; background: rgba(230,81,0,.1); color: var(--saffron); font-weight: 700; font-size: 12px; text-align: center; line-height: 28px; margin-bottom: 6px; }
+.nakshatra-card h4 { margin: 0; color: var(--text); }
+.nakshatra-tamil { color: var(--muted); font-size: 12px; }
+.nakshatra-temple-name { color: var(--saffron); font-size: 13px; font-weight: 600; margin: 6px 0 2px; }
+.nakshatra-loc { color: var(--muted); font-size: 12px; }
+.nakshatra-result-card {
+  padding: 24px; border: 2px solid var(--saffron); border-radius: 16px;
+  background: linear-gradient(180deg, #FFF3E0, var(--card)); margin-bottom: 20px;
+}
+.nakshatra-result-header { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+.nakshatra-result-header h2 { color: var(--text); margin: 0; }
+.nakshatra-result-header span { color: var(--muted); font-weight: 400; }
+.nakshatra-deity { color: var(--muted); font-size: 14px; margin: 4px 0; }
+.nakshatra-num-large { font-size: 2rem; font-weight: 800; color: var(--saffron); opacity: .3; }
+.nakshatra-result-body { margin-top: 16px; display: grid; gap: 12px; }
+.nakshatra-info-block { padding: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
+.nakshatra-info-block strong { color: var(--saffron); font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 4px; }
+.nakshatra-info-block h3 { color: var(--text); margin: 0; }
+.nakshatra-info-block p { color: var(--muted); font-size: 14px; margin: 2px 0 0; }
+
+/* ===== FEATURE: Annadanam Finder ===== */
+.annadanam-filters { display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+.annadanam-filters input { flex: 1; min-width: 200px; }
+
+/* ===== FEATURE: Packing Checklist ===== */
+.packing-config {
+  padding: 20px; border: 1px solid var(--border); border-radius: 16px;
+  background: linear-gradient(180deg, #FFF3E0, var(--card)); margin-bottom: 20px;
+}
+.packing-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.packing-field label { display: block; font-size: 12px; font-weight: 600; color: var(--saffron); text-transform: uppercase; margin-bottom: 4px; }
+.packing-list { padding-bottom: 50px; }
+.packing-category {
+  margin-bottom: 16px; border: 1px solid var(--border); border-radius: 14px;
+  background: var(--card); overflow: hidden;
+}
+.packing-cat-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px; background: linear-gradient(180deg, #FFE0B2, var(--card));
+  border-bottom: 1px solid var(--border);
+}
+.packing-cat-header h3 { color: var(--saffron); font-size: 1rem; margin: 0; }
+.packing-progress { font-weight: 700; color: var(--saffron); font-size: 14px; }
+.packing-items { padding: 8px 12px; }
+.packing-item {
+  display: flex; align-items: center; gap: 10px; padding: 8px 6px;
+  border-radius: 8px; cursor: pointer; transition: background .15s; font-size: 14px;
+}
+.packing-item:hover { background: rgba(230,81,0,.04); }
+.packing-item input { accent-color: var(--saffron); width: 18px; height: 18px; }
+.packing-item.done span { text-decoration: line-through; color: var(--muted); }
+
+/* ===== FEATURE: Crowd Calendar ===== */
+.crowd-controls { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.crowd-nav { display: flex; gap: 10px; align-items: center; }
+.crowd-legend { display: flex; gap: 16px; align-items: center; margin-bottom: 14px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+.crowd-dot { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 4px; vertical-align: middle; }
+.crowd-low { background: #4CAF50; }
+.crowd-moderate { background: #FFC107; }
+.crowd-high { background: #FF9800; }
+.crowd-extreme { background: #F44336; }
+.crowd-grid { margin-bottom: 50px; }
+.crowd-header-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
+.crowd-day-name { text-align: center; font-size: 12px; font-weight: 600; color: var(--muted); padding: 6px 0; }
+.crowd-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.crowd-cell {
+  min-height: 72px; border: 1px solid var(--border); border-radius: 8px;
+  padding: 6px; display: flex; flex-direction: column; position: relative;
+}
+.crowd-cell.empty { border: none; background: none; }
+.crowd-day-num { font-weight: 700; font-size: 14px; color: var(--text); }
+.crowd-day-num.today { background: var(--saffron); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; }
+.crowd-level-dot { width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; right: 8px; }
+.crowd-reason { font-size: 10px; color: var(--muted); margin-top: auto; line-height: 1.2; }
+@media (max-width: 600px) { .crowd-cell { min-height: 50px; padding: 4px; } .crowd-reason { display: none; } }
+
+/* ===== FEATURE: Story Reader ===== */
+.story-reader-bar {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  margin-bottom: 14px; padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.story-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--card); color: var(--text); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all .2s;
+}
+.story-play-btn { background: linear-gradient(180deg, #FF6F00, #E65100); color: #fff; border-color: #E65100; }
+.story-btn:hover { border-color: var(--saffron); }
+.story-voice-select { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 12px; background: var(--card); color: var(--text); max-width: 180px; }
+.story-speed { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.story-speed input[type=range] { width: 60px; accent-color: var(--saffron); }
+
+/* ===== FEATURE: Architecture Explorer ===== */
+.arch-style-selector { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+.arch-info-card {
+  padding: 20px; border: 1px solid var(--border); border-radius: 16px;
+  background: linear-gradient(180deg, #FFF3E0, var(--card)); margin-bottom: 16px;
+}
+.arch-info-card h2 { color: var(--saffron); margin-bottom: 6px; }
+.arch-info-card p { color: var(--muted); font-size: 14px; margin: 0; line-height: 1.6; }
+.arch-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(180deg, #FF6F00, #E65100); color: #fff;
+  font-weight: 700; font-size: 14px; flex-shrink: 0;
+}
+.arch-detail-panel {
+  padding: 20px; border: 2px solid var(--saffron); border-radius: 16px;
+  background: linear-gradient(180deg, #FFF3E0, var(--card)); margin-bottom: 16px;
+}
+.arch-detail-content h2 { color: var(--saffron); }
+
+/* ===== FEATURE: Devotee Notes ===== */
+.devotee-notes-card {
+  margin-top: 14px; padding: 20px; border: 1px solid var(--border);
+  border-radius: 16px; background: var(--card);
+}
+.devotee-notes-card h3 { color: var(--saffron); margin-bottom: 4px; }
+.devotee-notes-list { display: flex; flex-direction: column; gap: 10px; }
+.devotee-note {
+  display: flex; gap: 12px; padding: 12px; background: var(--bg-soft);
+  border: 1px solid var(--border); border-radius: 10px;
+}
+.devotee-icon { font-size: 22px; flex-shrink: 0; }
+.devotee-tip-text { font-size: 14px; color: var(--text); line-height: 1.6; margin: 0; }
+.devotee-author { font-size: 12px; color: var(--muted); font-style: italic; }
+
+/* ===== FEATURE: Muhurtham Lookup ===== */
+.muhurtham-config {
+  padding: 20px; border: 1px solid var(--border); border-radius: 16px;
+  background: linear-gradient(180deg, #FFF3E0, var(--card)); margin-bottom: 20px;
+}
+.muhurtham-results { padding-bottom: 50px; }
+.muhurtham-list { display: flex; flex-direction: column; gap: 10px; }
+.muhurtham-item {
+  padding: 16px; border: 1px solid var(--border); border-radius: 12px;
+  background: var(--card);
+}
+.muhurtham-item.muh-excellent { border-left: 4px solid #2E7D32; }
+.muhurtham-item.muh-good { border-left: 4px solid #FF9800; }
+.muhurtham-item.muh-fair { border-left: 4px solid #9E9E9E; }
+.muh-header { display: flex; justify-content: space-between; align-items: center; }
+.muh-header strong { font-size: 15px; color: var(--text); }
+.muh-stars { color: #FFA000; margin-left: 8px; }
+.muh-rank { font-weight: 700; color: var(--saffron); font-size: 1.2rem; }
+.muh-reasons { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ===== FEATURE: Pocket Card ===== */
+.pocket-card-section { margin-top: 14px; }

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pilgrimage Packing Checklist - Temples of Tamil Nadu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#E65100" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo">&#x1F549; Temples of Tamil Nadu</a>
+      <nav><a href="index.html">Home</a><a href="nearby.html">Nearby</a><a href="festivals.html">Festivals</a><a href="compare.html">Compare</a></nav>
+      <button class="dark-mode-toggle" aria-label="Toggle dark mode"></button>
+      <button class="hamburger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <section class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Packing Checklist</div>
+      <h1>Pilgrimage Packing Checklist</h1>
+      <p>Generate a personalized packing list based on your destination, season, and trip details. Checked items are saved automatically.</p>
+    </section>
+
+    <section class="packing-config">
+      <div class="packing-controls">
+        <div class="packing-field">
+          <label for="packDest">Destination Type</label>
+          <select id="packDest" class="festival-select">
+            <option value="south">South India Temple Tour</option>
+            <option value="north">North India Pilgrimage</option>
+            <option value="hill">Hill Temple (Palani, Sabarimala, Kedarnath)</option>
+            <option value="coastal">Coastal Temple (Rameswaram, Dwaraka)</option>
+          </select>
+        </div>
+        <div class="packing-field">
+          <label for="packSeason">Season</label>
+          <select id="packSeason" class="festival-select">
+            <option value="summer">Summer (Mar-Jun)</option>
+            <option value="monsoon">Monsoon (Jul-Sep)</option>
+            <option value="winter">Winter (Oct-Feb)</option>
+          </select>
+        </div>
+        <div class="packing-field">
+          <label for="packDuration">Duration</label>
+          <select id="packDuration" class="festival-select">
+            <option value="day">Day Trip</option>
+            <option value="weekend">2-3 Days</option>
+            <option value="week">4-7 Days</option>
+            <option value="long">8+ Days</option>
+          </select>
+        </div>
+        <div class="packing-field">
+          <label for="packProfile">Traveler</label>
+          <select id="packProfile" class="festival-select">
+            <option value="solo">Solo</option>
+            <option value="family">Family with Kids</option>
+            <option value="elderly">Elderly / Senior</option>
+            <option value="group">Group Pilgrimage</option>
+          </select>
+        </div>
+      </div>
+      <button id="packGenerate" class="hero-btn" style="margin-top:14px">Generate Checklist</button>
+      <button id="packReset" class="trip-btn" style="margin-top:14px;margin-left:8px">Reset All</button>
+    </section>
+
+    <section id="packingList" class="packing-list"></section>
+  </main>
+
+  <script src="packing.js"></script>
+  <button class="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg></button>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-col"><h4>Major Sections</h4><a href="divyadesam.html">108 Divya Desam</a><a href="paadalpetra.html">276 Paadal Petra</a><a href="jyotirlinga.html">12 Jyotirlinga</a><a href="chardham.html">Char Dham</a></div><div class="footer-col"><h4>Tools</h4><a href="nearby.html">Nearby</a><a href="festivals.html">Festivals</a><a href="nakshatra.html">Nakshatra Finder</a><a href="annadanam.html">Annadanam</a></div><div class="footer-col"><h4>Explore</h4><a href="live-darshan.html">Live Darshan</a><a href="packing.html">Packing List</a><a href="crowd-calendar.html">Crowd Calendar</a><a href="architecture.html">Architecture</a></div><div class="footer-col"><h4>About</h4><p>A curated encyclopedia of sacred Hindu temples across India.</p></div></div><div class="footer-bottom">Temples of Tamil Nadu &amp; India &mdash; Sacred Heritage Encyclopedia</div></div></footer>
+  <script src="site-enhancements.js"></script>
+</body>
+</html>
