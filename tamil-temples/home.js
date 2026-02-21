@@ -3,17 +3,17 @@
   const results = document.getElementById('globalResults');
   if (!input || !results) return;
 
-  const sources = [
-    ...window.getSectionData('dd').map(t => ({ ...t, type: 'dd' })),
-    ...window.getSectionData('pps').map(t => ({ ...t, type: 'pps' })),
-    ...window.getSectionData('featured').map(t => ({ ...t, type: 'featured' })),
-    ...window.getSectionData('navagraha').map(t => ({ ...t, type: 'navagraha' })),
-    ...window.getSectionData('panchabhootha').map(t => ({ ...t, type: 'panchabhootha' })),
-    ...window.getSectionData('vinayagar').map(t => ({ ...t, type: 'vinayagar' })),
-    ...window.getSectionData('murugan').map(t => ({ ...t, type: 'murugan' })),
-    ...window.getSectionData('kumbakonam').map(t => ({ ...t, type: 'kumbakonam' })),
-    ...window.getSectionData('kanchipuram').map(t => ({ ...t, type: 'kanchipuram' }))
-  ];
+  // Build search index from all sections with data
+  var sources = [];
+  var allTypes = Object.keys(window.sectionMeta || {});
+  allTypes.forEach(function (type) {
+    try {
+      var data = window.getSectionData(type);
+      if (data && data.length) {
+        data.forEach(function (t) { sources.push(Object.assign({}, t, { type: type })); });
+      }
+    } catch (e) { /* skip sections without data */ }
+  });
 
   input.addEventListener('input', () => {
     const q = input.value.toLowerCase().trim();
