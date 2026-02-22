@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church Detail — Churches of India</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="site-logo">
+                <span class="cross-icon">&#x271E;</span>
+                <span>Churches of India</span>
+            </a>
+            <button class="hamburger" aria-label="Toggle navigation" onclick="document.querySelector('.main-nav').classList.toggle('open')">&#9776;</button>
+            <nav class="main-nav" role="navigation">
+                <a href="index.html">Home</a>
+                <a href="basilicas.html">Basilicas</a>
+                <a href="heritage.html">Heritage</a>
+                <a href="goa.html">Goa</a>
+                <a href="kerala.html">Kerala</a>
+                <a href="tamilnadu.html">Tamil Nadu</a>
+                <a href="northeast.html">Northeast</a>
+                <a href="pilgrimage.html">Pilgrimage</a>
+            </nav>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">&#9790;</button>
+        </div>
+    </header>
+
+    <main id="main">
+        <!-- Detail Hero -->
+        <div class="detail-hero" id="detailHero">
+            <img id="heroImage" src="" alt="">
+            <div class="overlay">
+                <div class="breadcrumb" style="padding:0 0 8px;">
+                    <a href="index.html" style="color:rgba(255,255,255,0.7);">Home</a>
+                    <span style="color:rgba(255,255,255,0.5);">›</span>
+                    <a href="#" id="sectionLink" style="color:rgba(255,255,255,0.7);"></a>
+                    <span style="color:rgba(255,255,255,0.5);">›</span>
+                    <span id="churchNameBreadcrumb" style="color:rgba(255,255,255,0.9);"></span>
+                </div>
+                <h1 id="churchName"></h1>
+                <div style="opacity:0.85;margin-top:4px;" id="churchLocation"></div>
+            </div>
+        </div>
+
+        <!-- Detail Content -->
+        <div class="detail-content">
+            <!-- Meta cards -->
+            <div class="detail-meta" id="detailMeta"></div>
+
+            <!-- Summary -->
+            <div class="detail-section" id="summarySection">
+                <h2>About This Church</h2>
+                <p id="churchSummary"></p>
+            </div>
+
+            <!-- Significance -->
+            <div class="detail-section" id="significanceSection" style="display:none;">
+                <h2>Historical Significance</h2>
+                <p id="churchSignificance"></p>
+            </div>
+
+            <!-- Festivals -->
+            <div class="detail-section" id="festivalsSection" style="display:none;">
+                <h2>Festivals & Celebrations</h2>
+                <ul id="churchFestivals" style="list-style:none;padding:0;"></ul>
+            </div>
+
+            <!-- Map -->
+            <div class="detail-section" id="mapSection" style="display:none;">
+                <h2>Location</h2>
+                <div class="map-container">
+                    <div id="map" style="height:400px;"></div>
+                </div>
+            </div>
+
+            <!-- Back link -->
+            <div style="margin-top:30px;">
+                <a href="#" id="backLink" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--primary);color:#fff;border-radius:var(--radius-sm);font-weight:500;">
+                    &#8592; Back to section
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Churches of India — Sacred Heritage Encyclopedia</p>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
+
+    <script src="church-photos.js"></script>
+    <script src="site-data.js"></script>
+    <script src="detail.js"></script>
+    <script src="theme.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</body>
+</html>
