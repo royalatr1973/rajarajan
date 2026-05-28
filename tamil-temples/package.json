@@ -1,0 +1,22 @@
+{
+  "name": "tamil-temples",
+  "version": "1.0.0",
+  "description": "Tamil Nadu Temples Guide — Timings, Routes & Pilgrimage Maps",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build required'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [
+    "temples",
+    "tamil-nadu",
+    "pilgrimage",
+    "divya-desam"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
